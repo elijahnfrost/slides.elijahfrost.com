@@ -29,8 +29,7 @@
     },
     {
       "source": "/:slug/",
-      "destination": "/api/deck?slug=:slug",
-      "check": true
+      "destination": "/api/deck?slug=:slug"
     }
   ],
 
