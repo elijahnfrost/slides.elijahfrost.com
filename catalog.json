@@ -1,16 +1,1 @@
-{
-  "pieces": [
-    {
-      "slug": "soft-halo",
-      "kind": "deck",
-      "title": "Grid Studies — soft halo",
-      "description": "A typographic study about backgrounds.",
-      "date": "2026-05-14",
-      "tags": [
-        "typography",
-        "grid"
-      ],
-      "parent_template": null
-    }
-  ]
-}
+{"pieces":[{"slug":"soft-halo","kind":"deck","title":"Grid Studies — soft halo","description":"A typographic study about backgrounds.","date":"2026-05-14","tags":["typography","grid"],"parent_template":null},{"slug":"editorial-template","kind":"deck","title":"Editorial Template — Grid Studies","description":"A typographic study about backgrounds.","date":"2026-05-14","tags":["typography","grid"],"parent_template":null}]}

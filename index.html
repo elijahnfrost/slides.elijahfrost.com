@@ -82,7 +82,7 @@
   let seedTemplates = [];
   try {
     const [cat, seeds] = await Promise.all([
-      fetch('/catalog.json', { cache: 'no-store' }).then(r => r.json()),
+      fetch('/api/catalog/', { cache: 'no-store' }).then(r => r.json()),
       fetch('/_framework/v1/templates/index.json', { cache: 'no-store' })
         .then(r => r.ok ? r.json() : { templates: [] })
         .catch(() => ({ templates: [] })),
