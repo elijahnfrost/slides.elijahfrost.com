@@ -8,6 +8,14 @@
 
   "rewrites": [
     {
+      "source": "/api/export/template/:name",
+      "destination": "/api/export-template?name=:name"
+    },
+    {
+      "source": "/api/export/:slug",
+      "destination": "/api/export-piece?slug=:slug"
+    },
+    {
       "source": "/:slug/present/",
       "destination": "/_framework/v1/present.html"
     },

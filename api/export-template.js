@@ -1,7 +1,8 @@
 /**
- * api/export/template/[name].js — return a fresh template file.
+ * api/export-template.js — return a fresh template file.
  *
- * GET /api/export/template/<name>
+ * GET /api/export-template?name=<name>     (raw)
+ * GET /api/export/template/<name>           (clean, via vercel.json rewrite)
  *   200 text/html  with Content-Disposition: attachment; filename="new-deck.html"
  *   404            if no template by that name
  *
@@ -11,8 +12,8 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ulid } from 'ulid';
-import { parseDeckHtml, extractDeckMetaText, rewriteDeckMeta, absolutizeFrameworkUrls } from '../../../lib/parse.js';
-import { parseDeckMeta } from '../../../lib/schema.js';
+import { parseDeckHtml, extractDeckMetaText, rewriteDeckMeta, absolutizeFrameworkUrls } from '../lib/parse.js';
+import { parseDeckMeta } from '../lib/schema.js';
 
 const namePattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 

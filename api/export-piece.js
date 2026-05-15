@@ -1,16 +1,17 @@
 /**
- * api/export/[slug].js — return a piece's HTML file with framework imports
+ * api/export-piece.js — return a piece's HTML file with framework imports
  * rewritten to absolute prod URLs and <deck-meta> freshened for download.
  *
- * GET /api/export/<slug>
+ * GET /api/export-piece?slug=<slug>     (raw)
+ * GET /api/export/<slug>                 (clean, via vercel.json rewrite)
  *   200 text/html  with Content-Disposition: attachment; filename="<slug>.html"
  *   404            if no piece with that slug exists
  */
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ulid } from 'ulid';
-import { parseDeckHtml, extractDeckMetaText, rewriteDeckMeta, absolutizeFrameworkUrls } from '../../lib/parse.js';
-import { parseDeckMeta } from '../../lib/schema.js';
+import { parseDeckHtml, extractDeckMetaText, rewriteDeckMeta, absolutizeFrameworkUrls } from '../lib/parse.js';
+import { parseDeckMeta } from '../lib/schema.js';
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
