@@ -35,7 +35,7 @@
       <p class="hub-eyebrow">Elijah Frost</p>
     </div>
     <nav class="hub-header-actions" aria-label="Deck actions">
-      <a class="hub-action" href="/api/export/template/blank-deck">New from template</a>
+      <a class="hub-action" href="/api/export-template?name=blank-deck">New from template</a>
       <a class="hub-action" href="/upload/">Upload deck</a>
     </nav>
   </header>
@@ -112,7 +112,7 @@
       node.querySelector('.hub-card-tags').textContent =
         (p.tags || []).join(' · ');
       const dl = node.querySelector('.hub-card-download');
-      dl.href = '/api/export/' + p.slug;
+      dl.href = '/api/export-piece?slug=' + encodeURIComponent(p.slug);
       catalogEl.appendChild(node);
     }
   }
