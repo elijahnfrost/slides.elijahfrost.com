@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap">
-<link rel="stylesheet" href="/_framework/tokens.css">
-<link rel="stylesheet" href="/_framework/present.css">
+<link rel="stylesheet" href="/_framework/v1/tokens.css">
+<link rel="stylesheet" href="/_framework/v1/present.css">
 </head>
 <body>
 
@@ -53,6 +53,14 @@
         <iframe id="frame-next" title="Next slide" allow="autoplay"></iframe>
       </div>
     </div>
+
+    <div class="p-waiting" id="waiting" hidden>
+      <p class="p-waiting-eyebrow">Presenter</p>
+      <h2 class="p-waiting-title">No deck connected</h2>
+      <p class="p-waiting-body">Open the deck window. The presenter syncs automatically over a same-origin broadcast channel — once the deck loads, the current and next slide thumbnails appear here.</p>
+      <button class="p-btn p-btn-primary" id="waiting-open" type="button">Open deck window</button>
+      <p class="p-waiting-hint">Or close this window and click <strong>Present</strong> on the deck.</p>
+    </div>
   </section>
 
   <section class="p-notes" aria-label="Speaker notes">
@@ -79,7 +87,7 @@
 
 </main>
 
-<script type="module" src="/_framework/present.js"></script>
+<script type="module" src="/_framework/v1/present.js"></script>
 
 </body>
 </html>

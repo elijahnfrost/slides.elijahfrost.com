@@ -72,6 +72,8 @@ const els = {
   navNext:      document.getElementById('nav-next'),
   navCur:       document.getElementById('nav-cur'),
   navTotal:     document.getElementById('nav-total'),
+  waiting:      document.getElementById('waiting'),
+  waitingOpen:  document.getElementById('waiting-open'),
 };
 
 // ----- clock -----
@@ -134,6 +136,9 @@ function setStatus(label, dataState, openDeckVisible) {
   els.status.textContent = label;
   els.status.dataset.state = dataState;
   els.openDeck.hidden = !openDeckVisible;
+  // The center-stage waiting card covers the empty iframes when the deck
+  // isn't connected. Same trigger as the small header-button.
+  if (els.waiting) els.waiting.hidden = !openDeckVisible;
 }
 
 function setConnected(on) {
@@ -144,9 +149,11 @@ function setConnected(on) {
             !on);
 }
 
-els.openDeck.addEventListener('click', () => {
+function openDeckWindow() {
   window.open(DECK_URL, 'deck:' + DECK_PATH);
-});
+}
+els.openDeck.addEventListener('click', openDeckWindow);
+if (els.waitingOpen) els.waitingOpen.addEventListener('click', openDeckWindow);
 
 // If we don't hear back after a moment, surface "Waiting for deck…" and
 // the "Open deck" button. setConnected(false) is a no-op if state hasn't

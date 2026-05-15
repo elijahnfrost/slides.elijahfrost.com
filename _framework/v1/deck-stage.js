@@ -864,12 +864,14 @@
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg>
         </button>
         <span class="divider"></span>
+        <button class="btn rail" type="button" aria-pressed="true" aria-label="Hide thumbnail rail" title="Toggle rail (H)">Rail<span class="kbd">H</span></button>
         <button class="btn reset" type="button" aria-label="Reset to first slide" title="Reset (R)">Reset<span class="kbd">R</span></button>
         <button class="btn present" type="button" aria-label="Open presenter view" title="Open presenter (P)">Present<span class="kbd">P</span></button>
       `;
 
       overlay.querySelector('.prev').addEventListener('click', () => this._advance(-1, 'click'));
       overlay.querySelector('.next').addEventListener('click', () => this._advance(1, 'click'));
+      overlay.querySelector('.rail').addEventListener('click', () => this._setRailVisible(!this._railVisible));
       overlay.querySelector('.reset').addEventListener('click', () => this._go(0, 'click'));
       overlay.querySelector('.present').addEventListener('click', () => this._openPresenter());
 
@@ -983,6 +985,7 @@
       } catch (err) {}
       this._setRailWidth(rw);
       this._syncRailHidden();
+      this._syncRailButton();
     }
 
     _setRailWidth(px) {
@@ -1242,20 +1245,35 @@
       // whether the Tweaks panel itself is open — closing the panel
       // doesn't change rail visibility. Persists alongside rail width.
       if (d && d.type === '__deck_rail_visible' && typeof d.on === 'boolean') {
-        if (d.on === this._railVisible) return;
-        this._railVisible = d.on;
-        try { localStorage.setItem('deck-stage.railVisible', d.on ? '1' : '0'); } catch (e) {}
-        // Arm the transition, commit it, then flip state — otherwise the
-        // browser coalesces both writes and nothing animates on show.
-        this.setAttribute('data-rail-anim', '');
-        void (this._rail && this._rail.offsetHeight);
-        this._syncRailHidden();
-        this._fit();
-        this._scaleThumbs();
-        clearTimeout(this._railAnimTimer);
-        this._railAnimTimer = setTimeout(() => this.removeAttribute('data-rail-anim'), 220);
+        this._setRailVisible(d.on);
       }
       if (d && d.type === '__omelette_rail_enabled') this._enableRail();
+    }
+
+    _setRailVisible(on) {
+      on = !!on;
+      if (on === this._railVisible) return;
+      this._railVisible = on;
+      try { localStorage.setItem('deck-stage.railVisible', on ? '1' : '0'); } catch (e) {}
+      // Arm the transition, commit it, then flip state — otherwise the
+      // browser coalesces both writes and nothing animates on show.
+      this.setAttribute('data-rail-anim', '');
+      void (this._rail && this._rail.offsetHeight);
+      this._syncRailHidden();
+      this._fit();
+      this._scaleThumbs();
+      this._syncRailButton();
+      clearTimeout(this._railAnimTimer);
+      this._railAnimTimer = setTimeout(() => this.removeAttribute('data-rail-anim'), 220);
+    }
+
+    _syncRailButton() {
+      if (!this._overlay) return;
+      const btn = this._overlay.querySelector('.btn.rail');
+      if (!btn) return;
+      const on = !!this._railVisible;
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      btn.setAttribute('aria-label', on ? 'Hide thumbnail rail' : 'Show thumbnail rail');
     }
 
     /** BroadcastChannel inbound — commands from a same-origin presenter
@@ -1350,6 +1368,8 @@
         this._go(0, 'keyboard');
       } else if (key === 'p' || key === 'P') {
         this._openPresenter();
+      } else if (key === 'h' || key === 'H') {
+        this._setRailVisible(!this._railVisible);
       } else if (/^[0-9]$/.test(key)) {
         // 1..9 jump to that slide; 0 jumps to 10.
         const n = key === '0' ? 9 : parseInt(key, 10) - 1;

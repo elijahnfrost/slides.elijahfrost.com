@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upload — Slides</title>
+<meta name="robots" content="noindex">
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap">
+<link rel="stylesheet" href="/_framework/v1/tokens.css">
+<link rel="stylesheet" href="/upload/upload.css">
+</head>
+<body>
+
+<main class="up">
+
+  <header class="up-header">
+    <a class="up-back" href="/">← Slides</a>
+    <h1 class="up-title">Upload deck</h1>
+    <p class="up-sub">Drop an HTML file that came back from your agent. The server validates it, mints a version_id, and commits to the repo.</p>
+  </header>
+
+  <section class="up-token">
+    <label for="token" class="up-label">Upload token</label>
+    <input id="token" type="password" class="up-input" placeholder="DECK_UPLOAD_TOKEN" autocomplete="off" spellcheck="false">
+    <p class="up-hint">Saved in this browser's localStorage. Paste once.</p>
+  </section>
+
+  <section class="up-drop" id="drop">
+    <input type="file" id="file" accept=".html,text/html" hidden>
+    <p class="up-drop-eyebrow">Step 1</p>
+    <p class="up-drop-prompt">Drop an .html file here</p>
+    <p class="up-drop-or">or <button class="up-link" id="browse" type="button">browse</button></p>
+  </section>
+
+  <section class="up-preview" id="preview" hidden>
+    <h2 class="up-preview-head">Preview</h2>
+    <dl class="up-preview-grid">
+      <dt>Slug</dt><dd id="pv-slug">–</dd>
+      <dt>Title</dt><dd id="pv-title">–</dd>
+      <dt>Description</dt><dd id="pv-description">–</dd>
+      <dt>Tags</dt><dd id="pv-tags">–</dd>
+      <dt>Date</dt><dd id="pv-date">–</dd>
+      <dt>Schema / Framework</dt><dd id="pv-versions">–</dd>
+      <dt>Sections / Notes</dt><dd id="pv-counts">–</dd>
+      <dt>Slide-types used</dt><dd id="pv-types">–</dd>
+    </dl>
+    <div class="up-preview-actions">
+      <button class="up-btn up-btn-primary" id="publish" type="button">Publish</button>
+      <button class="up-btn" id="cancel" type="button">Cancel</button>
+    </div>
+  </section>
+
+  <section class="up-status" id="status" hidden>
+    <h2 class="up-status-head" id="status-head">…</h2>
+    <p class="up-status-body" id="status-body"></p>
+    <pre class="up-status-detail" id="status-detail" hidden></pre>
+    <p class="up-status-actions">
+      <a class="up-link" id="status-link" href="#" hidden>Open piece →</a>
+    </p>
+  </section>
+
+</main>
+
+<script src="/upload/upload.js" type="module"></script>
+
+</body>
+</html>

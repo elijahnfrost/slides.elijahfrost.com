@@ -102,14 +102,83 @@ body {
   color: var(--color-fg);
 }
 
+.p-btn-primary {
+  border-color: var(--color-fg);
+  color: var(--color-fg);
+  background: var(--color-fg);
+  color: var(--color-bg-page);
+  font-weight: 500;
+  padding: 0.625rem 1.125rem;
+  font-size: 0.8125rem;
+}
+.p-btn-primary:hover {
+  border-color: var(--color-fg);
+  background: var(--color-fg-bright, var(--color-fg));
+}
+.p-btn-primary:active {
+  background: var(--color-fg);
+  filter: brightness(0.92);
+}
+
 /* ----- stage (current + next) ----- */
 
 .p-stage {
+  position: relative;
   display: grid;
   grid-template-columns: 1.6fr 1fr;
   gap: 1rem;
   padding: 1rem 1.25rem;
   min-height: 0;
+}
+
+/* Waiting card — covers the stage when no deck is connected. Hidden via
+   the `hidden` attribute; present.js toggles based on connection state. */
+.p-waiting {
+  position: absolute;
+  inset: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  text-align: center;
+  background: var(--color-bg-page);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 2.5rem 2rem;
+  z-index: 2;
+}
+.p-waiting[hidden] { display: none; }
+.p-waiting-eyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  margin: 0;
+}
+.p-waiting-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 2rem;
+  line-height: 1.1;
+  color: var(--color-fg-bright, var(--color-fg));
+  margin: 0;
+}
+.p-waiting-body {
+  max-width: 36rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-fg-muted);
+  margin: 0 0 0.5rem;
+}
+.p-waiting-hint {
+  font-size: 0.75rem;
+  color: var(--color-fg-dim, var(--color-fg-muted));
+  margin: 0.25rem 0 0;
+}
+.p-waiting-hint strong {
+  color: var(--color-fg-soft, var(--color-fg-muted));
+  font-weight: 500;
 }
 
 .p-pane {

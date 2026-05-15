@@ -1,89 +1,134 @@
 # slides.elijahfrost.com
 
-A personal slide catalog. The hub at `/` is searchable; each piece lives at
-`/<slug>/` and is a full-screen presentation built on the `<deck-stage>` Web
-Component.
+A personal slide hub. Each piece is a single self-contained HTML file
+rendered by a custom Web Component, `<deck-stage>`. The hub at `/` lists
+every piece and supports search.
+
+The site uses a **file-passing agent workflow**:
+
+```
+   site (hub)                                       agent
+       │  ────────── download .html ──────────►      │
+       │                                             │
+       │  ──────── you save / share file ────────►   │
+       │                                             │
+       │  ◄──────── upload edited .html ─────────    │
+       │                                             │
+   server: validate → mint version_id →
+   commit to GitHub → Vercel auto-deploys
+```
 
 ## Layout
 
 ```
-slides.elijahfrost.com/
-├── index.html              # the searchable hub (reads catalog.json)
-├── hub.css                 # hub-specific styles
-├── catalog.json            # the index of pieces
-├── _framework/             # the deck framework (shared across all pieces)
-│   ├── deck-stage.js
-│   ├── tokens.css
-│   ├── present.html        # presenter controller (see below)
-│   ├── present.css
-│   ├── present.js
-│   └── templates/
-│       └── blank-deck.html
-├── soft-halo/              # a piece
+.
+├── index.html              # hub (reads catalog.json, lists pieces)
+├── hub.css                 # hub styles
+├── catalog.json            # generated — do not hand-edit
+├── upload/                 # the /upload page client
 │   ├── index.html
-│   ├── deck-stage.js  →  ../_framework/deck-stage.js
-│   ├── tokens.css     →  ../_framework/tokens.css
-│   └── present/
-│       └── index.html  →  ../../_framework/present.html
-└── (future pieces…)
+│   ├── upload.css
+│   └── upload.js
+├── api/                    # Vercel serverless functions
+│   ├── upload.js                            # POST: validate + commit
+│   └── export/
+│       ├── [slug].js                        # GET: download a piece
+│       └── template/[name].js               # GET: download a fresh template
+├── lib/                    # shared modules used by api/*
+│   ├── schema.js           # deck-meta validator (zod)
+│   ├── fences.js           # FRAMEWORK-MANAGED region fingerprints
+│   ├── migrations.js       # schema migration chain (currently empty)
+│   ├── parse.js            # HTML parsing + structural validation
+│   ├── github.js           # Octokit multi-file commit wrapper
+│   ├── og.js               # server-side OG image (1200×630 PNG)
+│   └── upload-pipeline.js  # the 15-step validation pipeline
+├── bin/
+│   ├── build-catalog.mjs   # regenerates catalog.json from each piece's <deck-meta>
+│   ├── gen-og.py           # legacy local OG generator (server uses lib/og.js)
+│   └── new-piece           # deprecated; see /api/export/template/blank-deck
+├── _framework/v1/          # the deck framework. pinned, immutable per version.
+│   ├── deck-stage.js               # the <deck-stage> Web Component
+│   ├── tokens.css                  # design tokens
+│   ├── slide-types.css             # canonical 18 slide-types
+│   ├── present.html / present.js / present.css   # the presenter view
+│   ├── templates/blank-deck.html   # the agent's starting point
+│   ├── SLIDE-TYPES.md              # agent reference: the 18 layouts
+│   └── DECK-FORMAT.md              # agent reference: the file contract
+├── soft-halo/              # an example piece using the new format
+│   ├── index.html
+│   ├── og-image.png
+│   └── present/index.html          # symlink → ../../_framework/v1/present.html
+└── vercel.json
 ```
 
-Pieces symlink the framework files. Symlinks work here because everything is
-in the same git repo — Vercel clones the whole thing and resolves them at
-build time.
-
-## Local dev
+## Local development
 
 ```sh
-python3 -m http.server 8000
-# open http://localhost:8000/
+# Static dev server
+python3 -m http.server 8765
+# open http://localhost:8765/
 ```
 
-## Adding a piece
+To run the serverless functions locally:
 
 ```sh
-bin/new-piece <slug> "Title" "Short description"
+npm install
+cp .env.example .env.local && $EDITOR .env.local   # set DECK_UPLOAD_TOKEN, GITHUB_PAT
+vercel dev
 ```
 
-The script copies the template, symlinks the framework files (deck-stage.js,
-tokens.css, slide-types.css, present/), and appends a catalog entry dated
-today with empty tags. Then edit `<slug>/index.html` and update the catalog
-tags as needed. Commit and push — Vercel auto-deploys.
+## Creating a new deck (the workflow)
+
+1. **Download a blank template** from the hub ("New from template") or:
+
+   ```sh
+   curl -s https://slides.elijahfrost.com/api/export/template/blank-deck > new.html
+   ```
+
+2. **Hand `new.html` to an agent** (Claude.ai or similar). Tell it what
+   the deck is about. The agent reads
+   [_framework/v1/DECK-FORMAT.md](_framework/v1/DECK-FORMAT.md) and
+   [_framework/v1/SLIDE-TYPES.md](_framework/v1/SLIDE-TYPES.md) to know
+   the format and slide vocabulary.
+
+3. **Upload the result** via [/upload/](upload/). The server validates
+   schema, fences, structure, embed/script allow-lists, optimistic
+   concurrency, then commits to GitHub. Vercel deploys in ~30s.
+
+## Editing an existing deck
+
+Same loop. On the hub, click the ⇣ button on a card to download the
+piece. The download stamps a fresh `version_id` so optimistic concurrency
+catches the case where two parallel agent sessions try to publish.
+
+## Deck file format
+
+See [_framework/v1/DECK-FORMAT.md](_framework/v1/DECK-FORMAT.md) for the
+full contract: file skeleton, `<deck-meta>` schema, FRAMEWORK-MANAGED
+regions, hard rules, the failure codes the upload endpoint can return.
 
 ## Presenter view
 
-Every piece gets a presenter at `/<slug>/present/`. Open it from the deck by
-clicking **Present** in the bottom overlay or pressing **P**.
-
-Layout: clock + elapsed timer up top, current and next slide thumbnails
-side-by-side, speaker notes from the deck's `#speaker-notes` JSON below,
-prev/next + slide count at the foot.
-
-The deck and presenter sync over a same-origin `BroadcastChannel` named
-`deck-stage:/<slug>/`. Navigation from either window drives the other.
-Channel name is derived from `location.pathname`; the presenter strips its
-own `present/` suffix to match.
-
-Keys in the presenter window: **←/→** prev/next, **PgUp/PgDn**, **Space**,
-**Home/End**, **T** start/pause timer, **F** fullscreen.
-
-## Framework refinement
-
-`_framework/` is the deck framework — the source of truth. Edits there
-propagate to every piece on the next deploy via the symlinks. Planned work:
-extract per-piece slide-type styles (`slide-title`, `slide-body`, etc.) from
-each piece's HTML into `_framework/slide-types.css`; audit `deck-stage.js` for
-incomplete features.
+Every piece serves a presenter at `/<slug>/present/` — a Vercel rewrite
+maps it to [_framework/v1/present.html](_framework/v1/present.html). On
+the deck, click **Present** (bottom overlay) or press **P** to open it
+in a popup. Sync happens via a same-origin `BroadcastChannel`. Press
+**H** on the deck to toggle the thumbnail rail.
 
 ## Deploy
 
 Connected to Vercel via GitHub. Pushing to `main` triggers a deploy.
+The upload endpoint commits via the GitHub REST API; Vercel picks it up
+on the next webhook.
 
-Domain: `slides.elijahfrost.com` (via DNS CNAME → `cname.vercel-dns.com`).
+Required env vars (set in Vercel + `.env.local` for `vercel dev`):
 
-## Per-piece assets
+- `DECK_UPLOAD_TOKEN` — shared bearer token the `/upload` page sends
+- `GITHUB_PAT` — fine-grained PAT with `contents:write` on this repo
 
-Each piece should have:
-- `<slug>/index.html` — the deck
-- `<slug>/og-image.png` (1200×630, optional) — referenced from the piece's OG tags
-- `favicon.svg` at the repo root — used by all pieces, the hub, and the presenter
+Optional:
+
+- `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH` (defaults shown in `.env.example`)
+- `ALLOWED_EMBED_HOSTS` — comma-separated extra hosts for `<iframe>`/`<video>`/`<audio>`
+
+Domain: `slides.elijahfrost.com` (DNS CNAME → `cname.vercel-dns.com`).
