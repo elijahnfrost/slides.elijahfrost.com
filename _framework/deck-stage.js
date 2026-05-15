@@ -1366,12 +1366,15 @@
 
     /** Open the per-deck presenter window. Resolved relative to the deck's
      *  URL: /<slug>/ → /<slug>/present/. Named window so repeated clicks
-     *  focus the existing presenter instead of stacking new ones. */
+     *  focus the existing presenter instead of stacking new ones.
+     *  No features string — passing one makes Chrome open as a popup window
+     *  that gets blocked; omitting it opens as a regular tab. */
     _openPresenter() {
       try {
         const url = new URL('present/', location.href).href;
         const name = 'deck-presenter:' + location.pathname.replace(/present\/$/, '');
-        window.open(url, name, 'noopener=no');
+        const win = window.open(url, name);
+        if (win) win.focus();
       } catch (e) {}
     }
 

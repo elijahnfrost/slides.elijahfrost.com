@@ -229,9 +229,36 @@ function escapeHtml(s) {
 }
 
 // ----- nav -----
+//
+// Each nav action does two things: send the cmd on the channel (drives
+// any connected deck) AND optimistically update local state. If a deck
+// is connected it'll broadcast back authoritative state and overwrite
+// the optimistic guess; if not, the optimistic update keeps the
+// presenter usable as a standalone slide stepper.
 
-els.navPrev.addEventListener('click', () => send('prev'));
-els.navNext.addEventListener('click', () => send('next'));
+function nav(cmd) {
+  send(cmd);
+  if (!state.total) return;
+  const skipped = new Set(state.skipped);
+  const before = state.index;
+  if (cmd === 'next') {
+    for (let i = state.index + 1; i < state.total; i++) {
+      if (!skipped.has(i)) { state.index = i; break; }
+    }
+  } else if (cmd === 'prev') {
+    for (let i = state.index - 1; i >= 0; i--) {
+      if (!skipped.has(i)) { state.index = i; break; }
+    }
+  } else if (cmd === 'first') {
+    state.index = 0;
+  } else if (cmd === 'last') {
+    state.index = state.total - 1;
+  }
+  if (state.index !== before) render();
+}
+
+els.navPrev.addEventListener('click', () => nav('prev'));
+els.navNext.addEventListener('click', () => nav('next'));
 
 window.addEventListener('keydown', (e) => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
@@ -243,12 +270,12 @@ window.addEventListener('keydown', (e) => {
     case 'PageDown':
     case ' ':
     case 'Spacebar':
-      send('next'); e.preventDefault(); break;
+      nav('next'); e.preventDefault(); break;
     case 'ArrowLeft':
     case 'PageUp':
-      send('prev'); e.preventDefault(); break;
-    case 'Home': send('first'); e.preventDefault(); break;
-    case 'End':  send('last');  e.preventDefault(); break;
+      nav('prev'); e.preventDefault(); break;
+    case 'Home': nav('first'); e.preventDefault(); break;
+    case 'End':  nav('last');  e.preventDefault(); break;
     case 't': case 'T': els.timerToggle.click(); e.preventDefault(); break;
     case 'f': case 'F': toggleFullscreen(); e.preventDefault(); break;
   }
@@ -266,21 +293,39 @@ function toggleFullscreen() {
 }
 els.fullscreen.addEventListener('click', toggleFullscreen);
 
-// ----- load speaker notes from deck HTML -----
+// ----- bootstrap from deck HTML -----
+//
+// Fetch the deck once at startup to: (1) read #speaker-notes, (2) count
+// slides so we know the total even before a deck window connects. Without
+// this, a standalone presenter shows empty iframes and "– / –" counts
+// until a deck window broadcasts state — which looks broken if the user
+// hasn't opened a deck yet.
 
 (async () => {
   try {
     const res = await fetch(DECK_URL, { cache: 'no-store' });
     const html = await res.text();
     const doc = new DOMParser().parseFromString(html, 'text/html');
+
     const tag = doc.getElementById('speaker-notes');
     if (tag) {
       const parsed = JSON.parse(tag.textContent || '[]');
       if (Array.isArray(parsed)) state.notes = parsed;
     }
+
+    // Optimistic: assume slide 1 until the deck broadcasts otherwise.
+    // The count comes from the parsed HTML's <section> children of
+    // <deck-stage>; if a deck window is open, its 'state' broadcast
+    // overrides these values within a few hundred ms.
+    const sections = doc.querySelectorAll('deck-stage > section');
+    if (sections.length && state.total === 0) {
+      state.total = sections.length;
+      state.index = 0;
+    }
   } catch (e) {
-    // Notes are best-effort. Deck still works without them.
+    // Notes/count are best-effort. Manual navigation still works.
   }
+
   // Ask the deck for its current state (in case the presenter was opened
   // after the deck — the channel only fires on subsequent navs).
   send('sync');

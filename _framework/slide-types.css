@@ -30,9 +30,13 @@
 }
 
 /* Sections own their background so deck-stage's white canvas doesn't
-   bleed through. body/page background alone isn't enough — slides
-   render inside the component's shadow DOM with its own .canvas bg. */
-deck-stage section {
+   bleed through. The selector matches any <section> with a slide-* class,
+   which makes the rule work in BOTH contexts: in the main deck (where
+   sections are descendants of <deck-stage>) AND in the rail's thumbnail
+   clones (where the section sits inside a plain <div>'s shadow root —
+   so a `deck-stage section` selector wouldn't reach them, leaving thumbs
+   on the component's white default canvas). */
+section[class*="slide-"] {
   background: var(--color-bg-page);
   color: var(--color-fg);
   font-family: var(--font-sans);
