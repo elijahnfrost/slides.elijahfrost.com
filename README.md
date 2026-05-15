@@ -14,12 +14,17 @@ slides.elijahfrost.com/
 ├── _framework/             # the deck framework (shared across all pieces)
 │   ├── deck-stage.js
 │   ├── tokens.css
+│   ├── present.html        # presenter controller (see below)
+│   ├── present.css
+│   ├── present.js
 │   └── templates/
 │       └── blank-deck.html
 ├── soft-halo/              # a piece
 │   ├── index.html
 │   ├── deck-stage.js  →  ../_framework/deck-stage.js
-│   └── tokens.css     →  ../_framework/tokens.css
+│   ├── tokens.css     →  ../_framework/tokens.css
+│   └── present/
+│       └── index.html  →  ../../_framework/present.html
 └── (future pieces…)
 ```
 
@@ -36,11 +41,31 @@ python3 -m http.server 8000
 
 ## Adding a piece
 
-1. `cp -r _framework/templates/blank-deck.html <slug>/index.html`
-2. `cd <slug> && ln -s ../_framework/deck-stage.js deck-stage.js && ln -s ../_framework/tokens.css tokens.css`
-3. Edit `<slug>/index.html`.
-4. Add an entry to `catalog.json` (slug, title, description, date, tags).
-5. Commit and push. Vercel auto-deploys.
+```sh
+bin/new-piece <slug> "Title" "Short description"
+```
+
+The script copies the template, symlinks the framework files (deck-stage.js,
+tokens.css, slide-types.css, present/), and appends a catalog entry dated
+today with empty tags. Then edit `<slug>/index.html` and update the catalog
+tags as needed. Commit and push — Vercel auto-deploys.
+
+## Presenter view
+
+Every piece gets a presenter at `/<slug>/present/`. Open it from the deck by
+clicking **Present** in the bottom overlay or pressing **P**.
+
+Layout: clock + elapsed timer up top, current and next slide thumbnails
+side-by-side, speaker notes from the deck's `#speaker-notes` JSON below,
+prev/next + slide count at the foot.
+
+The deck and presenter sync over a same-origin `BroadcastChannel` named
+`deck-stage:/<slug>/`. Navigation from either window drives the other.
+Channel name is derived from `location.pathname`; the presenter strips its
+own `present/` suffix to match.
+
+Keys in the presenter window: **←/→** prev/next, **PgUp/PgDn**, **Space**,
+**Home/End**, **T** start/pause timer, **F** fullscreen.
 
 ## Framework refinement
 
@@ -61,4 +86,4 @@ Domain: `slides.elijahfrost.com` (via DNS CNAME → `cname.vercel-dns.com`).
 Each piece should have:
 - `<slug>/index.html` — the deck
 - `<slug>/og-image.png` (1200×630, optional) — referenced from the piece's OG tags
-- `favicon.png` at the repo root — used by all pieces and the hub
+- `favicon.svg` at the repo root — used by all pieces, the hub, and the presenter

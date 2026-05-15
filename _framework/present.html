@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presenter</title>
+<meta name="robots" content="noindex">
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap">
+<link rel="stylesheet" href="/_framework/tokens.css">
+<link rel="stylesheet" href="/_framework/present.css">
+</head>
+<body>
+
+<main class="p">
+
+  <header class="p-chrome">
+    <div class="p-chrome-left">
+      <span class="p-clock" id="clock" aria-label="Wall clock">--:--</span>
+    </div>
+    <div class="p-chrome-mid">
+      <span class="p-timer" id="timer" aria-live="off">00:00</span>
+      <button class="p-btn" id="timer-toggle" type="button">Start</button>
+      <button class="p-btn p-btn-quiet" id="timer-reset" type="button">Reset</button>
+    </div>
+    <div class="p-chrome-right">
+      <span class="p-status" id="status">Connecting…</span>
+      <button class="p-btn p-btn-quiet" id="open-deck" type="button" hidden>Open deck</button>
+      <button class="p-btn p-btn-quiet" id="fullscreen" type="button" aria-label="Toggle fullscreen" title="Fullscreen (F)">⛶</button>
+    </div>
+  </header>
+
+  <section class="p-stage">
+    <div class="p-pane p-pane-current">
+      <header class="p-pane-head">
+        <span class="p-pane-label">Current</span>
+        <span class="p-pane-meta"><span id="cur-num">–</span> / <span id="cur-total">–</span></span>
+      </header>
+      <div class="p-frame">
+        <iframe id="frame-current" title="Current slide" allow="autoplay"></iframe>
+      </div>
+    </div>
+    <div class="p-pane p-pane-next">
+      <header class="p-pane-head">
+        <span class="p-pane-label">Next</span>
+        <span class="p-pane-meta" id="next-meta">–</span>
+      </header>
+      <div class="p-frame">
+        <iframe id="frame-next" title="Next slide" allow="autoplay"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-notes" aria-label="Speaker notes">
+    <div class="p-notes-inner" id="notes">
+      <p class="p-notes-empty">No notes for this slide.</p>
+    </div>
+  </section>
+
+  <footer class="p-nav">
+    <button class="p-btn p-btn-nav" id="nav-prev" type="button" aria-label="Previous slide">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+      <span>Prev</span>
+    </button>
+    <span class="p-nav-count">
+      <span id="nav-cur">–</span>
+      <span class="p-nav-count-sep">/</span>
+      <span id="nav-total">–</span>
+    </span>
+    <button class="p-btn p-btn-nav" id="nav-next" type="button" aria-label="Next slide">
+      <span>Next</span>
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg>
+    </button>
+  </footer>
+
+</main>
+
+<script type="module" src="/_framework/present.js"></script>
+
+</body>
+</html>

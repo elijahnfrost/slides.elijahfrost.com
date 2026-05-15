@@ -9,14 +9,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap">
 <link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="slide-types.css">
 
 <style>
-  /*
-   * NOTE — slide-type styles (slide-title, slide-body, slide-list, etc.)
-   * currently live inline in each piece's HTML (see soft-halo for reference).
-   * Extracting them into folio/ is a planned framework-refinement task.
-   * For now: copy a piece's <style> block as a starting point, or write
-   * minimal per-slide CSS here.
+  /* slide-types.css covers the layout bones for every .slide-* class.
+   * Add piece-specific overrides (color accents, motion, custom slide
+   * decorations) here. Each piece's <style> overrides the framework
+   * because it loads later in the cascade.
    */
   deck-stage:not(:defined) { visibility: hidden; }
 </style>

@@ -1,0 +1,241 @@
+/*
+ * present.css — controller UI for /<slug>/present/.
+ * Reuses tokens from /_framework/tokens.css. Layout is a fixed grid:
+ *   row 1: chrome (clock + timer + status)
+ *   row 2: current + next slide thumbnails (16:9)
+ *   row 3: speaker notes (scrollable)
+ *   row 4: prev / count / next
+ */
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--color-bg-page);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  overscroll-behavior: none;
+}
+
+.p {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) minmax(0, 0.7fr) auto;
+  height: 100vh;
+  gap: 0;
+}
+
+/* ----- chrome ----- */
+
+.p-chrome {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--color-border-divider);
+}
+
+.p-chrome-left  { justify-self: start; }
+.p-chrome-mid   { justify-self: center; display: flex; align-items: center; gap: 0.625rem; }
+.p-chrome-right { justify-self: end;    display: flex; align-items: center; gap: 0.625rem; }
+
+.p-clock {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+.p-timer {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 1.875rem;
+  line-height: 1;
+  color: var(--color-fg-bright);
+  min-width: 4.5rem;
+  text-align: center;
+}
+
+.p-status {
+  font-size: 0.6875rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+.p-status[data-state="connected"] { color: var(--color-fg-soft); }
+.p-status[data-state="waiting"]   { color: var(--color-error-text); }
+
+/* ----- shared button ----- */
+
+.p-btn {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-fg);
+  font: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  padding: 0.4375rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background var(--duration-base) var(--ease-out-quint),
+              border-color var(--duration-base) var(--ease-out-quint),
+              color var(--duration-base) var(--ease-out-quint);
+}
+.p-btn:hover  { border-color: var(--color-border-hover); }
+.p-btn:active { background: rgba(255,255,255,0.04); }
+.p-btn:focus  { outline: none; }
+.p-btn:focus-visible {
+  outline: 2px solid var(--color-fg-muted);
+  outline-offset: 2px;
+}
+
+.p-btn-quiet {
+  border-color: transparent;
+  color: var(--color-fg-muted);
+}
+.p-btn-quiet:hover {
+  border-color: var(--color-border);
+  color: var(--color-fg);
+}
+
+/* ----- stage (current + next) ----- */
+
+.p-stage {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  min-height: 0;
+}
+
+.p-pane {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+  gap: 0.5rem;
+}
+
+.p-pane-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.p-pane-label {
+  font-size: 0.6875rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+.p-pane-meta {
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-fg-soft);
+}
+
+/* The frame fills the pane's grid cell; the deck-stage inside scales to
+   fit and letterboxes any leftover space. Aspect-ratio on the wrapper
+   would push the row past 100vh when the viewport is narrow. */
+.p-frame {
+  position: relative;
+  background: #000;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  overflow: hidden;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.p-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #000;
+}
+
+/* ----- notes ----- */
+
+.p-notes {
+  border-top: 1px solid var(--color-border-divider);
+  padding: 1.25rem 1.25rem 1rem;
+  overflow: hidden;
+  min-height: 0;
+  display: grid;
+}
+
+.p-notes-inner {
+  overflow-y: auto;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  line-height: 1.45;
+  color: var(--color-fg);
+  max-width: 60rem;
+  margin: 0 auto;
+  padding-right: 0.5rem;
+}
+
+.p-notes-inner p {
+  margin: 0 0 0.75em;
+}
+.p-notes-inner p:last-child { margin-bottom: 0; }
+
+.p-notes-empty {
+  font-style: italic;
+  color: var(--color-fg-muted);
+  font-size: 1rem;
+  font-family: var(--font-sans);
+}
+
+/* ----- footer nav ----- */
+
+.p-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0.875rem 1.25rem 1.125rem;
+  border-top: 1px solid var(--color-border-divider);
+}
+
+.p-btn-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5625rem 0.875rem;
+  font-size: 0.8125rem;
+}
+.p-btn-nav svg { width: 14px; height: 14px; display: block; }
+
+#nav-prev { justify-self: start; }
+#nav-next { justify-self: end; }
+
+.p-nav-count {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 1.5rem;
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
+}
+.p-nav-count-sep {
+  color: var(--color-fg-dim);
+  margin: 0 0.4em;
+}
+
+/* ----- small screens ----- */
+
+@media (max-width: 720px) {
+  .p-stage {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .p-notes-inner { font-size: 1.125rem; }
+  .p-timer { font-size: 1.5rem; }
+}

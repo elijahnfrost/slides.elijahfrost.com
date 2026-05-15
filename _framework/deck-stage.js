@@ -201,7 +201,8 @@
     .btn:focus-visible { outline: none; }
     .btn::-moz-focus-inner { border: 0; }
     .btn svg { width: 14px; height: 14px; display: block; }
-    .btn.reset {
+    .btn.reset,
+    .btn.present {
       font-size: 11px;
       font-weight: 500;
       letter-spacing: 0.02em;
@@ -209,7 +210,8 @@
       gap: 6px;
       color: rgba(255,255,255,0.72);
     }
-    .btn.reset .kbd {
+    .btn.reset .kbd,
+    .btn.present .kbd {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -550,6 +552,7 @@
       this._onTapBack = this._onTapBack.bind(this);
       this._onTapForward = this._onTapForward.bind(this);
       this._onMessage = this._onMessage.bind(this);
+      this._onChannel = this._onChannel.bind(this);
       // Capture-phase close so a click anywhere dismisses the menu, but
       // ignore clicks that land inside the menu itself — otherwise the
       // capture handler runs before the menu's own (bubble) handler and
@@ -580,6 +583,19 @@
       window.addEventListener('mousemove', this._onMouseMove, { passive: true });
       window.addEventListener('message', this._onMessage);
       window.addEventListener('click', this._onDocClick, true);
+      // Same-origin pubsub for the presenter view. Channel name is keyed
+      // by pathname so each deck only sees its own presenter, and the
+      // presenter (at /<slug>/present/) strips '/present/' to match.
+      // Skipped on thumbnail iframes (would echo back nav from the rail).
+      if (typeof BroadcastChannel !== 'undefined'
+          && !this.hasAttribute('no-broadcast')
+          && !/[?&]_snthumb=/.test(location.search)) {
+        try {
+          this._channelName = 'deck-stage:' + location.pathname.replace(/present\/$/, '');
+          this._channel = new BroadcastChannel(this._channelName);
+          this._channel.addEventListener('message', this._onChannel);
+        } catch (e) { this._channel = null; }
+      }
       // Initial collection + layout happens via slotchange, which fires on mount.
       this._enableRail();
       // Hold the stage hidden until webfonts are ready so the first visible
@@ -776,6 +792,11 @@
       if (this._liveObserver) this._liveObserver.disconnect();
       if (this._railObserver) this._railObserver.disconnect();
       if (this._onTweakChange) window.removeEventListener('tweakchange', this._onTweakChange);
+      if (this._channel) {
+        try { this._channel.removeEventListener('message', this._onChannel); } catch (e) {}
+        try { this._channel.close(); } catch (e) {}
+        this._channel = null;
+      }
     }
 
     attributeChangedCallback() {
@@ -844,11 +865,13 @@
         </button>
         <span class="divider"></span>
         <button class="btn reset" type="button" aria-label="Reset to first slide" title="Reset (R)">Reset<span class="kbd">R</span></button>
+        <button class="btn present" type="button" aria-label="Open presenter view" title="Open presenter (P)">Present<span class="kbd">P</span></button>
       `;
 
       overlay.querySelector('.prev').addEventListener('click', () => this._advance(-1, 'click'));
       overlay.querySelector('.next').addEventListener('click', () => this._advance(1, 'click'));
       overlay.querySelector('.reset').addEventListener('click', () => this._go(0, 'click'));
+      overlay.querySelector('.present').addEventListener('click', () => this._openPresenter());
 
       // Thumbnail rail + context menu. Thumbnails are populated in
       // _renderRail() after _collectSlides().
@@ -1108,6 +1131,19 @@
         // (1) Legacy: host-window postMessage for speaker-notes renderers.
         try { window.postMessage({ slideIndexChanged: curr, deckTotal: this._slides.length, deckSkipped: this._skippedIndices() }, '*'); } catch (e) {}
 
+        // (1b) BroadcastChannel: presenter window sync, same-origin only.
+        if (this._channel) {
+          try {
+            this._channel.postMessage({
+              type: 'state',
+              index: curr,
+              total: this._slides.length,
+              skipped: this._skippedIndices(),
+              reason,
+            });
+          } catch (e) {}
+        }
+
         // (2) In-page CustomEvent on the <deck-stage> element itself.
         //     Bubbles and composes out of shadow DOM so slide code can listen:
         //       document.querySelector('deck-stage').addEventListener('slidechange', e => {
@@ -1222,6 +1258,39 @@
       if (d && d.type === '__omelette_rail_enabled') this._enableRail();
     }
 
+    /** BroadcastChannel inbound — commands from a same-origin presenter
+     *  window. All nav routes through _go/_advance so 'slidechange' and
+     *  the outbound 'state' broadcast both fire normally. */
+    _onChannel(e) {
+      const d = e.data;
+      if (!d || typeof d !== 'object') return;
+      if (d.type !== 'cmd') return;
+      switch (d.cmd) {
+        case 'next':  this._advance(1, 'api'); break;
+        case 'prev':  this._advance(-1, 'api'); break;
+        case 'first': this._go(0, 'api'); break;
+        case 'last':  this._go(this._slides.length - 1, 'api'); break;
+        case 'goto':
+          if (Number.isInteger(d.index)) this._go(d.index, 'api');
+          break;
+        case 'sync':
+          // Presenter just connected — re-emit current state so it can
+          // catch up without waiting for the next nav.
+          if (this._channel) {
+            try {
+              this._channel.postMessage({
+                type: 'state',
+                index: this._index,
+                total: this._slides.length,
+                skipped: this._skippedIndices(),
+                reason: 'sync',
+              });
+            } catch (err) {}
+          }
+          break;
+      }
+    }
+
     _syncRailHidden() {
       if (!this._rail) return;
       // data-presenting is the hard hide (display:none) for flag-off and
@@ -1279,6 +1348,8 @@
         this._go(this._slides.length - 1, 'keyboard');
       } else if (key === 'r' || key === 'R') {
         this._go(0, 'keyboard');
+      } else if (key === 'p' || key === 'P') {
+        this._openPresenter();
       } else if (/^[0-9]$/.test(key)) {
         // 1..9 jump to that slide; 0 jumps to 10.
         const n = key === '0' ? 9 : parseInt(key, 10) - 1;
@@ -1291,6 +1362,17 @@
         e.preventDefault();
         this._flashOverlay();
       }
+    }
+
+    /** Open the per-deck presenter window. Resolved relative to the deck's
+     *  URL: /<slug>/ → /<slug>/present/. Named window so repeated clicks
+     *  focus the existing presenter instead of stacking new ones. */
+    _openPresenter() {
+      try {
+        const url = new URL('present/', location.href).href;
+        const name = 'deck-presenter:' + location.pathname.replace(/present\/$/, '');
+        window.open(url, name, 'noopener=no');
+      } catch (e) {}
     }
 
     _go(i, reason = 'api') {
