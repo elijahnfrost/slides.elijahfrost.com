@@ -1,0 +1,208 @@
+/*
+ * Design system: tokens + base styles.
+ *
+ * Required foundation. Import once at the root of your app:
+ *   @import "@elijahfrost/design-system/tokens.css";
+ *
+ * Optional siblings:
+ *   @import "@elijahfrost/design-system/components.css";  // canonical button/input recipes
+ *   @import "@elijahfrost/design-system/cursor.css";      // hides system pointer when the React cursor is mounted
+ *
+ * Fonts: the system expects --font-inter and --font-cormorant to be defined on
+ * <html>. If your app doesn't load them yet, the variables here fall back to
+ * named families ("Inter", "Cormorant Garamond") and then system fonts, so
+ * layouts never break — they just lose the exact look.
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* ------------------------------------------------------------------ */
+  /* Type families                                                      */
+  /* ------------------------------------------------------------------ */
+  --font-sans: var(--font-inter, "Inter"), system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-serif: var(--font-cormorant, "Cormorant Garamond"), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-serif);
+
+  /* ------------------------------------------------------------------ */
+  /* Letter-spacing scale                                               */
+  /* ------------------------------------------------------------------ */
+  --tracking-tight: -0.01em;          /* display headings */
+  --tracking-label-sm: 0.18em;        /* button labels, nav links (mobile) */
+  --tracking-label: 0.2em;            /* caption labels, footer year, button labels (sm+) */
+  --tracking-eyebrow: 0.25em;         /* field labels, muted action links */
+  --tracking-display-eyebrow: 0.28em; /* hero subtitle (sm+) */
+
+  /* ------------------------------------------------------------------ */
+  /* Motion                                                             */
+  /* ------------------------------------------------------------------ */
+  --theme-transition-duration: 120ms;
+  --theme-transition-ease: linear;
+  --ease-out-quint: cubic-bezier(0.16, 1, 0.3, 1); /* entrance & primary UI motion */
+  --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1); /* cursor scale tween */
+  --duration-fast: 100ms;
+  --duration-base: 120ms;
+  --duration-slow: 220ms;
+
+  /* ------------------------------------------------------------------ */
+  /* Color — DARK (default)                                             */
+  /* ------------------------------------------------------------------ */
+  --color-bg-page: #0d0d0d;
+  --color-fg: #e4dfd8;
+  --color-fg-bright: #ffffff;
+  --color-fg-muted: #6b6660;
+  --color-fg-dim: #4a4643;
+  --color-fg-soft: #8a8580;
+  --color-fg-body: #7a7670;
+  --color-label: #3a3733;
+  --color-border: #2a2a2a;
+  --color-border-hover: #444444;
+  --color-border-section: #1e1e1e;
+  --color-border-divider: #1a1a1a;
+  --color-numeral: #2e2c2a;
+  --color-bullet: #3a3733;
+  --color-border-input-focus: #2e2e2e;
+  --color-border-input-error: #3a322f;
+  --color-border-input-error-focus: #4a3f3a;
+  --color-chrome-border: rgba(34, 34, 34, 0.42);
+  --color-hero-grid: var(--color-fg);
+  --color-footer-year: #2a2a2a;
+  --color-error-text: #5a4a4a;
+
+  /* Text selection — soft mix of fg + page (readable but quieter than a flat block) */
+  --color-selection-bg: color-mix(in srgb, var(--color-fg) 16%, var(--color-bg-page));
+  --color-selection-fg: var(--color-fg);
+
+  /* Touch (iOS Safari): subtle flash aligned with dark palette */
+  --color-tap-highlight: rgba(228, 223, 216, 0.12);
+
+  /* Custom cursor (optional) — fill matches body text, stroke matches page bg */
+  --cursor-fill: var(--color-fg);
+  --cursor-stroke: var(--color-bg-page);
+  --cursor-arrow-fill: var(--color-fg);
+}
+
+html.light {
+  color-scheme: light;
+
+  --color-bg-page: #faf8f5;
+  --color-fg: #1c1917;
+  --color-fg-bright: #0c0a09;
+  --color-fg-muted: #5c5750;
+  --color-fg-dim: #6b6560;
+  --color-fg-soft: #7a7570;
+  --color-fg-body: #5e5950;
+  --color-label: #8a8580;
+  --color-border: #d4cfc5;
+  --color-border-hover: #a8a29a;
+  --color-border-section: #e0dcd5;
+  --color-border-divider: #d9d4cc;
+  --color-numeral: #c4bfb6;
+  --color-bullet: #c4bfb6;                    /* relative quietness aligned across themes (audit flag 6) */
+  --color-border-input-focus: #a8a29a;
+  --color-border-input-error: #c4a89a;
+  --color-border-input-error-focus: #b89888;
+  --color-chrome-border: rgba(120, 113, 103, 0.35);
+  --color-footer-year: #c4bfb6;
+  --color-error-text: #8a6a6a;
+
+  --color-selection-bg: color-mix(in srgb, var(--color-fg) 9%, var(--color-bg-page));
+
+  --color-tap-highlight: rgba(28, 25, 23, 0.08);
+}
+
+/* Reduced motion: disable theme color tweens */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --theme-transition-duration: 0ms;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Base styles                                                        */
+/* ------------------------------------------------------------------ */
+
+html {
+  -webkit-tap-highlight-color: var(--color-tap-highlight);
+}
+
+body {
+  background: var(--color-bg-page);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem; /* 15px — denser on small screens */
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (min-width: 640px) {
+  body {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5;
+  }
+}
+
+::selection {
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-fg);
+}
+::-moz-selection {
+  background-color: var(--color-selection-bg);
+  color: var(--color-selection-fg);
+}
+
+/*
+ * Theme crossfade: one rule for body + descendants. Gradients that drive their
+ * color from currentColor (e.g. the hero grid) inherit this transition too.
+ */
+body,
+body * {
+  transition-property: background-color, color, border-color, outline-color, fill, stroke;
+  transition-duration: var(--theme-transition-duration);
+  transition-timing-function: var(--theme-transition-ease);
+  transition-delay: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  body * {
+    transition-duration: 0ms;
+  }
+}
+
+/* SVG strokes on the theme toggle snap rather than tween (cleaner morph) */
+[data-theme-toggle] svg {
+  transition: none;
+}
+
+/* Canonical keyboard focus ring (audit flag 3) */
+.ds-focus-ring:focus-visible,
+[data-ds-focus-ring]:focus-visible {
+  outline: 2px solid var(--color-fg-muted);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Entrance motion                                                    */
+/* ------------------------------------------------------------------ */
+
+@keyframes ds-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up {
+  animation: ds-fade-up 0.32s var(--ease-out-quint) both;
+}
+.fade-in-up.delay-1 { animation-delay: 0ms; }
+.fade-in-up.delay-2 { animation-delay: 40ms; }
+.fade-in-up.delay-3 { animation-delay: 80ms; }
+.fade-in-up.delay-4 { animation-delay: 120ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in-up {
+    animation: none;
+    opacity: 1;
+  }
+}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Untitled deck</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap">
+<link rel="stylesheet" href="tokens.css">
+
+<style>
+  /*
+   * NOTE — slide-type styles (slide-title, slide-body, slide-list, etc.)
+   * currently live inline in each piece's HTML (see soft-halo for reference).
+   * Extracting them into folio/ is a planned framework-refinement task.
+   * For now: copy a piece's <style> block as a starting point, or write
+   * minimal per-slide CSS here.
+   */
+  deck-stage:not(:defined) { visibility: hidden; }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+  <section data-numeral="I" data-name="Title" data-screen-label="01 Title">
+    <div class="slide center">
+      <h1>Untitled deck</h1>
+      <p>Subtitle.</p>
+    </div>
+  </section>
+</deck-stage>
+
+<script type="application/json" id="speaker-notes">[""]</script>
+<script src="deck-stage.js"></script>
+
+</body>
+</html>

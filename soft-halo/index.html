@@ -1,0 +1,2582 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grid Studies — A deck about a background</title>
+<meta name="description" content="A typographic study about backgrounds — a slide piece by Elijah Frost.">
+<meta name="robots" content="noindex">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://slides.elijahfrost.com/soft-halo/">
+<meta property="og:title" content="Grid Studies — A deck about a background">
+<meta property="og:description" content="A typographic study about backgrounds — a slide piece by Elijah Frost.">
+<meta property="og:image" content="https://slides.elijahfrost.com/soft-halo/og-image.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Grid Studies — A deck about a background">
+<meta name="twitter:description" content="A typographic study about backgrounds — a slide piece by Elijah Frost.">
+<meta name="twitter:image" content="https://slides.elijahfrost.com/soft-halo/og-image.png">
+
+<link rel="icon" type="image/png" href="/favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap">
+<link rel="stylesheet" href="tokens.css">
+
+<style>
+  /* ==================================================================
+     GRID STUDIES — TEMPLATE NOTES
+     ------------------------------------------------------------------
+     The deck is built from one persistent overlay (grid + brand mark +
+     scribe carriage) plus a flat list of <section> slides inside
+     <deck-stage>. Everything cross-slide is in the overlay; slide
+     content is just text and a couple of rule lines.
+
+     ADDING A SLIDE
+       <section data-numeral="VII" data-name="Section Name">
+         <div class="slide [center|left]">
+           <h2>Heading</h2>
+           <p class="body">Body copy.</p>
+         </div>
+       </section>
+     plus a matching entry in #speaker-notes (use "" for none).
+
+     REQUIRED PER-SECTION ATTRS
+       data-numeral   short label (Roman numeral or §1) for the scribe
+       data-name      section name shown beneath the numeral
+
+     OPTIONAL PER-SECTION ATTRS
+       data-halo      Halo radius in CELLS (default 0). The tile cascade
+                      lights cells where text lives at full brightness,
+                      then propagates outward to neighbouring cells at
+                      reduced brightness with a per-cell delay — a slow
+                      second wave that pools around the text. Try 3 for
+                      a tight pool, 8+ for a slide-filling glow.
+                      data-halo can ALSO sit on any descendant element
+                      to override the radius for that element's letters
+                      only (e.g. data-halo="0" on the section + data-halo="8"
+                      on a single number isolates the halo to that element).
+
+     SLIDE-TYPE CLASSES (on <section>)
+       .slide-title           hero cover                       (01)
+       .slide-colophon        printed title page details       (02)
+       .slide-contents        agenda / table of contents       (03)
+       .slide-section         section opener                   (04)
+       .slide-body            eyebrow + heading + body         (05)
+       .slide-list            numbered list with item + brief  (06)
+       .slide-pull            single huge italic statement     (07)
+       .slide-quote           pull quote                       (08)
+       .slide-quote-portrait  quote next to portrait slot      (09)
+       .slide-stat            single big figure + meta column  (10)
+       .slide-stat-grid       three KPIs in a row              (11)
+       .slide-split           two-column compare               (12)
+       .slide-triptych        three-column compare             (13)
+       .slide-plate           full-bleed image + caption       (14)
+       .slide-image-text      50/50 image + text               (15)
+       .slide-timeline        horizontal four-beat sequence    (16)
+       .slide-sources         numbered citations list          (17)
+       .slide-close           thank-you / coda                 (18)
+
+     LAYOUT HELPERS (on .slide)
+       .center   center content both axes
+       .left     left-aligned, vertically centred
+
+     TYPE HELPERS
+       .display       large serif headline
+       .serif-italic  serif italic
+       .body          sans body copy
+       .label         tracked uppercase mini-label
+       .eyebrow       small italic serif eyebrow
+
+     IMAGE SLOTS
+       <div class="placeholder" data-halo="8">
+         <div class="placeholder-tag">Description &middot; ratio</div>
+       </div>
+       The placeholder is a subtle hatched rectangle with a monospace
+       tag declaring what should drop in. The tag is real text so the
+       halo system seeds from it — image regions still light the grid.
+
+     ENTRY MOTION
+       Every text element is auto-split into per-letter spans at load.
+       Letters arrive as a TYPEWRITER: each .ltr's animation-delay is
+       stamped from its DOM (reading) order, so characters click on
+       one-by-one left-to-right, top-to-bottom. The total wave is
+       capped to ~900ms regardless of letter count. No drift, no
+       fade-curve — each letter is a hard binary step (steps(1,end)).
+
+       The tile cascade is DRIVEN BY THE TEXT: each letter's bbox is
+       rasterised into the same 32×18 grid, accumulating per-cell
+       "loudness" (fractional coverage). Tiles light only where text
+       lives; brightness scales with how much text stacks into the
+       cell. The grid IS the text's silhouette.
+
+       For non-text decoration (rules, dashes), add .rise.d-N with N in
+       1–5 to fade an element in at one of five stagger delays after the
+       letter wave settles.
+     ================================================================== */
+
+  @property --car-x { syntax: '<length>'; inherits: true; initial-value: 0px; }
+
+  :root {
+    --font-inter: "Inter";
+    --font-cormorant: "Cormorant Garamond";
+
+    --pad-x: 120px;
+    --pad-y: 96px;
+
+    /* Scribe accents — a triplet of values derived from --color-fg so
+       they hold against the page in both dark and light themes. */
+    --scribe-line:     color-mix(in srgb, var(--color-fg) 22%, var(--color-bg-page));
+    --scribe-line-dim: color-mix(in srgb, var(--color-fg) 10%, var(--color-bg-page));
+    --scribe-glow:     color-mix(in srgb, var(--color-fg) 42%, var(--color-bg-page));
+
+    /* Motion */
+    /* S-curve glide: slow start, fast middle, slow stop. Duration
+       matches the grid/letter cascade (~800ms) so the carriage and
+       the wave arrive together. */
+    --ease-glide:  cubic-bezier(0.83, 0, 0.17, 1);
+    --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+    /* Mechanical curves used by tiles + letters. The tile fade is a
+       very fast near-linear ramp; letters snap on as a single step. */
+    --ease-tile:   cubic-bezier(0.2, 0, 0.1, 1);
+    --ease-ltr:    steps(1, end);
+    --dur-nav:     820ms;
+    --dur-grid:    900ms;
+    --dur-label:   280ms;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Deck shell                                                         */
+  /* ------------------------------------------------------------------ */
+  deck-stage:not(:defined) { visibility: hidden; }
+  body { background: var(--color-bg-page); margin: 0; }
+
+  /* Sections OWN their background — without this the white .canvas of
+     deck-stage's shadow root shows through and the deck looks lit. */
+  deck-stage section {
+    background: var(--color-bg-page);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* ==================================================================
+     PERSISTENT OVERLAY                                                 */
+  .deck-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    transform-origin: 0 0;
+    pointer-events: none;
+    z-index: 5;
+    --car-x: 0px;
+  }
+
+  /* ==================================================================
+     TILE GRID
+     32 columns × 18 rows (60px cells across a 1920×1080 canvas). Each
+     tile draws its top + left edges; on-tiles share edges to form a
+     continuous crosshatch.
+
+     The reveal is typewriter-like: row-major, left-to-right, with
+     rows overlapping slightly so the surface fills as a clean wave.
+     A spotlight ellipse is computed each slide from the text's
+     bounding box, so the grid focuses on the words rather than
+     filling the whole canvas. Tiles outside the ellipse feather to
+     zero; a small mask softens the canvas perimeter as a safety net.
+     ================================================================== */
+  .grid-tiles {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(32, 1fr);
+    grid-template-rows: repeat(18, 1fr);
+    pointer-events: none;
+    /* Perimeter falloff — a LONG, smoothly-eased mask on each axis.
+       The fade spans ~38% of each side (5 stops approximating an
+       ease-in-out curve, no visible band). Tiles dissolve gradually
+       into the page background; importantly the falloff is opacity-
+       only, so any text-lit (.is-on) cells INSIDE the fade region
+       still read — they just sit at lower contrast as they approach
+       the edge, which preserves the telltale block-in. The two axes
+       are composited with `intersect` so the corners get the product
+       of both fades and disappear before the sides do.
+
+       Stops were picked to lie on a cubic ease (0.06 / 0.24 / 0.56 /
+       0.84 / 0.97 of the fade interval) so the eye reads it as one
+       smooth ramp rather than a stepped gradient. */
+    -webkit-mask-image:
+      linear-gradient(to right,
+        transparent          0%,
+        rgba(0,0,0,0.02)     2%,
+        rgba(0,0,0,0.08)     6%,
+        rgba(0,0,0,0.20)    11%,
+        rgba(0,0,0,0.38)    17%,
+        rgba(0,0,0,0.58)    23%,
+        rgba(0,0,0,0.78)    29%,
+        rgba(0,0,0,0.92)    35%,
+        #000                42%,
+        #000                58%,
+        rgba(0,0,0,0.92)    65%,
+        rgba(0,0,0,0.78)    71%,
+        rgba(0,0,0,0.58)    77%,
+        rgba(0,0,0,0.38)    83%,
+        rgba(0,0,0,0.20)    89%,
+        rgba(0,0,0,0.08)    94%,
+        rgba(0,0,0,0.02)    98%,
+        transparent        100%),
+      linear-gradient(to bottom,
+        transparent          0%,
+        rgba(0,0,0,0.02)     2%,
+        rgba(0,0,0,0.08)     6%,
+        rgba(0,0,0,0.20)    11%,
+        rgba(0,0,0,0.38)    17%,
+        rgba(0,0,0,0.58)    23%,
+        rgba(0,0,0,0.78)    29%,
+        rgba(0,0,0,0.92)    35%,
+        #000                42%,
+        #000                58%,
+        rgba(0,0,0,0.92)    65%,
+        rgba(0,0,0,0.78)    71%,
+        rgba(0,0,0,0.58)    77%,
+        rgba(0,0,0,0.38)    83%,
+        rgba(0,0,0,0.20)    89%,
+        rgba(0,0,0,0.08)    94%,
+        rgba(0,0,0,0.02)    98%,
+        transparent        100%);
+            mask-image:
+      linear-gradient(to right,
+        transparent          0%,
+        rgba(0,0,0,0.02)     2%,
+        rgba(0,0,0,0.08)     6%,
+        rgba(0,0,0,0.20)    11%,
+        rgba(0,0,0,0.38)    17%,
+        rgba(0,0,0,0.58)    23%,
+        rgba(0,0,0,0.78)    29%,
+        rgba(0,0,0,0.92)    35%,
+        #000                42%,
+        #000                58%,
+        rgba(0,0,0,0.92)    65%,
+        rgba(0,0,0,0.78)    71%,
+        rgba(0,0,0,0.58)    77%,
+        rgba(0,0,0,0.38)    83%,
+        rgba(0,0,0,0.20)    89%,
+        rgba(0,0,0,0.08)    94%,
+        rgba(0,0,0,0.02)    98%,
+        transparent        100%),
+      linear-gradient(to bottom,
+        transparent          0%,
+        rgba(0,0,0,0.02)     2%,
+        rgba(0,0,0,0.08)     6%,
+        rgba(0,0,0,0.20)    11%,
+        rgba(0,0,0,0.38)    17%,
+        rgba(0,0,0,0.58)    23%,
+        rgba(0,0,0,0.78)    29%,
+        rgba(0,0,0,0.92)    35%,
+        #000                42%,
+        #000                58%,
+        rgba(0,0,0,0.92)    65%,
+        rgba(0,0,0,0.78)    71%,
+        rgba(0,0,0,0.58)    77%,
+        rgba(0,0,0,0.38)    83%,
+        rgba(0,0,0,0.20)    89%,
+        rgba(0,0,0,0.08)    94%,
+        rgba(0,0,0,0.02)    98%,
+        transparent        100%);
+    -webkit-mask-composite: source-in;
+            mask-composite: intersect;
+  }
+  .tile {
+    border-top:  1px solid color-mix(in srgb, var(--color-fg) 7%, transparent);
+    border-left: 1px solid color-mix(in srgb, var(--color-fg) 7%, transparent);
+    opacity: 0;
+    transition: opacity 140ms var(--ease-tile);
+    /* per-tile transitionDelay + --t-op set inline by JS */
+  }
+  .tile.is-on { opacity: var(--t-op, 1); }
+  /* Briefly suppress transitions while we reset all tiles to off at the
+     start of each slide change, so the cascade-on wave reads as fresh
+     instead of a global fade. */
+  .grid-tiles.is-resetting .tile { transition: none !important; }
+
+  /* counter — top-right of canvas, mirrors brand mark on the left */
+  .counter {
+    position: absolute;
+    top: 60px;
+    right: 60px;
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .counter .cur { color: var(--color-fg); }
+  .counter .of  { color: var(--color-fg-dim); margin: 0 6px; }
+
+  /* brand mark — top-left, persistent, quiet */
+  .brand {
+    position: absolute;
+    top: 60px;
+    left: 60px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--color-fg);
+  }
+  .brand svg { width: 22px; height: 22px; display: block; color: var(--color-fg); }
+  .brand .wordmark {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    letter-spacing: 0.01em;
+    color: var(--color-fg);
+  }
+
+  /* ==================================================================
+     SCRIBE
+     ------------------------------------------------------------------
+     Geometry (in 1920×1080 design space):
+
+       outer container        left:120 right:120 bottom:60   height:100
+       rule                   bottom:30 of container   1px hairline
+       ticks                  start at top:24 below rule's vertical
+                              center; six positions at 0, 20, 40, 60,
+                              80, 100% of inner width.
+       pearl                  centered on the rule (vertically) at
+                              car-x (horizontally).  7×7 hollow circle.
+       numeral                bottom 44 of container, centered on car-x.
+       name                   top 78 of container, centered on car-x.
+       brand mark             top 78 of container, anchored left.
+       count                  top 78 of container, anchored right.
+
+     The carriage (pearl + numeral + name) is one positioned ancestor
+     with left:var(--car-x); transition applies to that single transform
+     so the three pieces stay perfectly together.                       */
+
+  .scribe {
+    position: absolute;
+    left: 120px;
+    right: 120px;
+    bottom: 60px;
+    height: 100px;
+  }
+  .scribe-rule {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 30px;
+    height: 1px;
+    background: var(--scribe-line-dim);
+  }
+  /* trail: a soft wash that lights between old and new carriage X.
+     Lives just under the rule, briefly raised in opacity by JS. */
+  .scribe-trail {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    height: 1px;
+    width: 0;
+    background: linear-gradient(90deg, transparent, var(--scribe-glow), transparent);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .scribe-ticks {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 24px;
+    height: 6px;
+    pointer-events: none;
+  }
+  .scribe-ticks .tick {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 6px;
+    background: var(--scribe-line-dim);
+    transform: translateX(-0.5px);
+  }
+
+  /* Carriage — a single anchor that moves */
+  .scribe-carriage {
+    position: absolute;
+    left: var(--car-x);
+    top: 0;
+    bottom: 0;
+    width: 0;
+    transition: left var(--dur-nav) var(--ease-glide);
+  }
+  .scribe-carriage .pearl {
+    position: absolute;
+    left: 0;
+    bottom: 27px;
+    width: 5px;
+    height: 5px;
+    border: 1px solid var(--color-fg);
+    background: var(--color-bg-page);
+    box-sizing: content-box;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    transition:
+      transform 220ms cubic-bezier(0.2, 0.9, 0.2, 1),
+      background 220ms ease,
+      border-color 220ms ease;
+  }
+  /* Brief tick-pulse on the pearl whenever the carriage lands on a new
+     tick — it scales up + fills + relaxes, selling the "click". */
+  .scribe-carriage.is-clicking .pearl {
+    animation: pearl-tick 420ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+  }
+  @keyframes pearl-tick {
+    0%   { transform: translateX(-50%) scale(1);   background: var(--color-bg-page); }
+    28%  { transform: translateX(-50%) scale(2.0); background: var(--color-fg); }
+    100% { transform: translateX(-50%) scale(1);   background: var(--color-bg-page); }
+  }
+
+  /* Numeral + name use a two-layer crossfade so a label is ALWAYS
+     visible during nav: the outgoing layer fades up + out while the
+     incoming layer fades up + in, and the two overlap mid-transit.
+     The container is a zero-size anchor at car-x; layers are
+     absolute children centred horizontally via translateX(-50%). */
+  .scribe-carriage .numeral,
+  .scribe-carriage .name {
+    position: absolute;
+    left: 0;
+    width: 0;
+    height: 0;
+  }
+  .scribe-carriage .numeral { bottom: 44px; }
+  .scribe-carriage .name    { top: 78px; }
+
+  .scribe-carriage .numeral .layer,
+  .scribe-carriage .name    .layer {
+    position: absolute;
+    left: 0;
+    white-space: nowrap;
+    opacity: 1;
+    transform: translateX(-50%);
+    /* Pure opacity crossfade — no vertical drift. The carriage glides
+       horizontally and the labels are anchored to it; any extra Y
+       motion reads as a wobble. */
+    transition: opacity var(--dur-label) ease;
+  }
+  /* Anchor each label to match the side its container is anchored on:
+     the numeral hangs above the rule (container bottom-anchored), the
+     name sits below it (container top-anchored). */
+  .scribe-carriage .numeral .layer { bottom: 0; }
+  .scribe-carriage .name    .layer { top: 0; }
+  .scribe-carriage .numeral .layer {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--color-fg);
+    letter-spacing: 0.01em;
+  }
+  .scribe-carriage .name .layer {
+    font-family: var(--font-inter), sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-fg-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+  }
+  .scribe-carriage .numeral .layer.is-incoming,
+  .scribe-carriage .name    .layer.is-incoming {
+    opacity: 0;
+  }
+  .scribe-carriage .numeral .layer.is-outgoing,
+  .scribe-carriage .name    .layer.is-outgoing {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Overlay chrome — brand mark + scribe — fade in once on initial
+     mount so they arrive at the same time as the first slide's content
+     (which uses `.rise` with delays 0–240ms). The `data-mounted` attr
+     is set on the overlay after one rAF; before that, both are at
+     opacity 0. No exit animation; this only runs at load.            */
+  /* Above-fallback rule for older browsers without color-mix — ensure
+     brand/counter/scribe always start hidden until JS mounts. */
+  .brand, .counter, .scribe { opacity: 0; }
+  .deck-overlay[data-mounted] .brand,
+  .deck-overlay[data-mounted] .counter,
+  .deck-overlay[data-mounted] .scribe {
+    animation: rise 0.6s var(--ease-settle) both;
+  }
+  .deck-overlay[data-mounted] .counter { animation-delay: 30ms; }
+  .deck-overlay[data-mounted] .scribe  { animation-delay: 60ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scribe-carriage,
+    .scribe-carriage .numeral, .scribe-carriage .name { transition: none !important; }
+    .tile { transition: none !important; }
+  }
+  @media print {
+    .deck-overlay { display: none !important; }
+  }
+
+  /* ==================================================================
+     SLIDE CONTENT
+     Slides carry no chrome of their own. The persistent overlay
+     handles brand mark, progress, numerals.
+     ================================================================== */
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: var(--pad-y) var(--pad-x) 200px;  /* leave room for scribe */
+    box-sizing: border-box;
+    z-index: 1;
+  }
+  .slide.center { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 8px; }
+  .slide.left   { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; text-align: left; }
+
+  /* Title slide needs more breathing room — display line-height of 0.95
+     means the ascenders of "Grid Studies" can punch up into the eyebrow
+     above without an explicit gap. */
+  .slide-title.slide.center { gap: 0; }
+  .slide-title .eyebrow { margin-bottom: 40px; }
+  .slide-title .sub     { margin-top: 32px; }
+
+  /* Type helpers */
+  .eyebrow {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-fg-dim);
+    font-size: 28px;
+    line-height: 1;
+  }
+  .label {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 26px;
+    color: var(--color-fg-muted);
+    font-weight: 400;
+  }
+  .display {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    color: var(--color-fg);
+    line-height: 0.95;
+  }
+  .serif-italic {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-fg);
+  }
+  .body {
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    color: var(--color-fg-body);
+    line-height: 1.5;
+    font-size: 30px;
+  }
+
+  /* ==================================================================
+     ENTRY MOTION
+     ------------------------------------------------------------------
+     Letters arrive in the same block-scan rhythm as the tiles. Each
+     text element is split into per-character spans (.ltr) at load; on
+     slide change, each letter's animation-delay is stamped from the
+     block its (col,row) cell belongs to, using the IDENTICAL formula
+     the tile loop uses. So each letter clicks on at the exact moment
+     its block lights up — typewriter snap, no drift.
+
+     Decorative non-text rises (hero rule, split-slide column rule,
+     closing dash) keep the older `.rise` animation — but with delays
+     tuned to land near the END of the letter wave, not the start.
+     ================================================================== */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  deck-stage section[data-deck-active] .rise        { animation: rise 0.6s var(--ease-settle) both; }
+  deck-stage section[data-deck-active] .rise.d-1    { animation-delay: 420ms; }
+  deck-stage section[data-deck-active] .rise.d-2    { animation-delay: 560ms; }
+  deck-stage section[data-deck-active] .rise.d-3    { animation-delay: 700ms; }
+  deck-stage section[data-deck-active] .rise.d-4    { animation-delay: 840ms; }
+  deck-stage section[data-deck-active] .rise.d-5    { animation-delay: 980ms; }
+
+  /* Per-letter span. Inline-block so transform works; spaces stay as
+     raw text nodes so wrapping is preserved BETWEEN words. Words are
+     wrapped in `.word` spans (inline-block + white-space:nowrap) so the
+     browser can't break inside a word. */
+  .word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .ltr {
+    display: inline-block;
+    opacity: 0;
+    will-change: opacity;
+  }
+  /* Typewriter snap: each letter switches on at its stamped delay
+     with no drift, no fade-curve — a hard binary step. The 1ms
+     duration is a no-op carrier for the delay; steps(1,end) commits
+     the new opacity at the END of that 1ms, so the prior frame's
+     0-opacity holds until the exact moment the letter clicks on. */
+  deck-stage section.letters-ready .ltr {
+    animation: ltr-snap 1ms var(--ease-ltr) both;
+  }
+  @keyframes ltr-snap {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  /* Parents of split text shed their own .rise so only the letters
+     animate — otherwise the parent's opacity gate hides the staggered
+     children behind a single global fade. */
+  .has-letters,
+  deck-stage section[data-deck-active] .has-letters {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ltr { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+
+  /* (01) Title — hero rises; a hairline rule draws beneath after the
+         hero has settled. The rule's draw is the bespoke moment. */
+  .slide-title .hero-name {
+    font-size: clamp(96px, 8vw, 160px);
+    text-align: center;
+    white-space: nowrap;
+  }
+  .slide-title .hero-rule {
+    width: 360px;
+    height: 1px;
+    background: var(--scribe-line);
+    margin: 36px auto 0;
+    opacity: 0;
+  }
+  deck-stage section[data-deck-active].slide-title .hero-rule {
+    animation: rise 0.6s 0.78s var(--ease-settle) both;
+  }
+  .slide-title .sub {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 22px;
+    color: var(--color-fg-muted);
+    margin-top: 28px;
+  }
+
+  /* (02) Section opener — two-column composition, both rise. */
+  .slide-section .opener {
+    width: 100%;
+    max-width: 1100px;
+  }
+  .slide-section .label-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+  .slide-section .label-row .pip {
+    width: 28px; height: 1px; background: var(--scribe-line);
+  }
+  .slide-section h2 {
+    margin: 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 96px;
+    color: var(--color-fg);
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .slide-section .lede { margin-top: 36px; max-width: 720px; }
+
+  /* (03) Quote — one rise on the body, one on the attribution. */
+  .slide-quote .quote {
+    font-size: 72px;
+    line-height: 1.22;
+    max-width: 1400px;
+    text-align: center;
+  }
+  .slide-quote .marks {
+    color: var(--color-numeral);
+    font-style: italic;
+    font-family: var(--font-cormorant), serif;
+    font-size: 1.1em;
+    line-height: 1;
+  }
+  .slide-quote .attrib {
+    margin-top: 56px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-size: 26px;
+  }
+
+  /* (04) Stat — the big figure rises with everything else. No count-up. */
+  .slide-stat .stat-wrap {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .slide-stat .stat-num {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 320px;
+    color: var(--color-fg);
+    letter-spacing: -0.01em;
+    line-height: 0.85;
+    text-align: right;
+    font-feature-settings: "tnum" 1;
+  }
+  .slide-stat .stat-num .times { color: var(--color-numeral); margin-left: 2px; }
+  .slide-stat .stat-num .unit {
+    font-style: italic;
+    color: var(--color-fg-dim);
+    font-size: 0.28em;
+    margin-left: 18px;
+    letter-spacing: 0.02em;
+  }
+  .slide-stat .stat-meta { padding-right: 60px; }
+  .slide-stat .stat-meta h3 {
+    margin: 0 0 32px 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 56px;
+    color: var(--color-fg);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+
+  /* (05) Split — two columns slide in from their own sides. A vertical
+         rule traces between them in the same beat. Bespoke because the
+         direction of motion carries the slide's meaning (mis-registration). */
+  .slide-split .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 120px;
+    width: 100%;
+    align-items: flex-start;
+    position: relative;
+  }
+  .slide-split .cols::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--scribe-line-dim);
+    transform: translateX(-0.5px);
+    opacity: 0;
+  }
+  deck-stage section[data-deck-active].slide-split .cols::before {
+    animation: rise-fade 0.6s 0.56s var(--ease-settle) both;
+  }
+  @keyframes rise-fade {
+    to { opacity: 1; }
+  }
+  .slide-split .col-left, .slide-split .col-right { opacity: 0; }
+  deck-stage section[data-deck-active].slide-split .col-left {
+    animation: rise 0.7s 0.50s var(--ease-settle) both;
+  }
+  deck-stage section[data-deck-active].slide-split .col-right {
+    animation: rise 0.7s 0.72s var(--ease-settle) both;
+  }
+  .slide-split h2 {
+    margin: 0 0 36px 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 56px;
+    color: var(--color-fg);
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+  }
+  .slide-split .label-row {
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .slide-split .label-row .pip {
+    width: 10px; height: 1px; background: var(--scribe-line);
+  }
+
+  /* (06) Close — eyebrow rises, dash draws, name rises. No letterspacing
+         tricks. */
+  .slide-close .closing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+  }
+  .slide-close .end-eyebrow {
+    font-size: 32px;
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-fg-muted);
+  }
+  .slide-close .dash {
+    width: 240px;
+    height: 1px;
+    background: var(--scribe-line);
+    opacity: 0;
+  }
+  deck-stage section[data-deck-active].slide-close .dash {
+    animation: rise 0.6s 0.62s var(--ease-settle) both;
+  }
+  .slide-close .end-name {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 84px;
+    color: var(--color-fg);
+    letter-spacing: -0.01em;
+  }
+
+  /* ==================================================================
+     ADDITIONAL TEMPLATE LAYOUTS
+     ------------------------------------------------------------------
+     Layouts beyond the six original studies. Each follows the same
+     vocabulary: serif italic accents, sans body, tracked uppercase
+     micro-labels, hairline rules. New shared primitive: `.placeholder`
+     for image slots — a hatched rectangle with a monospace tag that
+     also doubles as a halo seed so the tile grid lights around it.
+
+       .slide-colophon       printed title page details (key/value rows)
+       .slide-contents       agenda / table of contents
+       .slide-body           eyebrow + heading + body paragraph
+       .slide-list           numbered list with item title + brief
+       .slide-pull           single full-bleed italic statement
+       .slide-quote-portrait quote next to portrait placeholder
+       .slide-stat-grid      three KPIs in a row
+       .slide-triptych       three short columns
+       .slide-plate          full-bleed image placeholder + caption
+       .slide-image-text     50/50 image placeholder + text
+       .slide-timeline       horizontal sequence of beats
+       .slide-sources        citations list
+     ================================================================== */
+
+  /* Image placeholder. Subtle hatch on the page background; a mono tag
+     declares what should drop in. The tag is real text so the halo
+     system seeds from it — image regions still light the grid. */
+  .placeholder {
+    position: relative;
+    background:
+      repeating-linear-gradient(
+        135deg,
+        transparent 0 13px,
+        color-mix(in srgb, var(--color-fg) 5%, transparent) 13px 14px
+      );
+    border: 1px solid color-mix(in srgb, var(--color-fg) 14%, transparent);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+  }
+  .placeholder-tag {
+    font-family: ui-monospace, "SF Mono", "Menlo", monospace;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-fg-muted);
+    padding: 18px 22px;
+  }
+  .placeholder.center { align-items: center; justify-content: center; }
+  .placeholder.center .placeholder-tag { padding: 0; }
+
+  /* (02) Colophon — left-aligned key/value rows */
+  .slide-colophon .colophon-head {
+    margin-bottom: 56px;
+  }
+  .slide-colophon .colophon-title {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 80px;
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    color: var(--color-fg);
+  }
+  .slide-colophon .colophon {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    row-gap: 24px;
+    column-gap: 60px;
+    max-width: 1200px;
+    margin: 0;
+  }
+  .slide-colophon .colophon dt {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 16px;
+    color: var(--color-fg-muted);
+    font-weight: 400;
+    padding-top: 16px;
+    align-self: start;
+  }
+  .slide-colophon .colophon dd {
+    margin: 0;
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 38px;
+    color: var(--color-fg);
+    line-height: 1.15;
+    letter-spacing: -0.005em;
+    padding-bottom: 8px;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-fg) 7%, transparent);
+  }
+  .slide-colophon .colophon dd:last-of-type { border-bottom: none; }
+
+  /* (03) Contents — agenda list */
+  .slide-contents .toc-wrap {
+    width: 100%;
+    max-width: 1400px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .slide-contents .toc-head .label { font-size: 18px; }
+  .slide-contents .toc-head h2 {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .slide-contents .toc-list {
+    display: grid;
+    gap: 6px;
+  }
+  .slide-contents .toc-item {
+    display: grid;
+    grid-template-columns: 90px 1fr 180px;
+    gap: 32px;
+    align-items: baseline;
+    padding: 22px 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-fg) 8%, transparent);
+  }
+  .slide-contents .toc-item:last-child {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-fg) 8%, transparent);
+  }
+  .slide-contents .toc-num {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 32px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.02em;
+  }
+  .slide-contents .toc-name {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 38px;
+    color: var(--color-fg);
+    letter-spacing: -0.005em;
+    line-height: 1;
+  }
+  .slide-contents .toc-page {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 14px;
+    color: var(--color-fg-muted);
+    text-align: right;
+  }
+
+  /* (05) Body — eyebrow + heading + body */
+  .slide-body .body-stack { max-width: 1300px; }
+  .slide-body h2 {
+    margin: 28px 0 36px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 76px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .slide-body .lede {
+    max-width: 1050px;
+    font-size: 28px;
+  }
+  .slide-body .lede + .lede {
+    margin-top: 22px;
+    color: var(--color-fg-muted);
+    font-size: 24px;
+  }
+
+  /* (06) List — numbered list */
+  .slide-list .list-wrap {
+    width: 100%;
+    max-width: 1500px;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 96px;
+    align-items: start;
+  }
+  .slide-list .list-lede .label { font-size: 18px; }
+  .slide-list .list-lede h2 {
+    margin: 14px 0 28px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 60px;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+  .slide-list .list-lede p {
+    margin: 0;
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: var(--color-fg-body);
+    line-height: 1.55;
+    max-width: 460px;
+  }
+  .slide-list .num-list {
+    display: grid;
+    gap: 4px;
+  }
+  .slide-list .num-item {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 24px;
+    align-items: baseline;
+    padding: 22px 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-fg) 8%, transparent);
+  }
+  .slide-list .num-item:last-child {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-fg) 8%, transparent);
+  }
+  .slide-list .num-tag {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 28px;
+    color: var(--color-fg-muted);
+    line-height: 1.3;
+  }
+  .slide-list .num-text h3 {
+    margin: 0 0 6px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 30px;
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+  }
+  .slide-list .num-text p {
+    margin: 0;
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: var(--color-fg-body);
+    line-height: 1.5;
+    max-width: 720px;
+  }
+
+  /* (07) Pull headline — single huge italic statement */
+  .slide-pull .pull {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 132px;
+    line-height: 0.98;
+    letter-spacing: -0.015em;
+    max-width: 1560px;
+    text-align: center;
+    color: var(--color-fg);
+  }
+  .slide-pull .pull .accent {
+    color: var(--color-numeral);
+  }
+  .slide-pull .pull-foot {
+    margin-top: 64px;
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 18px;
+    color: var(--color-fg-muted);
+  }
+
+  /* (09) Quote with portrait */
+  .slide-quote-portrait .qp {
+    display: grid;
+    grid-template-columns: 460px 1fr;
+    gap: 100px;
+    width: 100%;
+    align-items: center;
+    max-width: 1560px;
+  }
+  .slide-quote-portrait .portrait {
+    width: 460px;
+    height: 620px;
+  }
+  .slide-quote-portrait .qp-quote {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 52px;
+    line-height: 1.22;
+    letter-spacing: -0.005em;
+    color: var(--color-fg);
+  }
+  .slide-quote-portrait .qp-quote .marks {
+    color: var(--color-numeral);
+    font-family: var(--font-cormorant), serif;
+  }
+  .slide-quote-portrait .qp-attrib {
+    margin-top: 44px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .slide-quote-portrait .qp-attrib .name {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 16px;
+    color: var(--color-fg);
+  }
+  .slide-quote-portrait .qp-attrib .role {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--color-fg-muted);
+  }
+  .slide-quote-portrait .qp-attrib .sep {
+    width: 24px;
+    height: 1px;
+    background: var(--scribe-line);
+    display: inline-block;
+    align-self: center;
+  }
+
+  /* (11) Stat grid — three KPIs in a row */
+  .slide-stat-grid .grid-lede {
+    margin-bottom: 72px;
+    max-width: 1100px;
+  }
+  .slide-stat-grid .grid-lede .label { font-size: 18px; }
+  .slide-stat-grid .grid-lede h2 {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 48px;
+    letter-spacing: -0.005em;
+    line-height: 1.1;
+  }
+  .slide-stat-grid .grid3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 80px;
+    width: 100%;
+  }
+  .slide-stat-grid .kpi {
+    display: grid;
+    gap: 18px;
+    padding-right: 30px;
+    position: relative;
+  }
+  .slide-stat-grid .kpi + .kpi::before {
+    content: "";
+    position: absolute;
+    left: -40px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: color-mix(in srgb, var(--color-fg) 9%, transparent);
+  }
+  .slide-stat-grid .kpi-num {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 168px;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--color-fg);
+  }
+  .slide-stat-grid .kpi-num .unit {
+    font-size: 0.30em;
+    color: var(--color-fg-dim);
+    font-style: italic;
+    margin-left: 6px;
+  }
+  .slide-stat-grid .kpi-label {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 14px;
+    color: var(--color-fg-muted);
+    margin-top: 4px;
+  }
+  .slide-stat-grid .kpi-note {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--color-fg-body);
+    line-height: 1.4;
+    max-width: 360px;
+    margin-top: 4px;
+  }
+
+  /* (13) Triptych — three columns */
+  .slide-triptych .tri-lede {
+    margin-bottom: 64px;
+    max-width: 1100px;
+  }
+  .slide-triptych .tri-lede .label { font-size: 18px; }
+  .slide-triptych .tri-lede h2 {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .slide-triptych .tri {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 96px;
+    width: 100%;
+    align-items: start;
+  }
+  .slide-triptych .tri-col {
+    position: relative;
+    padding-top: 28px;
+  }
+  .slide-triptych .tri-col::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--scribe-line);
+  }
+  .slide-triptych .tri-num {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 24px;
+    color: var(--color-fg-muted);
+    margin-bottom: 14px;
+  }
+  .slide-triptych .tri-col h3 {
+    margin: 0 0 20px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 38px;
+    line-height: 1.05;
+    letter-spacing: -0.005em;
+  }
+  .slide-triptych .tri-col p {
+    margin: 0;
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: var(--color-fg-body);
+    line-height: 1.55;
+  }
+
+  /* (14) Plate — full bleed image placeholder + caption */
+  .slide-plate .plate-wrap {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 120px 120px 200px;
+    box-sizing: border-box;
+    gap: 28px;
+  }
+  .slide-plate .plate {
+    width: 100%;
+    min-height: 0;
+  }
+  .slide-plate .plate-cap {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: end;
+  }
+  .slide-plate .plate-cap .caption {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 28px;
+    color: var(--color-fg);
+    max-width: 1100px;
+    line-height: 1.35;
+    margin: 0;
+  }
+  .slide-plate .plate-cap .credit {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 13px;
+    color: var(--color-fg-muted);
+    text-align: right;
+    line-height: 1.6;
+  }
+  .slide-plate .plate-cap .credit .credit-num {
+    display: block;
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-size: 22px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--color-fg);
+    margin-bottom: 4px;
+  }
+
+  /* (15) Image + text — 50/50 */
+  .slide-image-text .it {
+    display: grid;
+    grid-template-columns: 760px 1fr;
+    gap: 100px;
+    width: 100%;
+    align-items: center;
+  }
+  .slide-image-text .it-image {
+    width: 760px;
+    height: 640px;
+  }
+  .slide-image-text .it-text .label { font-size: 18px; }
+  .slide-image-text .it-text h2 {
+    margin: 18px 0 28px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 60px;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+  .slide-image-text .it-text p {
+    margin: 0;
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--color-fg-body);
+    line-height: 1.55;
+    max-width: 580px;
+  }
+  .slide-image-text .it-text p + p { margin-top: 16px; }
+
+  /* (16) Timeline — horizontal sequence */
+  .slide-timeline .tl-lede {
+    margin-bottom: 80px;
+    max-width: 1200px;
+  }
+  .slide-timeline .tl-lede .label { font-size: 18px; }
+  .slide-timeline .tl-lede h2 {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .slide-timeline .tl {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 56px;
+    width: 100%;
+    position: relative;
+  }
+  .slide-timeline .tl::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--scribe-line-dim);
+    pointer-events: none;
+  }
+  .slide-timeline .tl-beat {
+    padding-top: 38px;
+    position: relative;
+  }
+  .slide-timeline .tl-beat .dot {
+    position: absolute;
+    top: 0; left: 0;
+    width: 11px;
+    height: 11px;
+    border: 1px solid var(--color-fg);
+    background: var(--color-bg-page);
+    border-radius: 50%;
+    box-sizing: border-box;
+    transform: translateY(-50%);
+  }
+  .slide-timeline .tl-beat .year {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 24px;
+    color: var(--color-fg-muted);
+    margin-bottom: 14px;
+  }
+  .slide-timeline .tl-beat h3 {
+    margin: 0 0 14px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 34px;
+    line-height: 1.05;
+    letter-spacing: -0.005em;
+  }
+  .slide-timeline .tl-beat p {
+    margin: 0;
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    color: var(--color-fg-body);
+    line-height: 1.55;
+  }
+
+  /* (17) Sources — citations list */
+  .slide-sources .src-wrap {
+    width: 100%;
+    max-width: 1500px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .slide-sources .src-head .label { font-size: 18px; }
+  .slide-sources .src-head h2 {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .slide-sources .src-list {
+    display: grid;
+    gap: 4px;
+  }
+  .slide-sources .src-item {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 22px;
+    align-items: baseline;
+    padding: 18px 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-fg) 7%, transparent);
+  }
+  .slide-sources .src-item:last-child {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-fg) 7%, transparent);
+  }
+  .slide-sources .src-num {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--color-fg-muted);
+  }
+  .slide-sources .src-cite {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--color-fg);
+    line-height: 1.45;
+  }
+  .slide-sources .src-cite .work { font-style: italic; }
+  .slide-sources .src-cite .meta {
+    font-family: var(--font-inter), sans-serif;
+    font-size: 16px;
+    color: var(--color-fg-muted);
+    margin-left: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    deck-stage section[data-deck-active] * {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script type="application/json" id="speaker-notes">
+[
+  "Grid Studies. Watch how the slide loads: tiles light up in block-scan reading order, and the letters fade in over each tile at the same moment. The carriage at the bottom rides a rule across all eighteen slides; its Roman numeral and section name crossfade so a label is always visible.",
+  "Colophon. A printed title page. Key on the left, value on the right \u2014 the same vocabulary you'd see on the back of a book.",
+  "Contents. The agenda for what follows. Six movements, eighteen slides.",
+  "Section opener. The premise: the grid is decorative, but it's also the only continuous element in the deck.",
+  "Body slide. A paragraph of argument. Notice how the halo concentrates where the headline sits and thins through the body copy.",
+  "Catalogue. Five short claims, each numbered. The same wave loads the left column and the list together.",
+  "A maxim. One sentence, full bleed.",
+  "A quote. Letters drop in along the same diagonal as the grid; the attribution arrives last, where the wave finishes.",
+  "A second quote, with a portrait slot. The placeholder is a real text label so the halo lights the photo area too.",
+  "A figure. The four sits where the wave concentrates, on the right side of the canvas.",
+  "A grid of three figures. The same wave passes through all three KPIs in reading order.",
+  "Two columns. The same wave loads both halves in parallel, with a thin rule traced down the middle as they settle.",
+  "A triptych. Three short inquiries on a shared page.",
+  "A plate. A full-bleed image, with a caption beneath. The placeholder tag in the corner seeds a halo across the whole image area.",
+  "Image and text, side by side. A specimen on the left, marginalia on the right.",
+  "A sequence. Four beats, each settling before the next. The timeline rule sits exactly where the dots land.",
+  "Sources. The works consulted.",
+  "Coda. The deck closes with the same vocabulary it opened with, then the carriage rests on the last tick."
+]
+</script>
+</head>
+
+<body>
+
+<style>deck-stage:not(:defined){visibility:hidden}</style>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- ============================================================== -->
+  <!-- 01 — TITLE                                                     -->
+  <!-- ============================================================== -->
+  <section data-screen-label="01 Title" class="slide-title"
+           data-numeral="I" data-name="Ouverture" data-halo="3">
+    <div class="slide center">
+      <div class="eyebrow rise d-1"><i>A small inquiry into</i></div>
+      <div class="display hero-name rise d-2">Grid&nbsp;Studies</div>
+      <div class="hero-rule"></div>
+      <div class="sub rise d-4">Notes on a background that pays attention</div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 02 — COLOPHON                                                  -->
+  <!-- ============================================================== -->
+  <section data-screen-label="02 Colophon" class="slide-colophon"
+           data-numeral="II" data-name="Colophon" data-halo="5">
+    <div class="slide left">
+      <div class="colophon-head">
+        <div class="label">Colophon</div>
+        <h2 class="colophon-title">A printed<br>title page.</h2>
+      </div>
+      <dl class="colophon">
+        <dt>Prepared by</dt><dd>Studio Halftone</dd>
+        <dt>For</dt><dd>The Annual Survey of Quiet Interfaces</dd>
+        <dt>Date</dt><dd>May, 2026</dd>
+        <dt>Edition</dt><dd>Second printing, revised</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 03 — CONTENTS                                                  -->
+  <!-- ============================================================== -->
+  <section data-screen-label="03 Contents" class="slide-contents"
+           data-numeral="III" data-name="Contents" data-halo="4">
+    <div class="slide left">
+      <div class="toc-wrap">
+        <div class="toc-head">
+          <div class="label">Contents</div>
+          <h2>What follows.</h2>
+        </div>
+        <div class="toc-list">
+          <div class="toc-item"><span class="toc-num">I.</span><span class="toc-name">Foundations</span><span class="toc-page">Slides 04 &mdash; 07</span></div>
+          <div class="toc-item"><span class="toc-num">II.</span><span class="toc-name">Voices</span><span class="toc-page">Slides 08 &mdash; 09</span></div>
+          <div class="toc-item"><span class="toc-num">III.</span><span class="toc-name">Measures</span><span class="toc-page">Slides 10 &mdash; 11</span></div>
+          <div class="toc-item"><span class="toc-num">IV.</span><span class="toc-name">Compositions</span><span class="toc-page">Slides 12 &mdash; 15</span></div>
+          <div class="toc-item"><span class="toc-num">V.</span><span class="toc-name">Apparatus</span><span class="toc-page">Slides 16 &mdash; 17</span></div>
+          <div class="toc-item"><span class="toc-num">VI.</span><span class="toc-name">Coda</span><span class="toc-page">Slide 18</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 04 — SECTION OPENER                                            -->
+  <!-- ============================================================== -->
+  <section data-screen-label="04 Section opener" class="slide-section"
+           data-numeral="IV" data-name="Premise" data-halo="4">
+    <div class="slide left">
+      <div class="opener">
+        <div class="label-row rise d-1"><span class="pip"></span><span class="label">Premise</span></div>
+        <h2 class="rise d-2">A background<br>that pays attention.</h2>
+        <p class="body lede rise d-3">
+          The grid is decorative. It is also the only continuous element in the deck.
+          What happens if we let it carry some of the meaning &mdash; not by saying anything,
+          but by moving, breathing, attending.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 05 — BODY                                                      -->
+  <!-- ============================================================== -->
+  <section data-screen-label="05 Body" class="slide-body"
+           data-numeral="V" data-name="Argument" data-halo="4">
+    <div class="slide left">
+      <div class="body-stack">
+        <div class="label">Argument</div>
+        <h2>Texture is information<br>delivered without ink.</h2>
+        <p class="body lede">
+          A reader's eye treats density as emphasis long before it parses a word. If the grid concentrates
+          where the headline lives and thins where the margin begins, the page is already telling you where to look.
+          The text only confirms it.
+        </p>
+        <p class="body lede">
+          This template uses that signal twice: once for entry, once for hierarchy. The same wave that loads
+          the slide also draws the eye to whatever is most worth reading.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 06 — LIST                                                      -->
+  <!-- ============================================================== -->
+  <section data-screen-label="06 List" class="slide-list"
+           data-numeral="VI" data-name="Catalogue" data-halo="4">
+    <div class="slide left">
+      <div class="list-wrap">
+        <div class="list-lede">
+          <div class="label">Catalogue</div>
+          <h2>Five things<br>the grid does<br>besides decorate.</h2>
+          <p>An informal taxonomy. None of these are exclusive to the grid; each is something the grid happens to do better than most page furniture.</p>
+        </div>
+        <div class="num-list">
+          <div class="num-item">
+            <div class="num-tag">i.</div>
+            <div class="num-text">
+              <h3>It establishes scale</h3>
+              <p>The cell is a unit. Headlines that span six cells read as headlines without further announcement.</p>
+            </div>
+          </div>
+          <div class="num-item">
+            <div class="num-tag">ii.</div>
+            <div class="num-text">
+              <h3>It admits hierarchy</h3>
+              <p>Density is a free contrast. Brighter cells pull weight; dim ones recede without leaving.</p>
+            </div>
+          </div>
+          <div class="num-item">
+            <div class="num-tag">iii.</div>
+            <div class="num-text">
+              <h3>It carries motion</h3>
+              <p>The wave that loads the page is the same one that nominates the headline. One gesture, two readings.</p>
+            </div>
+          </div>
+          <div class="num-item">
+            <div class="num-tag">iv.</div>
+            <div class="num-text">
+              <h3>It holds silence</h3>
+              <p>Empty cells aren't blank &mdash; they're paused. The eye notices the rest.</p>
+            </div>
+          </div>
+          <div class="num-item">
+            <div class="num-tag">v.</div>
+            <div class="num-text">
+              <h3>It survives translation</h3>
+              <p>Pixels, print, projection. A rule is a rule on any substrate.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 07 — PULL HEADLINE                                             -->
+  <!-- ============================================================== -->
+  <section data-screen-label="07 Pull headline" class="slide-pull"
+           data-numeral="VII" data-name="Maxim" data-halo="6">
+    <div class="slide center">
+      <div class="pull">
+        Hold still long enough,<br>and a background<br><span class="accent">becomes a foreground.</span>
+      </div>
+      <div class="pull-foot">A working maxim</div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 08 — QUOTE                                                     -->
+  <!-- ============================================================== -->
+  <section data-screen-label="08 Quote" class="slide-quote"
+           data-numeral="VIII" data-name="On stillness" data-halo="4">
+    <div class="slide center">
+      <div class="serif-italic quote rise d-1">
+        <span class="marks">&ldquo;</span>The plainness of a ruled page is not the absence of design.
+        It is the design, holding still long enough to be read.<span class="marks">&rdquo;</span>
+      </div>
+      <div class="attrib rise d-4">After Tschichold</div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 09 — QUOTE WITH PORTRAIT                                       -->
+  <!-- ============================================================== -->
+  <section data-screen-label="09 Quote with portrait" class="slide-quote-portrait"
+           data-numeral="IX" data-name="In conversation" data-halo="3">
+    <div class="slide left" style="align-items: center;">
+      <div class="qp">
+        <div class="placeholder portrait" data-halo="6">
+          <div class="placeholder-tag">Portrait &middot; 3:4</div>
+        </div>
+        <div>
+          <div class="qp-quote">
+            <span class="marks">&ldquo;</span>The best system disappears into the work you do with it.
+            You stop noticing the lines and start noticing what they hold.<span class="marks">&rdquo;</span>
+          </div>
+          <div class="qp-attrib">
+            <span class="name">Subject Name</span>
+            <span class="sep"></span>
+            <span class="role">Designer &amp; printer, in conversation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 10 — STAT                                                      -->
+  <!-- ============================================================== -->
+  <section data-screen-label="10 Stat" class="slide-stat"
+           data-numeral="X" data-name="On density" data-halo="0">
+    <div class="slide">
+      <div class="stat-wrap" style="height: 100%;">
+        <div class="stat-meta">
+          <div class="label rise d-1" style="margin-bottom: 28px;">Cell density</div>
+          <h3 class="rise d-2">Forty pixels on the right.<br>One hundred and sixty on the left.</h3>
+          <p class="body rise d-3" style="font-size: 26px;">
+            The visible patch of grid is twice as dense where the eye lands, four times as sparse where it doesn't.
+            Texture does the same work a rule of thirds would.
+          </p>
+        </div>
+        <div class="stat-num rise d-2" data-halo="8"><span>4</span><span class="times">&times;</span><span class="unit">density&nbsp;ratio</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 11 — STAT GRID                                                 -->
+  <!-- ============================================================== -->
+  <section data-screen-label="11 Stat grid" class="slide-stat-grid"
+           data-numeral="XI" data-name="Measures" data-halo="3">
+    <div class="slide left">
+      <div class="grid-lede">
+        <div class="label">Measures</div>
+        <h2>Three figures<br>that hold the page together.</h2>
+      </div>
+      <div class="grid3">
+        <div class="kpi">
+          <div class="kpi-num">32<span class="unit">columns</span></div>
+          <div class="kpi-label">Tile grid</div>
+          <div class="kpi-note">Wide enough for a comfortable headline, narrow enough that a paragraph stays in a single block.</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num">18<span class="unit">rows</span></div>
+          <div class="kpi-label">Tile grid</div>
+          <div class="kpi-note">A 16:9 canvas in cells of sixty pixels &mdash; the page resolves on its own diagonals.</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num">900<span class="unit">ms</span></div>
+          <div class="kpi-label">Reveal duration</div>
+          <div class="kpi-note">Long enough to feel composed, short enough that nobody is waiting for the slide.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 12 — SPLIT                                                     -->
+  <!-- ============================================================== -->
+  <section data-screen-label="12 Split" class="slide-split"
+           data-numeral="XII" data-name="On mis-registration" data-halo="5">
+    <div class="slide left">
+      <div class="cols" style="margin-top: 20px;">
+        <div class="col-left">
+          <div class="label-row"><span class="pip"></span><span class="label">Close-knit</span></div>
+          <h2>Tight, leaning left,<br>56px cells, &minus;8&deg;.</h2>
+          <p class="body">A denser weave; the surface looks held together. The slight rotation off vertical reads as effort &mdash; like writing on a slope.</p>
+        </div>
+        <div class="col-right">
+          <div class="label-row"><span class="pip"></span><span class="label">Airy</span></div>
+          <h2>Loose, leaning right,<br>120px cells, &plus;8&deg;.</h2>
+          <p class="body">Twice the spacing, the opposite lean. The two halves never align &mdash; that mis-registration is the whole point.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 13 — TRIPTYCH                                                  -->
+  <!-- ============================================================== -->
+  <section data-screen-label="13 Triptych" class="slide-triptych"
+           data-numeral="XIII" data-name="Triptych" data-halo="4">
+    <div class="slide left">
+      <div class="tri-lede">
+        <div class="label">Triptych</div>
+        <h2>Three small inquiries,<br>one shared page.</h2>
+      </div>
+      <div class="tri">
+        <div class="tri-col">
+          <div class="tri-num">i.</div>
+          <h3>What it carries</h3>
+          <p>A grid is a contract about where things may live. The contract is enforced by attention, not by ink.</p>
+        </div>
+        <div class="tri-col">
+          <div class="tri-num">ii.</div>
+          <h3>What it costs</h3>
+          <p>A rigid grid is cheap to obey and expensive to defy. The defiance is where most of the design ends up living.</p>
+        </div>
+        <div class="tri-col">
+          <div class="tri-num">iii.</div>
+          <h3>What it leaves</h3>
+          <p>The cells you don't fill. A reader notices a paused cell as quickly as a struck one &mdash; sooner, often.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 14 — PLATE                                                     -->
+  <!-- ============================================================== -->
+  <section data-screen-label="14 Plate" class="slide-plate"
+           data-numeral="XIV" data-name="Plate" data-halo="14">
+    <div class="slide" style="padding: 0;">
+      <div class="plate-wrap">
+        <div class="placeholder plate" data-halo="14">
+          <div class="placeholder-tag">Plate &middot; 16 : 5 &middot; full bleed image</div>
+        </div>
+        <div class="plate-cap">
+          <p class="caption">A spread from a press proof, photographed under raking light. The grid the printer used to register the run is just visible at the edge of the bleed.</p>
+          <div class="credit"><span class="credit-num">Plate I</span>Studio Halftone &middot; 2026</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 15 — IMAGE + TEXT                                              -->
+  <!-- ============================================================== -->
+  <section data-screen-label="15 Image + text" class="slide-image-text"
+           data-numeral="XV" data-name="Annotation" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it">
+        <div class="placeholder it-image" data-halo="8">
+          <div class="placeholder-tag">Specimen &middot; 19 : 16</div>
+        </div>
+        <div class="it-text">
+          <div class="label">Annotation</div>
+          <h2>A specimen,<br>with marginalia.</h2>
+          <p>The artifact and the gloss share a page so the reader can compare without flipping. The image carries the evidence; the right column carries the argument.</p>
+          <p>A 50/50 split keeps neither column from dominating. The grid bridges the gap.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 16 — TIMELINE                                                  -->
+  <!-- ============================================================== -->
+  <section data-screen-label="16 Timeline" class="slide-timeline"
+           data-numeral="XVI" data-name="Sequence" data-halo="4">
+    <div class="slide left">
+      <div class="tl-lede">
+        <div class="label">Sequence</div>
+        <h2>Four beats,<br>each settling before the next.</h2>
+      </div>
+      <div class="tl">
+        <div class="tl-beat">
+          <span class="dot"></span>
+          <div class="year">First, 0 &mdash; 120ms</div>
+          <h3>The grid notices</h3>
+          <p>Cells under the headline light up at full brightness, in block-scan order.</p>
+        </div>
+        <div class="tl-beat">
+          <span class="dot"></span>
+          <div class="year">Then, 120 &mdash; 480ms</div>
+          <h3>The halo answers</h3>
+          <p>Neighbouring cells fade up at a softer brightness, a slow second wave around the text.</p>
+        </div>
+        <div class="tl-beat">
+          <span class="dot"></span>
+          <div class="year">Meanwhile, 0 &mdash; 820ms</div>
+          <h3>The carriage glides</h3>
+          <p>The scribe steps from the last tick to the next; the numeral crossfades in place.</p>
+        </div>
+        <div class="tl-beat">
+          <span class="dot"></span>
+          <div class="year">Lastly, 720 &mdash; 900ms</div>
+          <h3>The pearl clicks</h3>
+          <p>A brief tick-pulse at the new mark. The slide is, by then, already legible.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 17 — SOURCES                                                   -->
+  <!-- ============================================================== -->
+  <section data-screen-label="17 Sources" class="slide-sources"
+           data-numeral="XVII" data-name="Sources" data-halo="4">
+    <div class="slide left">
+      <div class="src-wrap">
+        <div class="src-head">
+          <div class="label">Sources</div>
+          <h2>Works consulted.</h2>
+        </div>
+        <div class="src-list">
+          <div class="src-item"><span class="src-num">01.</span><span class="src-cite">Tschichold, J. <span class="work">The Form of the Book</span><span class="meta">Hartley &amp; Marks, 1991</span></span></div>
+          <div class="src-item"><span class="src-num">02.</span><span class="src-cite">M&uuml;ller-Brockmann, J. <span class="work">Grid Systems in Graphic Design</span><span class="meta">Niggli, 1981</span></span></div>
+          <div class="src-item"><span class="src-num">03.</span><span class="src-cite">Bringhurst, R. <span class="work">The Elements of Typographic Style</span><span class="meta">Hartley &amp; Marks, 4th ed.</span></span></div>
+          <div class="src-item"><span class="src-num">04.</span><span class="src-cite">Hochuli, J. <span class="work">Detail in Typography</span><span class="meta">Hyphen Press, 2008</span></span></div>
+          <div class="src-item"><span class="src-num">05.</span><span class="src-cite">Lupton, E. <span class="work">Thinking with Type</span><span class="meta">Princeton Architectural, 2010</span></span></div>
+          <div class="src-item"><span class="src-num">06.</span><span class="src-cite">Spiekermann, E. <span class="work">Stop Stealing Sheep &amp; Find Out How Type Works</span><span class="meta">Adobe Press, 3rd ed.</span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- 18 — CLOSE                                                     -->
+  <!-- ============================================================== -->
+  <section data-screen-label="18 Close" class="slide-close"
+           data-numeral="XVIII" data-name="Coda" data-halo="4">
+    <div class="slide center">
+      <div class="closing">
+        <div class="end-eyebrow rise d-1"><i>That is all &mdash;</i></div>
+        <div class="dash"></div>
+        <div class="end-name rise d-3">thank&nbsp;you.</div>
+      </div>
+    </div>
+  </section>
+
+</deck-stage>
+
+<!-- ================================================================== -->
+<!-- PERSISTENT OVERLAY                                                 -->
+<!-- ================================================================== -->
+<div class="deck-overlay" id="overlay" aria-hidden="true">
+  <div class="grid-tiles" id="gridTiles"></div>
+
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+      <circle cx="16" cy="16" r="11"/>
+      <circle cx="16" cy="16" r="5"/>
+      <circle cx="16" cy="16" r="1.2" fill="currentColor" stroke="none"/>
+    </svg>
+    <span class="wordmark">Grid&nbsp;Studies</span>
+  </div>
+
+  <div class="counter" id="counter">
+    <span class="cur">01</span><span class="of">/</span><span class="tot">18</span>
+  </div>
+
+  <div class="scribe">
+    <div class="scribe-rule"></div>
+    <div class="scribe-trail" id="scribeTrail"></div>
+    <div class="scribe-ticks" id="scribeTicks"></div>
+
+    <div class="scribe-carriage" id="scribeCarriage">
+      <div class="pearl"></div>
+      <div class="numeral" id="scribeNumeral"><span class="layer">I</span></div>
+      <div class="name"    id="scribeName"><span class="layer">Ouverture</span></div>
+    </div>
+  </div>
+</div>
+
+<script src="deck-stage.js"></script>
+
+<script>
+  /* ==================================================================
+     Mirror deck-stage's scaled .canvas with the overlay's transform.
+     The canvas is in shadow DOM; we resolve it lazily and re-sync on
+     resize / ResizeObserver / per-frame position polling.
+     ================================================================== */
+  (() => {
+    const deck = document.querySelector('deck-stage');
+    const overlay = document.getElementById('overlay');
+    if (!deck || !overlay) return;
+
+    let canvas = null;
+    const resolveCanvas = () => {
+      if (canvas && canvas.isConnected) return canvas;
+      canvas = deck.shadowRoot && deck.shadowRoot.querySelector('.canvas');
+      return canvas;
+    };
+
+    const sync = () => {
+      const c = resolveCanvas();
+      if (!c) { requestAnimationFrame(sync); return; }
+      const r = c.getBoundingClientRect();
+      const s = r.width / 1920;
+      overlay.style.transform = `translate(${r.left}px, ${r.top}px) scale(${s})`;
+      overlay.style.visibility = (r.width > 0 ? 'visible' : 'hidden');
+    };
+
+    window.addEventListener('resize', sync);
+    window.addEventListener('scroll', sync, { passive: true });
+
+    const start = () => {
+      const c = resolveCanvas();
+      if (!c) { requestAnimationFrame(start); return; }
+      sync();
+      try { new ResizeObserver(sync).observe(c); } catch (e) {}
+      // Position can change without size changing (rail toggle, etc).
+      // A per-frame poll is cheap enough for a single getBoundingClientRect.
+      let last = c.getBoundingClientRect();
+      const poll = () => {
+        const n = c.getBoundingClientRect();
+        if (n.left !== last.left || n.top !== last.top || n.width !== last.width) {
+          last = n; sync();
+        }
+        requestAnimationFrame(poll);
+      };
+      poll();
+    };
+    start();
+  })();
+
+  /* ==================================================================
+     Build ticks once we know how many slides there are.
+     ================================================================== */
+  (() => {
+    const ticks = document.getElementById('scribeTicks');
+    const count = document.getElementById('scribeCount');
+    const deck = document.querySelector('deck-stage');
+    if (!ticks || !deck) return;
+
+    const init = () => {
+      const total = deck.querySelectorAll(':scope > section').length;
+      if (!total) { requestAnimationFrame(init); return; }
+      ticks.innerHTML = '';
+      for (let i = 0; i < total; i++) {
+        const t = document.createElement('span');
+        t.className = 'tick';
+        t.style.left = (total === 1 ? 50 : (i / (total - 1)) * 100) + '%';
+        t.dataset.idx = String(i);
+        ticks.appendChild(t);
+      }
+    };
+    init();
+  })();
+
+  /* ==================================================================
+     slidechange — drive every persistent element from the active
+     slide's data-* attributes.
+     ================================================================== */
+  (() => {
+    const deck = document.querySelector('deck-stage');
+    const overlay = document.getElementById('overlay');
+    const carriage = document.getElementById('scribeCarriage');
+    const numeralEl = document.getElementById('scribeNumeral');
+    const nameEl = document.getElementById('scribeName');
+    const trail = document.getElementById('scribeTrail');
+    const counter = document.getElementById('counter');
+    const ticks = document.getElementById('scribeTicks');
+    const gridTiles = document.getElementById('gridTiles');
+    if (!deck || !overlay) return;
+
+    // Build the 32×18 tile grid once.
+    const tiles = [];
+    if (gridTiles && gridTiles.childElementCount === 0) {
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < 32 * 18; i++) {
+        const t = document.createElement('div');
+        t.className = 'tile';
+        frag.appendChild(t);
+        tiles.push(t);
+      }
+      gridTiles.appendChild(frag);
+    } else if (gridTiles) {
+      gridTiles.querySelectorAll('.tile').forEach((t) => tiles.push(t));
+    }
+
+    // Write the total slide count into the counter.
+    if (counter) {
+      const tot = counter.querySelector('.tot');
+      const totalNow = deck.querySelectorAll(':scope > section').length;
+      if (tot && totalNow) tot.textContent = String(totalNow).padStart(2, '0');
+    }
+
+    let lastX = null;
+    let lastIdx = 0;
+    let trailFadeTimer = null;
+    let clickTimer = null;
+
+    /* --------------------------------------------------------------
+       Letter splitting: walk every text node inside each slide and
+       replace it with a fragment of <span class="ltr"> per character
+       (spaces stay as text nodes so wrap behaviour is unchanged). Run
+       once at load.
+       -------------------------------------------------------------- */
+    const slidesAll = Array.from(deck.querySelectorAll(':scope > section'));
+
+    function splitTextInSlide(slide) {
+      const walker = document.createTreeWalker(slide, NodeFilter.SHOW_TEXT, {
+        acceptNode(n) {
+          if (!n.textContent || !n.textContent.trim()) return NodeFilter.FILTER_REJECT;
+          let p = n.parentNode;
+          while (p && p !== slide) {
+            if (p.classList) {
+              if (p.classList.contains('ltr')) return NodeFilter.FILTER_REJECT;
+              if (p.classList.contains('no-split')) return NodeFilter.FILTER_REJECT;
+            }
+            const tag = p.nodeName;
+            if (tag === 'SCRIPT' || tag === 'STYLE') return NodeFilter.FILTER_REJECT;
+            p = p.parentNode;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const nodes = [];
+      let n; while ((n = walker.nextNode())) nodes.push(n);
+      for (const tn of nodes) {
+        const frag = document.createDocumentFragment();
+        let wordSpan = null;
+        const flushWord = () => { wordSpan = null; };
+        for (const ch of tn.textContent) {
+          if (ch === ' ' || ch === '\u00A0') {
+            flushWord();
+            frag.appendChild(document.createTextNode(ch));
+          } else {
+            if (!wordSpan) {
+              wordSpan = document.createElement('span');
+              wordSpan.className = 'word';
+              frag.appendChild(wordSpan);
+            }
+            const sp = document.createElement('span');
+            sp.className = 'ltr';
+            sp.textContent = ch;
+            wordSpan.appendChild(sp);
+          }
+        }
+        tn.parentNode.replaceChild(frag, tn);
+      }
+      // Mark every ancestor that now hosts .ltr children so its own
+      // .rise gets disabled in favour of the per-letter animation.
+      slide.querySelectorAll('.ltr').forEach(span => {
+        let p = span.parentNode;
+        while (p && p !== slide) {
+          if (p.nodeType === 1) p.classList.add('has-letters');
+          p = p.parentNode;
+        }
+      });
+    }
+    slidesAll.forEach(splitTextInSlide);
+
+    /* Stamp each letter's delay from its (col, row) cell in the SAME
+       32x18 grid the tiles use, using the IDENTICAL column-major
+       formula. The letter under tile T fires at T's exact delay, so
+       the letter cascade and the tile cascade are one wave. Direction
+       reverses on backward nav. */
+    const T_COLS = 32, T_ROWS = 18;
+    // Block-scan reveal: the grid is partitioned into BLOCK_W x BLOCK_H
+    // cell chunks. Every cell inside a block fires at the SAME delay,
+    // and blocks fire one after the next in row-major scan order. The
+    // result reads as a chunky, programmatic load (like a tiled
+    // texture decoder filling block by block), not a smooth wave.
+    // 32/4 = 8 block-cols, 18/3 = 6 block-rows -> 48 blocks.
+    const BLOCK_W = 4, BLOCK_H = 3;
+    const BLOCK_COLS = Math.ceil(T_COLS / BLOCK_W);  // 8
+    const BLOCK_ROWS = Math.ceil(T_ROWS / BLOCK_H);  // 6
+    const BLOCK_STEP = 32;  // ms between adjacent blocks in scan order
+
+    function applyLetterDelays(slide, blockDelay) {
+      const cv = deck.shadowRoot && deck.shadowRoot.querySelector('.canvas');
+      if (!cv) return;
+      const cr = cv.getBoundingClientRect();
+      if (!cr.width) return;
+      const letters = slide.querySelectorAll('.ltr');
+      for (let i = 0; i < letters.length; i++) {
+        const span = letters[i];
+        const r = span.getBoundingClientRect();
+        const cxN = (r.left + r.width / 2 - cr.left) / cr.width;
+        const cyN = (r.top  + r.height / 2 - cr.top)  / cr.height;
+        let col = Math.floor(cxN * T_COLS);
+        let row = Math.floor(cyN * T_ROWS);
+        if (col < 0) col = 0; else if (col > T_COLS - 1) col = T_COLS - 1;
+        if (row < 0) row = 0; else if (row > T_ROWS - 1) row = T_ROWS - 1;
+        const bc = (col / BLOCK_W) | 0;
+        const br = (row / BLOCK_H) | 0;
+        const bid = br * BLOCK_COLS + bc;
+        const k = blockDelay[bid] >= 0 ? blockDelay[bid] : 0;
+        span.style.animationDelay = k + 'ms';
+      }
+    }
+
+    // The scribe container is left:120 right:120 in a 1920 canvas,
+    // so its inner width is 1680 (in design units). The car-x var is
+    // expressed in those same units — left:var(--car-x) of the scribe.
+    const scribeInnerW = 1920 - 120 - 120;
+
+    const apply = (slide, idx, total, isInit) => {
+      if (!slide) return;
+      const d = slide.dataset;
+
+      // Tile cascade — the tiles ARE the text. We rasterise every
+      // .ltr's bounding box into the 32×18 grid, accumulating per-cell
+      // "loudness" (fractional coverage). Cells touched by text light
+      // up; cells that aren't, don't. Brightness scales with how much
+      // text stacks into the cell, so headlines and body copy both
+      // read but headlines punch harder. Both letters and tiles ride
+      // the same column-major march.
+      //
+      // On every slide change we (a) snap all tiles off with transitions
+      // suppressed, then (b) re-enable transitions and cascade them back
+      // on so the wave replays.
+      const forward = isInit || idx >= lastIdx;
+      const cv = deck.shadowRoot && deck.shadowRoot.querySelector('.canvas');
+      const cr = cv && cv.getBoundingClientRect();
+
+      // Build the loudness map AND the per-cell halo-radius map. The
+      // halo radius is resolved per letter by walking up to the first
+      // ancestor with [data-halo] (falls back to the section's own
+      // [data-halo], default 0). For each cell that letter touches, we
+      // keep the MAX halo radius — so a small radius elsewhere never
+      // shrinks a big-radius element's reach.
+      const loud = new Float32Array(T_COLS * T_ROWS);
+      const haloR = new Float32Array(T_COLS * T_ROWS);
+      const sectionHalo = parseFloat(slide.dataset.halo || '0') || 0;
+      if (cr && cr.width) {
+        const cellW = cr.width  / T_COLS;
+        const cellH = cr.height / T_ROWS;
+        const letters = slide.querySelectorAll('.ltr');
+        // Cache resolved halo radius per element so we don't walk the
+        // tree once per letter.
+        const haloCache = new WeakMap();
+        const resolveHalo = (el) => {
+          let p = el;
+          while (p && p !== slide) {
+            if (haloCache.has(p)) return haloCache.get(p);
+            if (p.dataset && p.dataset.halo != null) {
+              const v = parseFloat(p.dataset.halo) || 0;
+              haloCache.set(p, v);
+              return v;
+            }
+            p = p.parentElement;
+          }
+          return sectionHalo;
+        };
+        for (let li = 0; li < letters.length; li++) {
+          const r = letters[li].getBoundingClientRect();
+          if (!r.width || !r.height) continue;
+          const h = resolveHalo(letters[li]);
+          const x0 = (r.left   - cr.left) / cellW;
+          const y0 = (r.top    - cr.top ) / cellH;
+          const x1 = (r.right  - cr.left) / cellW;
+          const y1 = (r.bottom - cr.top ) / cellH;
+          const c0 = Math.max(0, Math.floor(x0));
+          const c1 = Math.min(T_COLS - 1, Math.floor(x1 - 1e-6));
+          const r0 = Math.max(0, Math.floor(y0));
+          const r1 = Math.min(T_ROWS - 1, Math.floor(y1 - 1e-6));
+          for (let rr = r0; rr <= r1; rr++) {
+            const yA = Math.max(y0, rr);
+            const yB = Math.min(y1, rr + 1);
+            const dy = yB - yA;
+            if (dy <= 0) continue;
+            for (let cc = c0; cc <= c1; cc++) {
+              const xA = Math.max(x0, cc);
+              const xB = Math.min(x1, cc + 1);
+              const dx = xB - xA;
+              if (dx <= 0) continue;
+              const idx = rr * T_COLS + cc;
+              loud[idx] += dx * dy;
+              if (h > haloR[idx]) haloR[idx] = h;
+            }
+          }
+        }
+      }
+
+      // Aggregate cell loudness into block loudness, then build the
+      // "ladder": an ordered list of just the blocks that contain text,
+      // in reading order (top-to-bottom, left-to-right). Each rung of
+      // the ladder gets a sequential delay; blocks NOT on the ladder
+      // never animate. Tiles and letters share this ladder, so a block
+      // of text and its tiles light at the exact same instant.
+      const BLOCK_LOUD_MIN = 0.10;
+      const blockLoud = new Float32Array(BLOCK_COLS * BLOCK_ROWS);
+      for (let row = 0; row < T_ROWS; row++) {
+        const br = (row / BLOCK_H) | 0;
+        for (let col = 0; col < T_COLS; col++) {
+          const bc = (col / BLOCK_W) | 0;
+          blockLoud[br * BLOCK_COLS + bc] += loud[row * T_COLS + col];
+        }
+      }
+      const blockDelay = new Int32Array(BLOCK_COLS * BLOCK_ROWS);
+      blockDelay.fill(-1);
+      const activeBlocks = [];
+      for (let br = 0; br < BLOCK_ROWS; br++) {
+        for (let bc = 0; bc < BLOCK_COLS; bc++) {
+          const bid = br * BLOCK_COLS + bc;
+          if (blockLoud[bid] >= BLOCK_LOUD_MIN) activeBlocks.push(bid);
+        }
+      }
+      const orderList = forward ? activeBlocks : activeBlocks.slice().reverse();
+      for (let i = 0; i < orderList.length; i++) {
+        blockDelay[orderList[i]] = i * BLOCK_STEP;
+      }
+
+      // --------------------------------------------------------------
+      // HALO PASS
+      // For each non-text cell, find the nearest text-covered cell
+      // whose halo radius reaches us. The halo lights that cell at a
+      // reduced opacity (linear falloff with distance / radius) and
+      // delays it by the SOURCE block's text-arrival time plus a
+      // per-cell ring offset — so the halo "cascades outward" from
+      // each text region a beat after the text itself lands.
+      //
+      // Pacing: HALO_STEP_MS is slightly slower than BLOCK_STEP so the
+      // halo expansion reads as a softer second wave rather than the
+      // same march. Falloff is linear in cell distance, which on text
+      // bounding boxes (typically wider than tall) naturally produces
+      // an oval — a uniform dilation of a wide region.
+      // --------------------------------------------------------------
+      const MIN_COVERAGE = 0.04;
+      const HALO_STEP_MS = 42;     // ms per cell of halo distance
+      const HALO_PEAK    = 0.42;   // opacity of a halo cell immediately adjacent to text
+      const HALO_FLOOR   = 0.08;   // opacity of a halo cell at the very edge of its radius
+      const haloOp   = new Float32Array(T_COLS * T_ROWS);
+      const haloDly  = new Int32Array(T_COLS * T_ROWS);
+      haloDly.fill(-1);
+
+      // Collect seed cells: text-covered AND inside an element with a
+      // halo radius. If a slide / element opts out (halo = 0) no seeds
+      // contribute, so the slide gets the old text-only treatment.
+      const seedCells = [];
+      for (let i = 0; i < T_COLS * T_ROWS; i++) {
+        if (loud[i] > MIN_COVERAGE && haloR[i] > 0) seedCells.push(i);
+      }
+      if (seedCells.length) {
+        const maxR = Math.max.apply(null, seedCells.map(j => haloR[j]));
+        // For each cell, brute-force the nearest seed within radius.
+        // 576 cells × ~200 seeds = ~115k ops; cheap.
+        for (let i = 0; i < T_COLS * T_ROWS; i++) {
+          if (loud[i] > MIN_COVERAGE) continue;          // text owns this cell
+          const ic = i % T_COLS, ir = (i / T_COLS) | 0;
+          let bestStrength = 0;
+          let bestSrc = -1;
+          let bestDist = Infinity;
+          for (let si = 0; si < seedCells.length; si++) {
+            const j = seedCells[si];
+            const jc = j % T_COLS, jr = (j / T_COLS) | 0;
+            const dx = ic - jc, dy = ir - jr;
+            const d = Math.sqrt(dx * dx + dy * dy);
+            const R = haloR[j];
+            if (d > R) continue;
+            // Strength: linear falloff in normalised radius units.
+            // We take the MAX across all reaching seeds so cells in
+            // overlap zones glow brighter (denser regions accumulate).
+            const s = 1 - d / R;
+            if (s > bestStrength) {
+              bestStrength = s;
+              bestSrc = j;
+              bestDist = d;
+            }
+          }
+          if (bestSrc >= 0) {
+            haloOp[i] = HALO_FLOOR + (HALO_PEAK - HALO_FLOOR) * bestStrength;
+            const sc = bestSrc % T_COLS, sr = (bestSrc / T_COLS) | 0;
+            const sbid = ((sr / BLOCK_H) | 0) * BLOCK_COLS + ((sc / BLOCK_W) | 0);
+            const srcDelay = blockDelay[sbid] >= 0 ? blockDelay[sbid] : 0;
+            haloDly[i] = srcDelay + Math.round(bestDist * HALO_STEP_MS);
+          }
+        }
+        // Silence unused var warning for older engines that might
+        // strip dead code; maxR is documentary only.
+        void maxR;
+      }
+
+      if (tiles && tiles.length) {
+        // Use the shared T_COLS/T_ROWS/COL_STEP/ROW_STEP constants
+        // defined alongside applyLetterDelays — both waves run on the
+        // same grid and the same delay formula.
+
+        if (!isInit && gridTiles) {
+          gridTiles.classList.add('is-resetting');
+          for (let i = 0; i < tiles.length; i++) tiles[i].classList.remove('is-on');
+          void gridTiles.offsetWidth; // commit the no-transition clear
+          gridTiles.classList.remove('is-resetting');
+        }
+
+        for (let i = 0; i < tiles.length; i++) {
+          const col = i % T_COLS;
+          const row = (i / T_COLS) | 0;
+          const coverage = loud[i];
+          const bc = (col / BLOCK_W) | 0;
+          const br = (row / BLOCK_H) | 0;
+          const bid = br * BLOCK_COLS + bc;
+          const bd = blockDelay[bid];
+          const tile = tiles[i];
+          // Loudness → opacity. A cell with any meaningful letter
+          // coverage gets a clear floor so the silhouette reads; cells
+          // with stacked coverage hit 1. The exponent compresses the
+          // middle so the contour stays crisp rather than mushy.
+          const FLOOR = 0.55;
+          if (bd >= 0 && coverage > MIN_COVERAGE) {
+            // Primary: text-driven cell. Block-quantised timing.
+            tile.style.transitionDelay = bd + 'ms';
+            const t = Math.min(1, Math.pow(coverage, 0.6));
+            const op = FLOOR + (1 - FLOOR) * t;
+            tile.style.setProperty('--t-op', op.toFixed(3));
+            tile.classList.add('is-on');
+          } else if (haloOp[i] > 0) {
+            // Halo: per-cell timing, fades out with distance from text.
+            tile.style.transitionDelay = haloDly[i] + 'ms';
+            tile.style.setProperty('--t-op', haloOp[i].toFixed(3));
+            tile.classList.add('is-on');
+          } else {
+            tile.classList.remove('is-on');
+          }
+        }
+      }
+
+      // Letter cascade — same wave, same direction. Stamp each .ltr's
+      // animation-delay from its position in the canvas, then toggle
+      // `.letters-ready` on the section to (re)trigger the animation.
+      applyLetterDelays(slide, blockDelay);
+      slidesAll.forEach(s => { if (s !== slide) s.classList.remove('letters-ready'); });
+      slide.classList.remove('letters-ready');
+      void slide.offsetWidth; // force reflow so removal commits before re-add
+      slide.classList.add('letters-ready');
+
+      lastIdx = idx;
+
+      // Counter
+      if (counter) {
+        const cur = counter.querySelector('.cur');
+        if (cur) cur.textContent = String(idx + 1).padStart(2, '0');
+      }
+
+      // Carriage X in design units.
+      const x = total <= 1 ? scribeInnerW / 2 : (idx / (total - 1)) * scribeInnerW;
+
+      // Crossfade a label container's text. The container holds one or
+      // two <span class="layer"> children; the outgoing one drifts up
+      // and fades while the incoming one drifts up and resolves, so a
+      // word is always on screen during the transition.
+      const swapLabel = (container, newText, instant) => {
+        if (!container) return;
+        const current = container.querySelector('.layer:not(.is-outgoing)');
+        if (current && current.textContent === newText) return;
+        if (instant && current) { current.textContent = newText; return; }
+        const next = document.createElement('span');
+        next.className = 'layer is-incoming';
+        next.textContent = newText;
+        container.appendChild(next);
+        void next.offsetWidth;            // commit incoming state
+        next.classList.remove('is-incoming');
+        if (current) {
+          current.classList.add('is-outgoing');
+          setTimeout(() => { if (current.parentNode) current.parentNode.removeChild(current); }, 600);
+        }
+      };
+
+      const numText = d.numeral || String(idx + 1);
+      const nmText  = d.name    || ('Slide ' + (idx + 1));
+
+      if (isInit) {
+        // First mount — set carriage X with no transition so it doesn't
+        // glide in from x:0 while everything else is fading up.
+        if (carriage) {
+          carriage.style.transition = 'none';
+          carriage.style.setProperty('--car-x', x + 'px');
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => { carriage.style.transition = ''; });
+          });
+        }
+        swapLabel(numeralEl, numText, true);
+        swapLabel(nameEl,    nmText,  true);
+        // Reveal overlay chrome in step with first slide's `.rise`.
+        requestAnimationFrame(() => overlay.setAttribute('data-mounted', ''));
+      } else {
+        if (carriage) carriage.style.setProperty('--car-x', x + 'px');
+        swapLabel(numeralEl, numText, false);
+        swapLabel(nameEl,    nmText,  false);
+
+        // Pearl tick — fires at the END of the carriage glide so the
+        // click lands exactly when the pearl settles on its new tick.
+        // Strip then re-add to restart cleanly on rapid navs.
+        if (carriage) {
+          carriage.classList.remove('is-clicking');
+          if (clickTimer) clearTimeout(clickTimer);
+          // 720ms = ~end of the 820ms S-curve (last 12% is the slow
+          // landing where the click should hit).
+          clickTimer = setTimeout(() => {
+            carriage.classList.add('is-clicking');
+            setTimeout(() => carriage.classList.remove('is-clicking'), 460);
+          }, 720);
+        }
+
+        // Trail wash on real navigation.
+        if (trail && lastX !== null && Math.abs(x - lastX) > 1) {
+          const a = Math.min(lastX, x);
+          const b = Math.max(lastX, x);
+          trail.style.transition = 'none';
+          trail.style.left = a + 'px';
+          trail.style.width = (b - a) + 'px';
+          trail.style.opacity = '0';
+          trail.offsetWidth;
+          trail.style.transition = 'opacity 220ms ease-out 80ms';
+          trail.style.opacity = '0.32';
+          if (trailFadeTimer) clearTimeout(trailFadeTimer);
+          trailFadeTimer = setTimeout(() => {
+            trail.style.transition = 'opacity 700ms ease-in';
+            trail.style.opacity = '0';
+          }, 480);
+        }
+      }
+
+      lastX = x;
+    };
+
+    deck.addEventListener('slidechange', (e) => {
+      apply(e.detail.slide, e.detail.index, e.detail.total, e.detail.reason === 'init');
+    });
+
+    // deck-stage may have already fired its init slidechange before this
+    // listener attached (script load order). Catch the active slide up
+    // by hand so the first paint isn't a frozen page of zero-opacity
+    // letters and an empty tile field.
+    const catchUp = () => {
+      const sections = Array.from(deck.querySelectorAll(':scope > section'));
+      if (!sections.length) { requestAnimationFrame(catchUp); return; }
+      const active = sections.find(s => s.hasAttribute('data-deck-active')) || sections[0];
+      apply(active, sections.indexOf(active), sections.length, true);
+    };
+    catchUp();
+  })();
+
+  /* ==================================================================
+     Stat slide — count up from 0 to the target. Runs on every entry
+     so navigating away and back re-plays the count.
+     ================================================================== */
+  (() => {
+    const deck = document.querySelector('deck-stage');
+    if (!deck) return;
+    deck.addEventListener('slidechange', (e) => {
+      const slide = e.detail.slide;
+      if (!slide || !slide.classList.contains('slide-stat')) return;
+      slide.querySelectorAll('[data-count-to]').forEach((el) => {
+        const to = parseFloat(el.getAttribute('data-count-to')) || 0;
+        const dur = 800;
+        const isInt = Number.isInteger(to);
+        el.textContent = isInt ? '0' : '0.0';
+        // Lead-in so the count starts a beat after the stat-num element's
+        // own `.rise` settles — you see "0" land, then climb.
+        const start = performance.now() + 700;
+        const tick = (now) => {
+          const t = Math.max(0, Math.min(1, (now - start) / dur));
+          const eased = 1 - Math.pow(1 - t, 5); // ease-out-quint
+          el.textContent = isInt ? String(Math.round(to * eased)) : (to * eased).toFixed(1);
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slides — Elijah Frost</title>
+<meta name="description" content="A catalog of slide pieces by Elijah Frost.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://slides.elijahfrost.com/">
+<meta property="og:title" content="Slides — Elijah Frost">
+<meta property="og:description" content="A catalog of slide pieces by Elijah Frost.">
+
+<link rel="icon" type="image/png" href="/favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap">
+<link rel="stylesheet" href="/_framework/tokens.css">
+<link rel="stylesheet" href="/hub.css">
+</head>
+<body>
+
+<main class="hub">
+
+  <header class="hub-header">
+    <h1 class="hub-title">Slides</h1>
+    <p class="hub-eyebrow">Elijah Frost</p>
+  </header>
+
+  <div class="hub-search-wrap">
+    <input id="search" class="hub-search" type="search"
+           placeholder="Search pieces" aria-label="Search pieces"
+           autocomplete="off" spellcheck="false">
+  </div>
+
+  <section id="catalog" class="hub-catalog" aria-live="polite"></section>
+
+</main>
+
+<template id="card-template">
+  <a class="hub-card">
+    <h2 class="hub-card-title"></h2>
+    <p class="hub-card-description"></p>
+    <p class="hub-card-meta">
+      <span class="hub-card-date"></span>
+      <span class="hub-card-tags"></span>
+    </p>
+  </a>
+</template>
+
+<script>
+(async () => {
+  const catalogEl = document.getElementById('catalog');
+  const searchEl  = document.getElementById('search');
+  const tpl       = document.getElementById('card-template');
+
+  let pieces = [];
+  try {
+    const res = await fetch('/catalog.json', { cache: 'no-store' });
+    const data = await res.json();
+    pieces = (data.pieces || []).slice().sort((a, b) =>
+      (b.date || '').localeCompare(a.date || '')
+    );
+  } catch (err) {
+    catalogEl.textContent = 'Could not load catalog.';
+    return;
+  }
+
+  function render(query) {
+    catalogEl.innerHTML = '';
+    const q = (query || '').trim().toLowerCase();
+    const matched = q
+      ? pieces.filter(p => {
+          const hay = [p.title, p.description, ...(p.tags || [])]
+            .filter(Boolean).join(' ').toLowerCase();
+          return hay.includes(q);
+        })
+      : pieces;
+
+    if (matched.length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'hub-empty';
+      empty.textContent = 'No pieces matched.';
+      catalogEl.appendChild(empty);
+      return;
+    }
+
+    for (const p of matched) {
+      const node = tpl.content.cloneNode(true);
+      const a = node.querySelector('.hub-card');
+      a.href = '/' + p.slug + '/';
+      node.querySelector('.hub-card-title').textContent = p.title;
+      const desc = node.querySelector('.hub-card-description');
+      if (p.description) desc.textContent = p.description; else desc.remove();
+      node.querySelector('.hub-card-date').textContent = p.date || '';
+      node.querySelector('.hub-card-tags').textContent =
+        (p.tags || []).join(' · ');
+      catalogEl.appendChild(node);
+    }
+  }
+
+  render('');
+  searchEl.addEventListener('input', e => render(e.target.value));
+})();
+</script>
+
+</body>
+</html>
