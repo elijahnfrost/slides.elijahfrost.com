@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap">
-<link rel="stylesheet" href="/_framework/tokens.css">
+<link rel="stylesheet" href="/_framework/v1/tokens.css">
 <link rel="stylesheet" href="/hub.css">
 </head>
 <body>
@@ -30,8 +30,14 @@
 <main class="hub">
 
   <header class="hub-header">
-    <h1 class="hub-title">Slides</h1>
-    <p class="hub-eyebrow">Elijah Frost</p>
+    <div class="hub-header-text">
+      <h1 class="hub-title">Slides</h1>
+      <p class="hub-eyebrow">Elijah Frost</p>
+    </div>
+    <nav class="hub-header-actions" aria-label="Deck actions">
+      <a class="hub-action" href="/api/export/template/blank-deck">New from template</a>
+      <a class="hub-action" href="/upload/">Upload deck</a>
+    </nav>
   </header>
 
   <div class="hub-search-wrap">
@@ -45,14 +51,17 @@
 </main>
 
 <template id="card-template">
-  <a class="hub-card">
-    <h2 class="hub-card-title"></h2>
-    <p class="hub-card-description"></p>
-    <p class="hub-card-meta">
-      <span class="hub-card-date"></span>
-      <span class="hub-card-tags"></span>
-    </p>
-  </a>
+  <article class="hub-card-row">
+    <a class="hub-card">
+      <h2 class="hub-card-title"></h2>
+      <p class="hub-card-description"></p>
+      <p class="hub-card-meta">
+        <span class="hub-card-date"></span>
+        <span class="hub-card-tags"></span>
+      </p>
+    </a>
+    <a class="hub-card-download" title="Download .html to edit with an agent" aria-label="Download to edit">⇣</a>
+  </article>
 </template>
 
 <script>
@@ -102,6 +111,8 @@
       node.querySelector('.hub-card-date').textContent = p.date || '';
       node.querySelector('.hub-card-tags').textContent =
         (p.tags || []).join(' · ');
+      const dl = node.querySelector('.hub-card-download');
+      dl.href = '/api/export/' + p.slug;
       catalogEl.appendChild(node);
     }
   }

@@ -1,0 +1,182 @@
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--color-bg-page);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-weight: 300;
+}
+
+.up {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.up-header { display: flex; flex-direction: column; gap: 0.5rem; }
+.up-back {
+  font-size: 0.8125rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+}
+.up-back:hover { color: var(--color-fg); }
+.up-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 2.5rem;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.up-sub {
+  color: var(--color-fg-muted);
+  max-width: 36rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.up-token, .up-drop, .up-preview, .up-status {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 1.5rem 1.75rem;
+}
+
+.up-label {
+  display: block;
+  font-size: 0.6875rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  margin-bottom: 0.5rem;
+}
+.up-input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-fg);
+  font: inherit;
+  font-size: 0.9375rem;
+  padding: 0.25rem 0;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+.up-input:focus { outline: none; border-bottom-color: var(--color-fg); }
+.up-hint { font-size: 0.75rem; color: var(--color-fg-dim, var(--color-fg-muted)); margin: 0.5rem 0 0; }
+
+.up-drop {
+  text-align: center;
+  padding: 3.5rem 2rem;
+  border-style: dashed;
+  cursor: pointer;
+  transition: border-color 200ms, background 200ms;
+}
+.up-drop:hover, .up-drop[data-dragging] {
+  border-color: var(--color-fg-muted);
+  background: rgba(255,255,255,0.04);
+}
+.up-drop-eyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  margin: 0 0 0.5rem;
+}
+.up-drop-prompt {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 1.5rem;
+  margin: 0;
+  color: var(--color-fg);
+}
+.up-drop-or {
+  margin: 0.5rem 0 0;
+  color: var(--color-fg-muted);
+  font-size: 0.875rem;
+}
+
+.up-link {
+  background: none;
+  border: 0;
+  color: var(--color-fg);
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+.up-link:hover { color: var(--color-fg-bright, var(--color-fg)); }
+
+.up-btn {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-fg);
+  font: inherit;
+  font-size: 0.8125rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.up-btn:hover { border-color: var(--color-fg-muted); }
+.up-btn-primary {
+  background: var(--color-fg);
+  color: var(--color-bg-page);
+  border-color: var(--color-fg);
+  font-weight: 500;
+}
+.up-btn-primary:hover { filter: brightness(0.92); }
+
+.up-preview-head {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 1.5rem;
+  margin: 0 0 1rem;
+}
+.up-preview-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5rem 1.5rem;
+  margin: 0 0 1.5rem;
+}
+.up-preview-grid dt {
+  font-size: 0.6875rem;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+  align-self: center;
+}
+.up-preview-grid dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--color-fg);
+  word-break: break-word;
+}
+.up-preview-actions { display: flex; gap: 0.75rem; }
+
+.up-status-head {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 1.5rem;
+  margin: 0 0 0.75rem;
+}
+.up-status[data-state="success"] .up-status-head { color: var(--color-fg-bright, var(--color-fg)); }
+.up-status[data-state="error"]   .up-status-head { color: var(--color-error-text, #d97757); }
+.up-status-body { color: var(--color-fg-muted); line-height: 1.5; margin: 0 0 0.75rem; }
+.up-status-detail {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.75rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0 0 0.75rem;
+  color: var(--color-fg-soft, var(--color-fg-muted));
+}
+.up-status-actions { margin: 0; }

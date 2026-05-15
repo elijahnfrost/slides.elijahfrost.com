@@ -1,0 +1,22 @@
+{
+  "name": "slides.elijahfrost.com",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal slide hub — file-passing agent workflow.",
+  "type": "module",
+  "scripts": {
+    "build-catalog": "node bin/build-catalog.mjs",
+    "dev": "python3 -m http.server 8765",
+    "vercel-build": "node bin/build-catalog.mjs"
+  },
+  "dependencies": {
+    "@octokit/rest": "^21.0.2",
+    "@vercel/og": "^0.6.4",
+    "linkedom": "^0.18.5",
+    "ulid": "^2.3.0",
+    "zod": "^3.23.8"
+  },
+  "engines": {
+    "node": "20.x"
+  }
+}

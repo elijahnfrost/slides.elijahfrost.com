@@ -1,124 +1,27 @@
 #!/usr/bin/env bash
 #
-# new-piece — scaffold a new slide piece.
+# new-piece — deprecated.
 #
-#   bin/new-piece <slug> [title] [description]
+# The repo moved to a file-passing workflow. To create a new piece:
 #
-# Creates:
-#   <slug>/index.html                       (from _framework/templates/blank-deck.html)
-#   <slug>/deck-stage.js  → ../_framework/deck-stage.js   (symlink)
-#   <slug>/tokens.css     → ../_framework/tokens.css      (symlink)
-#   <slug>/slide-types.css → ../_framework/slide-types.css (symlink, if file exists)
-#   <slug>/present/index.html → ../../_framework/present.html (symlink)
+#   1. Visit https://slides.elijahfrost.com/ and click "New from template",
+#      or curl https://slides.elijahfrost.com/api/export/template/blank-deck > new.html
+#   2. Hand new.html to an agent (Claude.ai). Tell it what the deck is about.
+#   3. The agent returns a modified HTML file. Save it.
+#   4. Upload via https://slides.elijahfrost.com/upload/.
 #
-# Appends an entry to catalog.json (date = today, tags = empty array).
-# Aborts if <slug> already exists.
+# See _framework/v1/DECK-FORMAT.md and _framework/v1/SLIDE-TYPES.md for the
+# format the agent reads.
 
-set -euo pipefail
+cat <<'EOF' >&2
+bin/new-piece is deprecated.
 
-cd "$(dirname "$0")/.."
-ROOT="$PWD"
+To create a new deck:
+  1. Download the blank template:
+       curl -s https://slides.elijahfrost.com/api/export/template/blank-deck > new.html
+  2. Hand new.html to an agent and ask for the deck content.
+  3. Upload the result at https://slides.elijahfrost.com/upload/.
 
-if [ $# -lt 1 ]; then
-  echo "Usage: bin/new-piece <slug> [title] [description]" >&2
-  exit 1
-fi
-
-SLUG="$1"
-TITLE="${2:-${SLUG}}"
-DESC="${3:-}"
-
-# Slug sanity — letters, digits, hyphen only (no spaces or slashes).
-if ! [[ "$SLUG" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
-  echo "error: slug must be lowercase letters/digits separated by hyphens (got: $SLUG)" >&2
-  exit 2
-fi
-
-if [ -e "$ROOT/$SLUG" ]; then
-  echo "error: $ROOT/$SLUG already exists" >&2
-  exit 3
-fi
-
-if [ ! -f "$ROOT/_framework/templates/blank-deck.html" ]; then
-  echo "error: $ROOT/_framework/templates/blank-deck.html not found" >&2
-  exit 4
-fi
-
-# ---- create the piece directory ----
-
-mkdir -p "$ROOT/$SLUG"
-cp "$ROOT/_framework/templates/blank-deck.html" "$ROOT/$SLUG/index.html"
-
-# Personalize the template's <title>.
-# Portable in-place sed: BSD sed needs `-i ''`, GNU sed needs `-i`.
-if sed --version >/dev/null 2>&1; then
-  sed -i "s|<title>Untitled deck</title>|<title>${TITLE}</title>|" "$ROOT/$SLUG/index.html"
-else
-  sed -i '' "s|<title>Untitled deck</title>|<title>${TITLE}</title>|" "$ROOT/$SLUG/index.html"
-fi
-
-# ---- symlinks ----
-
-cd "$ROOT/$SLUG"
-ln -s ../_framework/deck-stage.js deck-stage.js
-ln -s ../_framework/tokens.css    tokens.css
-[ -f "$ROOT/_framework/slide-types.css" ] && ln -s ../_framework/slide-types.css slide-types.css
-
-mkdir present
-cd present
-ln -s ../../_framework/present.html index.html
-cd "$ROOT"
-
-# ---- catalog.json entry ----
-
-TODAY="$(date +%Y-%m-%d)"
-
-# Quote-safe escaping for JSON strings.
-esc_json() {
-  python3 -c 'import json,sys; print(json.dumps(sys.argv[1]))' "$1"
-}
-
-TITLE_J="$(esc_json "$TITLE")"
-DESC_J="$(esc_json "$DESC")"
-SLUG_J="$(esc_json "$SLUG")"
-DATE_J="$(esc_json "$TODAY")"
-
-python3 - "$ROOT/catalog.json" "$SLUG" "$TITLE" "$DESC" "$TODAY" <<'PY'
-import json, sys
-from pathlib import Path
-
-path = Path(sys.argv[1])
-slug, title, desc, date = sys.argv[2:]
-
-data = json.loads(path.read_text()) if path.exists() else {"pieces": []}
-data.setdefault("pieces", [])
-
-# If a piece with this slug already exists in the catalog, replace it.
-data["pieces"] = [p for p in data["pieces"] if p.get("slug") != slug]
-entry = {
-    "slug": slug,
-    "title": title,
-    "description": desc,
-    "date": date,
-    "tags": [],
-}
-data["pieces"].append(entry)
-
-path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
-PY
-
-cat <<EOF
-created $SLUG/
-  index.html
-  deck-stage.js  → ../_framework/deck-stage.js
-  tokens.css     → ../_framework/tokens.css
-$([ -L "$SLUG/slide-types.css" ] && echo "  slide-types.css → ../_framework/slide-types.css")
-  present/index.html → ../../_framework/present.html
-
-catalog.json updated (date=$TODAY, tags=[])
-
-next:
-  - edit $SLUG/index.html
-  - drop $SLUG/og-image.png (1200×630) for link previews
-  - open http://localhost:8765/$SLUG/ to view
+See _framework/v1/DECK-FORMAT.md for the file contract.
 EOF
+exit 1
