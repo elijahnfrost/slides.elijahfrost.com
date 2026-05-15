@@ -8,6 +8,10 @@
 
   "rewrites": [
     {
+      "source": "/catalog.json",
+      "destination": "/api/catalog"
+    },
+    {
       "source": "/api/export/template/:name",
       "destination": "/api/export-template?name=:name"
     },
@@ -22,6 +26,11 @@
     {
       "source": "/:slug/present",
       "destination": "/_framework/v1/present.html"
+    },
+    {
+      "source": "/:slug/",
+      "destination": "/api/deck?slug=:slug",
+      "check": true
     }
   ],
 

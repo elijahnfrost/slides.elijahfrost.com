@@ -127,7 +127,7 @@ async function upload(text) {
   // Stash for retry if the network breaks mid-flight
   try { localStorage.setItem(PENDING_KEY, text); } catch {}
 
-  showStatus('working', 'Publishing…', 'Validating and committing to GitHub.');
+  showStatus('working', 'Publishing…', 'Validating and storing to Vercel Blob.');
 
   let res;
   try {
@@ -151,7 +151,7 @@ async function upload(text) {
     try { localStorage.removeItem(PENDING_KEY); } catch {}
     showStatus('success',
       'Published',
-      `Slug: ${body.slug} · version_id: ${body.version_id}. Vercel is deploying — page will be live in ~30s.`,
+      `Slug: ${body.slug} · version_id: ${body.version_id}. Stored to Vercel Blob — live now.`,
       null,
       body.deploy_url
     );

@@ -1,15 +1,19 @@
 /**
- * api/export-piece.js — return a piece's HTML file with framework imports
+ * api/export-piece.js — return a piece's HTML with framework imports
  * rewritten to absolute prod URLs and <deck-meta> freshened for download.
  *
  * GET /api/export-piece?slug=<slug>     (raw)
  * GET /api/export/<slug>                 (clean, via vercel.json rewrite)
  *   200 text/html  with Content-Disposition: attachment; filename="<slug>.html"
  *   404            if no piece with that slug exists
+ *
+ * Reads from Vercel Blob first, then falls back to static files on disk
+ * (git-committed pieces that predate the Blob storage layer).
  */
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ulid } from 'ulid';
+import { getPieceFromBlob } from '../lib/blob-storage.js';
 import { parseDeckHtml, extractDeckMetaText, rewriteDeckMeta, absolutizeFrameworkUrls } from '../lib/parse.js';
 import { parseDeckMeta } from '../lib/schema.js';
 
@@ -27,17 +31,22 @@ export default async function handler(req, res) {
     return;
   }
 
-  const filePath = join(process.cwd(), slug, 'index.html');
+  // Try Blob first (uploaded pieces), then disk (git-committed pieces).
   let html;
-  try {
-    html = await readFile(filePath, 'utf8');
-  } catch (e) {
-    if (e.code === 'ENOENT') {
-      res.status(404).json({ ok: false, code: 'E_NOT_FOUND', message: `No piece "${slug}"` });
+  const blobPiece = await getPieceFromBlob(slug);
+  if (blobPiece) {
+    html = blobPiece.content;
+  } else {
+    try {
+      html = await readFile(join(process.cwd(), slug, 'index.html'), 'utf8');
+    } catch (e) {
+      if (e.code === 'ENOENT') {
+        res.status(404).json({ ok: false, code: 'E_NOT_FOUND', message: `No piece "${slug}"` });
+        return;
+      }
+      res.status(500).json({ ok: false, code: 'E_FS', message: e.message });
       return;
     }
-    res.status(500).json({ ok: false, code: 'E_FS', message: e.message });
-    return;
   }
 
   const parsed = parseDeckHtml(html);

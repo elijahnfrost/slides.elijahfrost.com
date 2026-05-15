@@ -102,7 +102,7 @@ export default async function handler(req, res) {
     E_DISALLOWED_EMBED: 422,
     E_DISALLOWED_SCRIPT: 422,
     E_VERSION_CONFLICT: 409,
-    E_GITHUB: 502,
+    E_STORAGE: 502,
   }[result.code] || 500;
 
   res.status(status).json(result);
