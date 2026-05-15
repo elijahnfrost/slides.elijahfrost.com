@@ -18,10 +18,18 @@ const CHANNEL_NAME = 'deck-stage:' + DECK_PATH;
 
 // ----- state -----
 
+// Heartbeat: the deck broadcasts 'state' every 5s when idle. Silence
+// beyond DISCONNECT_AFTER_MS means the deck closed (tab shut, reload,
+// navigated away); flip back to "Waiting for deck…" so the user can
+// re-open it. Each inbound message rearms the watchdog.
+const DISCONNECT_AFTER_MS = 7000;
+
 const state = {
   index: 0,
   total: 0,
   skipped: [],
+  fragment: 0,
+  fragmentTotal: 0,
   notes: [],
   connected: false,
 };
@@ -29,6 +37,7 @@ const state = {
 // ----- channel -----
 
 let channel = null;
+let watchdog = null;
 try {
   channel = new BroadcastChannel(CHANNEL_NAME);
   channel.addEventListener('message', onChannelMessage);
@@ -42,13 +51,24 @@ function send(cmd, extra) {
   catch (e) {}
 }
 
+function armWatchdog() {
+  if (watchdog) clearTimeout(watchdog);
+  watchdog = setTimeout(() => {
+    state.connected = false;
+    setStatus('Waiting for deck…', 'waiting', true);
+  }, DISCONNECT_AFTER_MS);
+}
+
 function onChannelMessage(e) {
   const d = e.data;
   if (!d || d.type !== 'state') return;
   state.index = Number.isInteger(d.index) ? d.index : 0;
   state.total = Number.isInteger(d.total) ? d.total : 0;
   state.skipped = Array.isArray(d.skipped) ? d.skipped : [];
+  state.fragment = Number.isInteger(d.fragment) ? d.fragment : 0;
+  state.fragmentTotal = Number.isInteger(d.fragmentTotal) ? d.fragmentTotal : 0;
   setConnected(true);
+  armWatchdog();
   render();
 }
 
@@ -68,6 +88,8 @@ const els = {
   curTotal:     document.getElementById('cur-total'),
   nextMeta:     document.getElementById('next-meta'),
   notes:        document.getElementById('notes'),
+  notesStatus:  document.getElementById('notes-status'),
+  notesReset:   document.getElementById('notes-reset'),
   navPrev:      document.getElementById('nav-prev'),
   navNext:      document.getElementById('nav-next'),
   navCur:       document.getElementById('nav-cur'),
@@ -169,9 +191,11 @@ setTimeout(() => {
 const frameSrc = { current: '', next: '' };
 
 function thumbUrl(index) {
-  // ?_snthumb=1 suppresses the deck's rail (see deck-stage connectedCallback).
-  // The deck's own URL hash (#N, 1-indexed) selects the slide.
-  return DECK_URL + '?_snthumb=1#' + (index + 1);
+  // ?_view=slide hides all framework chrome (rail, overlay, tap zones)
+  // and disables keyboard nav + BroadcastChannel inside the iframe so it
+  // can't echo state back. &n=N (1-indexed) selects the slide; the
+  // legacy ?_snthumb=1#N form still works via an alias in deck-stage.js.
+  return DECK_URL + '?_view=slide&n=' + (index + 1);
 }
 
 function loadFrame(key, index) {
@@ -214,26 +238,88 @@ function render() {
   renderNotes(index);
 }
 
-function renderNotes(index) {
-  const raw = (state.notes[index] || '').trim();
-  if (!raw) {
-    els.notes.innerHTML = '<p class="p-notes-empty">No notes for this slide.</p>';
-    return;
-  }
-  // Split into paragraphs on double-newline or sentence-pair patterns; for
-  // the soft-halo style of single-string notes, this leaves them as one <p>.
-  const paras = raw.split(/\n\s*\n/);
-  els.notes.innerHTML = paras
-    .map((p) => '<p>' + escapeHtml(p) + '</p>')
-    .join('');
+// ----- editable notes -----
+//
+// Notes live in two places:
+//   1. The deck's <script id="speaker-notes"> JSON — canonical, version-
+//      controlled. Authoritative until edited locally.
+//   2. localStorage, keyed by deck path + slide index — per-presenter
+//      drafts. Survive reloads, never leave the browser. The user
+//      bakes them back into the deck file at next upload.
+//
+// The textarea always shows: localStorage value if present, else the
+// canonical note from #2. The "Edited locally" affordance only appears
+// when a localStorage override exists.
+
+const NOTES_KEY_PREFIX = 'slides.notes:' + DECK_PATH + ':';
+function notesKey(index) { return NOTES_KEY_PREFIX + index; }
+
+function originalNote(index) {
+  return (state.notes[index] || '').trim();
 }
 
-function escapeHtml(s) {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+function overrideNote(index) {
+  try {
+    const v = localStorage.getItem(notesKey(index));
+    return v == null ? null : v;
+  } catch { return null; }
 }
+
+function effectiveNote(index) {
+  const o = overrideNote(index);
+  return o != null ? o : originalNote(index);
+}
+
+let renderedIndex = -1;
+function renderNotes(index) {
+  // Avoid clobbering a textarea the user is actively typing in. The
+  // index changes only on nav, so re-rendering on every state broadcast
+  // would steal focus/caret on each heartbeat.
+  if (index === renderedIndex && document.activeElement === els.notes) return;
+  renderedIndex = index;
+  els.notes.value = effectiveNote(index);
+  syncNotesStatus(index);
+}
+
+function syncNotesStatus(index) {
+  const o = overrideNote(index);
+  const edited = o != null && o !== originalNote(index);
+  els.notesStatus.hidden = !edited;
+}
+
+let saveTimer = null;
+els.notes.addEventListener('input', () => {
+  const i = renderedIndex;
+  if (i < 0) return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    const v = els.notes.value;
+    try {
+      // Reset to original via Reset button is the only way to clear the
+      // override; an empty edit is itself a meaningful override (the
+      // user said "no note here"). Both paths route through writeOverride.
+      writeOverride(i, v);
+    } catch {}
+    syncNotesStatus(i);
+  }, 250);
+});
+
+function writeOverride(index, value) {
+  try { localStorage.setItem(notesKey(index), value); } catch {}
+}
+
+function clearOverride(index) {
+  try { localStorage.removeItem(notesKey(index)); } catch {}
+}
+
+els.notesReset.addEventListener('click', () => {
+  const i = renderedIndex;
+  if (i < 0) return;
+  clearOverride(i);
+  els.notes.value = originalNote(i);
+  syncNotesStatus(i);
+  els.notes.focus();
+});
 
 // ----- nav -----
 //
@@ -270,17 +356,30 @@ els.navNext.addEventListener('click', () => nav('next'));
 window.addEventListener('keydown', (e) => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   const t = e.target;
-  if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+  const inEditor = t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
 
+  // Slide nav keys always win, even when the speaker-notes textarea is
+  // focused — during a presentation you keep the textarea active to read
+  // notes, but you should still be able to advance with ←/→ without
+  // having to click out first. preventDefault stops the textarea from
+  // also moving the caret on those keys.
   switch (e.key) {
     case 'ArrowRight':
     case 'PageDown':
+      nav('next'); e.preventDefault(); return;
+    case 'ArrowLeft':
+    case 'PageUp':
+      nav('prev'); e.preventDefault(); return;
+  }
+
+  // The rest are typeable characters / line nav. Stay out of the way
+  // when the user is editing notes.
+  if (inEditor) return;
+
+  switch (e.key) {
     case ' ':
     case 'Spacebar':
       nav('next'); e.preventDefault(); break;
-    case 'ArrowLeft':
-    case 'PageUp':
-      nav('prev'); e.preventDefault(); break;
     case 'Home': nav('first'); e.preventDefault(); break;
     case 'End':  nav('last');  e.preventDefault(); break;
     case 't': case 'T': els.timerToggle.click(); e.preventDefault(); break;

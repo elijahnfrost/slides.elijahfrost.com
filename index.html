@@ -35,10 +35,14 @@
       <p class="hub-eyebrow">Elijah Frost</p>
     </div>
     <nav class="hub-header-actions" aria-label="Deck actions">
-      <a class="hub-action" href="/api/export-template?name=blank-deck">New from template</a>
-      <a class="hub-action" href="/upload/">Upload deck</a>
+      <a class="hub-action" href="/upload/">Upload</a>
     </nav>
   </header>
+
+  <nav class="hub-tabs" role="tablist" aria-label="Catalog">
+    <button class="hub-tab" role="tab" data-tab="decks" aria-selected="true">Decks</button>
+    <button class="hub-tab" role="tab" data-tab="templates" aria-selected="false">Templates</button>
+  </nav>
 
   <div class="hub-search-wrap">
     <input id="search" class="hub-search" type="search"
@@ -69,34 +73,95 @@
   const catalogEl = document.getElementById('catalog');
   const searchEl  = document.getElementById('search');
   const tpl       = document.getElementById('card-template');
+  const tabsEl    = document.querySelector('.hub-tabs');
 
+  // Load catalog (decks + user-uploaded templates) and the seed-template
+  // manifest in parallel. Both lists are merged into the templates tab;
+  // the decks tab only shows catalog pieces with kind === "deck".
   let pieces = [];
+  let seedTemplates = [];
   try {
-    const res = await fetch('/catalog.json', { cache: 'no-store' });
-    const data = await res.json();
-    pieces = (data.pieces || []).slice().sort((a, b) =>
+    const [cat, seeds] = await Promise.all([
+      fetch('/catalog.json', { cache: 'no-store' }).then(r => r.json()),
+      fetch('/_framework/v1/templates/index.json', { cache: 'no-store' })
+        .then(r => r.ok ? r.json() : { templates: [] })
+        .catch(() => ({ templates: [] })),
+    ]);
+    pieces = (cat.pieces || []).slice().sort((a, b) =>
       (b.date || '').localeCompare(a.date || '')
     );
+    seedTemplates = seeds.templates || [];
   } catch (err) {
     catalogEl.textContent = 'Could not load catalog.';
     return;
   }
 
+  // Active tab + URL sync. ?tab=templates deep-links to that view; the
+  // /templates/ route rewrites to the same hub with that query.
+  const initial = new URLSearchParams(location.search).get('tab') === 'templates'
+    ? 'templates' : 'decks';
+  let activeTab = initial;
+  setActiveTab(activeTab, /* skipUrl */ true);
+
+  tabsEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-tab]');
+    if (!btn) return;
+    setActiveTab(btn.dataset.tab);
+  });
+
+  function setActiveTab(name, skipUrl) {
+    activeTab = name;
+    tabsEl.querySelectorAll('[data-tab]').forEach((b) => {
+      const on = b.dataset.tab === name;
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    if (!skipUrl) {
+      const u = new URL(location.href);
+      if (name === 'templates') u.searchParams.set('tab', 'templates');
+      else u.searchParams.delete('tab');
+      history.replaceState(null, '', u);
+    }
+    render(searchEl.value);
+  }
+
+  function entries() {
+    if (activeTab === 'templates') {
+      // User-uploaded templates (catalog kind:"template") + seed templates.
+      const userTpls = pieces
+        .filter(p => p.kind === 'template')
+        .map(p => ({ ...p, _seed: false }));
+      const seeds = seedTemplates.map(t => ({
+        slug: t.name,
+        title: t.title,
+        description: t.description || '',
+        date: '',
+        tags: t.tags || [],
+        _seed: true,
+      }));
+      return userTpls.concat(seeds);
+    }
+    // Decks tab — anything not explicitly a template (kind unset or "deck").
+    return pieces.filter(p => (p.kind || 'deck') === 'deck');
+  }
+
   function render(query) {
     catalogEl.innerHTML = '';
     const q = (query || '').trim().toLowerCase();
+    const all = entries();
     const matched = q
-      ? pieces.filter(p => {
+      ? all.filter(p => {
           const hay = [p.title, p.description, ...(p.tags || [])]
             .filter(Boolean).join(' ').toLowerCase();
           return hay.includes(q);
         })
-      : pieces;
+      : all;
 
     if (matched.length === 0) {
       const empty = document.createElement('p');
       empty.className = 'hub-empty';
-      empty.textContent = 'No pieces matched.';
+      empty.textContent = activeTab === 'templates'
+        ? 'No templates yet. Upload one or convert a deck.'
+        : 'No decks matched.';
       catalogEl.appendChild(empty);
       return;
     }
@@ -104,15 +169,22 @@
     for (const p of matched) {
       const node = tpl.content.cloneNode(true);
       const a = node.querySelector('.hub-card');
-      a.href = '/' + p.slug + '/';
+      const dl = node.querySelector('.hub-card-download');
+      if (p._seed) {
+        // Seed templates download as a fresh file; no /slug/ page.
+        a.href = '/api/export-template?name=' + encodeURIComponent(p.slug);
+        a.setAttribute('download', '');
+        dl.remove();
+      } else {
+        a.href = '/' + p.slug + '/';
+        dl.href = '/api/export-piece?slug=' + encodeURIComponent(p.slug);
+      }
       node.querySelector('.hub-card-title').textContent = p.title;
       const desc = node.querySelector('.hub-card-description');
       if (p.description) desc.textContent = p.description; else desc.remove();
       node.querySelector('.hub-card-date').textContent = p.date || '';
       node.querySelector('.hub-card-tags').textContent =
         (p.tags || []).join(' · ');
-      const dl = node.querySelector('.hub-card-download');
-      dl.href = '/api/export-piece?slug=' + encodeURIComponent(p.slug);
       catalogEl.appendChild(node);
     }
   }

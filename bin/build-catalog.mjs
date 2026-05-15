@@ -53,10 +53,12 @@ async function main() {
     }
     pieces.push({
       slug: m.meta.slug,
+      kind: m.meta.kind || 'deck',
       title: m.meta.title,
       description: m.meta.description || '',
       date: m.meta.date,
       tags: m.meta.tags || [],
+      parent_template: m.meta.parent_template || null,
     });
   }
 

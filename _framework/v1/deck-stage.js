@@ -68,6 +68,11 @@
   const DESIGN_W_DEFAULT = 1920;
   const DESIGN_H_DEFAULT = 1080;
   const OVERLAY_HIDE_MS = 1800;
+  // How long the outgoing slide keeps [data-deck-leaving] before the
+  // runtime strips it. Sets the budget for exit animations. 600ms is
+  // enough for most CSS animations and short enough that a held-down
+  // arrow key doesn't accumulate leaving slides.
+  const TRANSITION_MS = 600;
   const VALIDATE_ATTR = 'no_overflowing_text,no_overlapping_text,slide_sized_text';
 
   const pad2 = (n) => String(n).padStart(2, '0');
@@ -125,6 +130,22 @@
       pointer-events: auto;
       visibility: visible;
     }
+    /* During a transition, [data-deck-leaving] is set on the outgoing
+       slide for TRANSITION_MS so authors can target it from per-deck
+       CSS for an exit animation. The framework does NOT force the
+       slide to remain visible — keeping the outgoing slide painted
+       interferes with reveal animations on the incoming slide for any
+       deck that doesn't explicitly handle the overlap. Opt in from the
+       deck's <style id="piece-style"> if you want a paint-during-exit:
+         deck-stage section[data-deck-leaving] { opacity: 1; visibility: visible; } */
+
+    /* Single-slide view (?_view=slide / ?_snthumb=1) — used by the
+       presenter's CURRENT/NEXT iframes. Hides all framework chrome so
+       the iframe shows just the slide. Skips overlay, tapzones, rail. */
+    :host([data-view="slide"]) .overlay,
+    :host([data-view="slide"]) .tapzones,
+    :host([data-view="slide"]) .rail,
+    :host([data-view="slide"]) .rail-resize { display: none !important; }
 
     /* Tap zones for mobile — back/forward thirds like Stories.
        Transparent, no visible UI, don't block the overlay. */
@@ -145,25 +166,31 @@
       .tapzones { display: none; }
     }
 
+    /* Bottom chrome — restrained, hub-aesthetic. Hairline border, muted
+       eyebrow labels, Cormorant for the count. CSS custom properties
+       inherit through the shadow boundary, so var(--color-*) resolves to
+       the design-system tokens at :root with safe dark fallbacks. */
     .overlay {
       position: fixed;
       left: 50%;
-      bottom: 22px;
-      transform: translate(-50%, 6px) scale(0.92);
-      filter: blur(6px);
+      bottom: 24px;
+      transform: translate(-50%, 6px) scale(0.96);
+      filter: blur(4px);
       display: flex;
       align-items: center;
-      gap: 4px;
-      padding: 4px;
-      background: #000;
-      color: #fff;
-      border-radius: 999px;
-      font-size: 12px;
+      gap: 2px;
+      padding: 4px 6px;
+      background: rgba(13, 13, 13, 0.78);
+      border: 1px solid var(--color-border, #2a2a2a);
+      border-radius: 6px;
+      font-family: var(--font-inter, "Inter"), system-ui, -apple-system, sans-serif;
+      font-size: 11px;
       font-feature-settings: "tnum" 1;
-      letter-spacing: 0.01em;
+      backdrop-filter: blur(8px) saturate(140%);
+      -webkit-backdrop-filter: blur(8px) saturate(140%);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 260ms ease, transform 260ms cubic-bezier(.2,.8,.2,1), filter 260ms ease;
+      transition: opacity 220ms ease, transform 220ms cubic-bezier(.2,.8,.2,1), filter 220ms ease;
       transform-origin: center bottom;
       z-index: 2147483000;
       user-select: none;
@@ -182,67 +209,77 @@
       border: 0;
       margin: 0;
       padding: 0;
-      color: inherit;
+      color: var(--color-fg-muted, #6b6660);
       font: inherit;
       cursor: default;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      height: 28px;
-      min-width: 28px;
-      border-radius: 999px;
-      color: rgba(255,255,255,0.72);
-      transition: background 140ms ease, color 140ms ease;
+      height: 26px;
+      min-width: 26px;
+      border-radius: 4px;
+      transition: background 120ms ease, color 120ms ease;
       -webkit-tap-highlight-color: transparent;
     }
-    .btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
-    .btn:active { background: rgba(255,255,255,0.18); }
-    .btn:focus { outline: none; }
+    .btn:hover  { color: var(--color-fg, #e4dfd8); background: rgba(255,255,255,0.04); }
+    .btn:active { background: rgba(255,255,255,0.08); }
+    .btn:focus  { outline: none; }
     .btn:focus-visible { outline: none; }
     .btn::-moz-focus-inner { border: 0; }
-    .btn svg { width: 14px; height: 14px; display: block; }
+    .btn svg { width: 13px; height: 13px; display: block; }
+
     .btn.reset,
-    .btn.present {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      padding: 0 10px 0 12px;
+    .btn.present,
+    .btn.rail-toggle {
+      font-size: 10px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-eyebrow, 0.25em);
+      padding: 0 8px 0 10px;
       gap: 6px;
-      color: rgba(255,255,255,0.72);
     }
     .btn.reset .kbd,
-    .btn.present .kbd {
+    .btn.present .kbd,
+    .btn.rail-toggle .kbd {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 16px;
-      height: 16px;
-      padding: 0 4px;
+      min-width: 14px;
+      height: 14px;
+      padding: 0 3px;
       font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-      font-size: 10px;
+      font-size: 9px;
       line-height: 1;
-      color: rgba(255,255,255,0.88);
-      background: rgba(255,255,255,0.12);
-      border-radius: 4px;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--color-fg-dim, #4a4643);
+      background: transparent;
+      border: 1px solid var(--color-border, #2a2a2a);
+      border-radius: 3px;
+      transition: color 120ms ease, border-color 120ms ease;
     }
+    .btn:hover .kbd { color: var(--color-fg-muted, #6b6660); border-color: var(--color-fg-dim, #4a4643); }
 
     .count {
+      font-family: var(--font-cormorant, "Cormorant Garamond"), Georgia, serif;
       font-variant-numeric: tabular-nums;
-      color: #fff;
-      font-weight: 500;
-      padding: 0 8px;
+      font-weight: 300;
+      color: var(--color-fg, #e4dfd8);
+      padding: 0 10px;
       min-width: 42px;
       text-align: center;
-      font-size: 12px;
+      font-size: 15px;
+      line-height: 1;
+      letter-spacing: 0;
     }
-    .count .sep { color: rgba(255,255,255,0.45); margin: 0 3px; font-weight: 400; }
-    .count .total { color: rgba(255,255,255,0.55); }
+    .count .sep   { color: var(--color-fg-dim, #4a4643); margin: 0 0.3em; }
+    .count .total { color: var(--color-fg-muted, #6b6660); }
 
     .divider {
       width: 1px;
       height: 14px;
-      background: rgba(255,255,255,0.18);
-      margin: 0 2px;
+      background: var(--color-border, #2a2a2a);
+      margin: 0 4px;
     }
 
     /* ── Thumbnail rail ──────────────────────────────────────────────────
@@ -571,10 +608,19 @@
     }
 
     connectedCallback() {
-      // Presenter-view popup loads deckUrl?_snthumb=...#N for its prev/cur/
-      // next thumbnails — the rail has no business rendering inside those
-      // (wrong scale, and it offsets the stage so the thumb shows a gutter).
-      if (/[?&]_snthumb=/.test(location.search)) this.setAttribute('no-rail', '');
+      // URL params drive three view modes:
+      //   ?_view=slide&n=N  presenter thumb: one slide, no chrome, no broadcast.
+      //   ?_snthumb=1       legacy alias for _view=slide (kept for back-compat).
+      //   ?edit=1           author/edit mode: rail visible by default.
+      const params = new URLSearchParams(location.search);
+      const thumbMode = params.get('_view') === 'slide' || params.has('_snthumb');
+      this._viewMode = thumbMode ? 'slide' : 'normal';
+      this._editMode = params.get('edit') === '1';
+      this._initialSlideParam = parseInt(params.get('n') || '', 10);
+      if (thumbMode) {
+        this.setAttribute('no-rail', '');
+        this.setAttribute('data-view', 'slide');
+      }
       this._render();
       this._loadNotes();
       this._syncPrintPageRule();
@@ -589,13 +635,32 @@
       // Skipped on thumbnail iframes (would echo back nav from the rail).
       if (typeof BroadcastChannel !== 'undefined'
           && !this.hasAttribute('no-broadcast')
-          && !/[?&]_snthumb=/.test(location.search)) {
+          && this._viewMode !== 'slide') {
         try {
           this._channelName = 'deck-stage:' + location.pathname.replace(/present\/$/, '');
           this._channel = new BroadcastChannel(this._channelName);
           this._channel.addEventListener('message', this._onChannel);
+          // Heartbeat — re-broadcast state every 5s so a presenter that
+          // opened mid-session (or after a deck reload) doesn't sit on
+          // stale "Waiting for deck…" while no nav happens.
+          this._heartbeat = setInterval(() => {
+            if (!this._channel || !this._slides || !this._slides.length) return;
+            try {
+              this._channel.postMessage({
+                type: 'state',
+                index: this._index,
+                total: this._slides.length,
+                skipped: this._skippedIndices(),
+                reason: 'heartbeat',
+              });
+            } catch (e) {}
+          }, 5000);
         } catch (e) { this._channel = null; }
       }
+      // Expose the public lifecycle API as soon as the element upgrades —
+      // authors can register handlers in any <script id="piece-script">
+      // that runs after the framework script (typical ordering).
+      this._installPublicApi();
       // Initial collection + layout happens via slotchange, which fires on mount.
       this._enableRail();
       // Hold the stage hidden until webfonts are ready so the first visible
@@ -622,11 +687,16 @@
       // for presenter-popup thumbnail iframes (up to 9 per view).
       if (this._railEnabled || this.hasAttribute('no-rail')) return;
       this._railEnabled = true;
-      // Per-viewer preference — restored alongside rail width. Default on;
-      // only a stored '0' (from the TweaksPanel toggle) hides it.
-      this._railVisible = true;
+      // Rail is editor-time chrome. Default OFF for a presentable deck —
+      // it interferes with cross-slide overlays that assume the full
+      // viewport. Opt in via ?edit=1 (per-load) or the H toggle / Tweaks
+      // panel (persisted to localStorage as '1').
+      this._railVisible = false;
+      if (this._editMode) this._railVisible = true;
       try {
-        if (localStorage.getItem('deck-stage.railVisible') === '0') this._railVisible = false;
+        const stored = localStorage.getItem('deck-stage.railVisible');
+        if (stored === '1') this._railVisible = true;
+        else if (stored === '0') this._railVisible = false;
       } catch (e) {}
       // Live thumbnail updates: watch the light-DOM slides for content
       // edits and re-clone just the affected thumb(s), debounced. Ignore
@@ -797,6 +867,11 @@
         try { this._channel.close(); } catch (e) {}
         this._channel = null;
       }
+      if (this._heartbeat) { clearInterval(this._heartbeat); this._heartbeat = null; }
+      if (this._leavingTimer) { clearTimeout(this._leavingTimer); this._leavingTimer = null; }
+      if (window.deck && window.deck.__owner === this) {
+        try { delete window.deck; } catch (e) { window.deck = undefined; }
+      }
     }
 
     attributeChangedCallback() {
@@ -864,16 +939,20 @@
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg>
         </button>
         <span class="divider"></span>
-        <button class="btn rail" type="button" aria-pressed="true" aria-label="Hide thumbnail rail" title="Toggle rail (H)">Rail<span class="kbd">H</span></button>
+        <button class="btn rail-toggle" type="button" aria-pressed="true" aria-label="Hide thumbnail rail" title="Toggle rail (H)">Rail<span class="kbd">H</span></button>
         <button class="btn reset" type="button" aria-label="Reset to first slide" title="Reset (R)">Reset<span class="kbd">R</span></button>
         <button class="btn present" type="button" aria-label="Open presenter view" title="Open presenter (P)">Present<span class="kbd">P</span></button>
+        <button class="btn fullscreen" type="button" aria-label="Toggle fullscreen" title="Fullscreen (F)">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6V3h3M13 6V3h-3M3 10v3h3M13 10v3h-3"/></svg>
+        </button>
       `;
 
       overlay.querySelector('.prev').addEventListener('click', () => this._advance(-1, 'click'));
       overlay.querySelector('.next').addEventListener('click', () => this._advance(1, 'click'));
-      overlay.querySelector('.rail').addEventListener('click', () => this._setRailVisible(!this._railVisible));
+      overlay.querySelector('.rail-toggle').addEventListener('click', () => this._setRailVisible(!this._railVisible));
       overlay.querySelector('.reset').addEventListener('click', () => this._go(0, 'click'));
       overlay.querySelector('.present').addEventListener('click', () => this._openPresenter());
+      overlay.querySelector('.fullscreen').addEventListener('click', () => this._toggleFullscreen());
 
       // Thumbnail rail + context menu. Thumbnails are populated in
       // _renderRail() after _collectSlides().
@@ -1100,6 +1179,13 @@
     }
 
     _restoreIndex() {
+      // Single-slide thumb mode: ?n=<int> (1-indexed) is authoritative.
+      // Falls through to the hash form when absent so back-compat
+      // ?_snthumb=1#N still selects the slide.
+      if (this._viewMode === 'slide' && Number.isFinite(this._initialSlideParam)) {
+        const n = this._initialSlideParam - 1;
+        if (n >= 0 && n < this._slides.length) { this._index = n; return; }
+      }
       // The host's ?slide= param is delivered as a #<int> hash (1-indexed) on
       // the iframe src. No hash → slide 1; the deck itself keeps no position
       // state across loads.
@@ -1115,13 +1201,32 @@
       const prev = this._prevIndex == null ? -1 : this._prevIndex;
       const curr = this._index;
       // Keep the iframe's own hash in sync so an in-iframe location.reload()
-      // (reload banner path in viewer-handle.ts) lands on the current slide,
-      // not the stale deep-link hash from initial load.
-      try { history.replaceState(null, '', '#' + (curr + 1)); } catch (e) {}
+      // lands on the current slide, not the stale deep-link hash. Skip in
+      // single-slide mode — the URL is owned by the parent (presenter).
+      if (this._viewMode !== 'slide') {
+        try { history.replaceState(null, '', '#' + (curr + 1)); } catch (e) {}
+      }
+      // Run onLeave for the outgoing slide BEFORE flipping data-deck-active
+      // so handlers can read the live DOM. Then mark it leaving so its CSS
+      // exit animations fire before it loses visibility.
+      const prevSlide = prev >= 0 ? (this._slides[prev] || null) : null;
+      if (prevSlide && prev !== curr) {
+        this._runHook(prev, 'onLeave', prevSlide);
+        prevSlide.setAttribute('data-deck-leaving', '');
+        clearTimeout(this._leavingTimer);
+        this._leavingTimer = setTimeout(() => {
+          this._slides.forEach((s) => s.removeAttribute('data-deck-leaving'));
+        }, TRANSITION_MS);
+      }
       this._slides.forEach((s, i) => {
         if (i === curr) s.setAttribute('data-deck-active', '');
         else s.removeAttribute('data-deck-active');
       });
+      // Reset fragment state on every navigation.
+      const currSlide = this._slides[curr] || null;
+      this._fragmentIndex = 0;
+      this._fragmentTotal = this._countFragments(currSlide);
+      this._applyFragments(currSlide);
       if (this._countEl) this._countEl.textContent = String(curr + 1);
       // Follow-scroll on every navigation (init deep-link, keyboard, click,
       // tap, external goTo) — the only time we *don't* want the rail to
@@ -1142,6 +1247,8 @@
               index: curr,
               total: this._slides.length,
               skipped: this._skippedIndices(),
+              fragment: this._fragmentIndex,
+              fragmentTotal: this._fragmentTotal,
               reason,
             });
           } catch (e) {}
@@ -1156,8 +1263,8 @@
           index: curr,
           previousIndex: prev,
           total: this._slides.length,
-          slide: this._slides[curr] || null,
-          previousSlide: prev >= 0 ? (this._slides[prev] || null) : null,
+          slide: currSlide,
+          previousSlide: prevSlide,
           reason: reason, // 'init' | 'keyboard' | 'click' | 'tap' | 'api'
         };
         this.dispatchEvent(new CustomEvent('slidechange', {
@@ -1165,10 +1272,113 @@
           bubbles: true,
           composed: true,
         }));
+
+        // (3) onEnter hook for the new slide. Run after the active attribute
+        // is set + one rAF so CSS keyframes attach before JS reads computed
+        // styles. Re-entering a slide (back-nav) calls onEnter again.
+        if (currSlide) {
+          requestAnimationFrame(() => {
+            this._runHook(curr, 'onEnter', currSlide);
+          });
+        }
       }
 
       this._prevIndex = curr;
       if (showOverlay) this._flashOverlay();
+    }
+
+    /** Count [data-fragment] descendants in a slide. Authors reveal them
+     *  one at a time on → / one-step-back on ←. fragmentTotal === 0 means
+     *  no fragments — → advances directly to the next slide. */
+    _countFragments(slide) {
+      if (!slide) return 0;
+      return slide.querySelectorAll('[data-fragment]').length;
+    }
+
+    /** Apply the current fragment index to a slide: each [data-fragment]
+     *  whose own data-fragment value (parsed as int, 1-based) is <=
+     *  _fragmentIndex gets data-fragment-shown, others lose it. CSS gates
+     *  reveals on [data-fragment-shown]. */
+    _applyFragments(slide) {
+      if (!slide) return;
+      const els = slide.querySelectorAll('[data-fragment]');
+      els.forEach((el) => {
+        const n = parseInt(el.getAttribute('data-fragment') || '0', 10) || 0;
+        if (n <= this._fragmentIndex) el.setAttribute('data-fragment-shown', '');
+        else el.removeAttribute('data-fragment-shown');
+      });
+    }
+
+    /** Step a fragment on the current slide. Returns true if a fragment
+     *  was advanced; false if there's nothing left to reveal (caller then
+     *  navigates to the next slide). dir = +1 or -1. */
+    _advanceFragment(dir) {
+      const slide = this._slides[this._index];
+      if (!slide || !this._fragmentTotal) return false;
+      const next = this._fragmentIndex + dir;
+      if (next < 0 || next > this._fragmentTotal) return false;
+      this._fragmentIndex = next;
+      this._applyFragments(slide);
+      this._runHook(this._index, 'onFragment', slide);
+      if (this._channel) {
+        try {
+          this._channel.postMessage({
+            type: 'state',
+            index: this._index,
+            total: this._slides.length,
+            skipped: this._skippedIndices(),
+            fragment: this._fragmentIndex,
+            fragmentTotal: this._fragmentTotal,
+            reason: 'fragment',
+          });
+        } catch (e) {}
+      }
+      return true;
+    }
+
+    /** Invoke a per-slide handler registered via window.deck.onSlide().
+     *  Index is the slide's current position (0-based). Handlers receive
+     *  the slide element and a context object. Errors are caught so one
+     *  bad handler doesn't break navigation. */
+    _runHook(index, name, slide) {
+      const hooks = this._hooks && this._hooks.get(index);
+      if (!hooks || !hooks[name]) return;
+      const ctx = {
+        index,
+        total: this._slides.length,
+        fragment: this._fragmentIndex || 0,
+        fragmentTotal: this._fragmentTotal || 0,
+        reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
+        channel: this._channel || null,
+      };
+      try { hooks[name](slide, ctx); } catch (e) {
+        console.warn('[deck-stage] hook', name, 'for slide', index + 1, 'threw:', e);
+      }
+    }
+
+    /** Public API surface on window.deck. Authors register handlers in
+     *  <script id="piece-script">:
+     *    window.deck.onSlide(7, { onEnter, onLeave, onFragment });
+     *  Slide indices are 1-based to match the URL hash and screen labels. */
+    _installPublicApi() {
+      if (window.deck && window.deck.__owner === this) return;
+      this._hooks = new Map();
+      const self = this;
+      window.deck = {
+        __owner: this,
+        onSlide(oneBasedIndex, handlers) {
+          const i = (oneBasedIndex | 0) - 1;
+          if (i < 0) return;
+          const existing = self._hooks.get(i) || {};
+          self._hooks.set(i, Object.assign(existing, handlers || {}));
+        },
+        goTo(i) { self._go((i | 0) - 1, 'api'); },
+        next() { self._advance(1, 'api'); },
+        prev() { self._advance(-1, 'api'); },
+        get index() { return self._index; },
+        get total() { return self._slides.length; },
+        get fragment() { return self._fragmentIndex || 0; },
+      };
     }
 
     _flashOverlay() {
@@ -1269,7 +1479,7 @@
 
     _syncRailButton() {
       if (!this._overlay) return;
-      const btn = this._overlay.querySelector('.btn.rail');
+      const btn = this._overlay.querySelector('.btn.rail-toggle');
       if (!btn) return;
       const on = !!this._railVisible;
       btn.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -1291,6 +1501,8 @@
         case 'goto':
           if (Number.isInteger(d.index)) this._go(d.index, 'api');
           break;
+        case 'fragment-next': this._advanceFragment(1); break;
+        case 'fragment-prev': this._advanceFragment(-1); break;
         case 'sync':
           // Presenter just connected — re-emit current state so it can
           // catch up without waiting for the next nav.
@@ -1301,6 +1513,8 @@
                 index: this._index,
                 total: this._slides.length,
                 skipped: this._skippedIndices(),
+                fragment: this._fragmentIndex || 0,
+                fragmentTotal: this._fragmentTotal || 0,
                 reason: 'sync',
               });
             } catch (err) {}
@@ -1336,6 +1550,9 @@
     }
 
     _onKey(e) {
+      // Single-slide thumb iframes don't handle keys — the parent presenter
+      // owns nav. The iframe would otherwise echo arrow keys when focused.
+      if (this._viewMode === 'slide') return;
       // Ignore when the user is typing.
       const t = e.target;
       if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
@@ -1368,6 +1585,8 @@
         this._go(0, 'keyboard');
       } else if (key === 'p' || key === 'P') {
         this._openPresenter();
+      } else if (key === 'f' || key === 'F') {
+        this._toggleFullscreen();
       } else if (key === 'h' || key === 'H') {
         this._setRailVisible(!this._railVisible);
       } else if (/^[0-9]$/.test(key)) {
@@ -1380,7 +1599,26 @@
 
       if (handled) {
         e.preventDefault();
-        this._flashOverlay();
+        // Deliberately do NOT call _flashOverlay() here. During a real
+        // presentation the chrome popping in on every space/arrow press
+        // is distracting; the audience sees the deck, the presenter is
+        // already driving from memory or the presenter view. Mouse-move
+        // is the explicit "I want chrome" gesture (_onMouseMove handles
+        // that path). Clicks/taps still flash via _applyIndex below.
+      }
+    }
+
+    /** Toggle browser fullscreen on the host document. The presenter view
+     *  has its own button + key wired to the same API; here it gives the
+     *  deck (presented window) a fullscreen entry point so an audience
+     *  sees a clean canvas without browser chrome. */
+    _toggleFullscreen() {
+      const doc = document;
+      if (!doc.fullscreenElement) {
+        const root = doc.documentElement;
+        if (root && root.requestFullscreen) root.requestFullscreen().catch(() => {});
+      } else if (doc.exitFullscreen) {
+        doc.exitFullscreen().catch(() => {});
       }
     }
 
@@ -1402,18 +1640,33 @@
       if (!this._slides.length) return;
       const clamped = Math.max(0, Math.min(this._slides.length - 1, i));
       if (clamped === this._index) {
-        this._flashOverlay();
+        // Keyboard at an edge — don't bother flashing chrome the user
+        // didn't ask to see. Clicks/taps still get an end-of-deck nudge.
+        if (reason !== 'keyboard') this._flashOverlay();
         return;
       }
       this._index = clamped;
-      this._applyIndex({ showOverlay: true, broadcast: true, reason });
+      // Keyboard nav shouldn't reveal chrome during a presentation; the
+      // mouse-move path is the explicit "I want chrome" gesture.
+      this._applyIndex({ showOverlay: reason !== 'keyboard', broadcast: true, reason });
     }
 
     /** Step forward/back skipping any slide marked data-deck-skip. Falls
      *  back to _go's clamp-at-ends behaviour (flash overlay) when there's
-     *  nothing further in that direction. */
+     *  nothing further in that direction. Fragments on the current slide
+     *  take precedence: → advances the next reveal until they're exhausted,
+     *  then advances the slide. ← steps back through revealed fragments
+     *  before navigating to the previous slide. */
     _advance(dir, reason) {
       if (!this._slides.length) return;
+      if (dir === 1 && this._fragmentTotal && this._fragmentIndex < this._fragmentTotal) {
+        this._advanceFragment(1);
+        return;
+      }
+      if (dir === -1 && this._fragmentTotal && this._fragmentIndex > 0) {
+        this._advanceFragment(-1);
+        return;
+      }
       let i = this._index + dir;
       while (i >= 0 && i < this._slides.length && this._slides[i].hasAttribute('data-deck-skip')) {
         i += dir;

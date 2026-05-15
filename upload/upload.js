@@ -16,6 +16,7 @@ const els = {
   browse:       document.getElementById('browse'),
   preview:      document.getElementById('preview'),
   pvSlug:       document.getElementById('pv-slug'),
+  pvKind:       document.getElementById('pv-kind'),
   pvTitle:      document.getElementById('pv-title'),
   pvDesc:       document.getElementById('pv-description'),
   pvTags:       document.getElementById('pv-tags'),
@@ -92,6 +93,7 @@ function showPreview(html) {
   try { notesLen = JSON.parse(notesTag?.textContent || '[]').length; } catch {}
 
   els.pvSlug.textContent     = meta?.slug || '—';
+  els.pvKind.textContent     = meta?.kind || 'deck';
   els.pvTitle.textContent    = meta?.title || '—';
   els.pvDesc.textContent     = meta?.description || '—';
   els.pvTags.textContent     = (meta?.tags || []).join(' · ') || '—';

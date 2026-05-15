@@ -38,7 +38,7 @@
     <div class="p-pane p-pane-current">
       <header class="p-pane-head">
         <span class="p-pane-label">Current</span>
-        <span class="p-pane-meta"><span id="cur-num">–</span> / <span id="cur-total">–</span></span>
+        <span class="p-pane-meta"><span id="cur-num">–</span><span class="p-pane-meta-sep">/</span><span id="cur-total">–</span></span>
       </header>
       <div class="p-frame">
         <iframe id="frame-current" title="Current slide" allow="autoplay"></iframe>
@@ -64,8 +64,14 @@
   </section>
 
   <section class="p-notes" aria-label="Speaker notes">
-    <div class="p-notes-inner" id="notes">
-      <p class="p-notes-empty">No notes for this slide.</p>
+    <div class="p-notes-inner">
+      <textarea class="p-notes-editor" id="notes"
+                placeholder="No notes for this slide. Click to add."
+                spellcheck="true" aria-label="Speaker notes (editable)"></textarea>
+      <div class="p-notes-status" id="notes-status" hidden>
+        <span class="p-notes-status-label">Edited locally</span>
+        <button class="p-btn p-btn-quiet" id="notes-reset" type="button">Reset to original</button>
+      </div>
     </div>
   </section>
 

@@ -1,0 +1,10 @@
+{
+  "templates": [
+    {
+      "name": "blank-deck",
+      "title": "Blank deck",
+      "description": "A clean starting point with one title slide. Download, fill in, upload.",
+      "tags": ["seed"]
+    }
+  ]
+}
