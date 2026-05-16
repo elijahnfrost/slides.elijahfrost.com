@@ -34,7 +34,6 @@ The site uses a **file-passing agent workflow**:
 │   ├── deck.js             # GET /<slug>/ — serve a piece's HTML
 │   ├── export-piece.js     # GET /api/export/<slug> — download a piece
 │   ├── export-template.js  # GET /api/export/template/<name> — download a fresh template
-│   ├── convert.js          # POST /api/convert — flip kind between deck/template
 │   └── upload.js           # POST /api/upload — validate + store in Blob
 ├── lib/                    # shared modules used by api/*
 │   ├── schema.js           # deck-meta validator (zod)
