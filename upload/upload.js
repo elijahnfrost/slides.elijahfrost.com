@@ -4,13 +4,12 @@
  * Flow:
  *   1. User drops or picks an .html file.
  *   2. Client extracts <deck-meta> for a preview (locally — purely cosmetic).
- *   3. User clicks Publish. We POST the raw bytes to /api/upload with the token.
+ *   3. User clicks Publish. We POST the raw bytes to /api/upload.
  *   4. Render server response.
  *
  * Validation is the server's job. The client just shows a friendly preview.
  */
 const els = {
-  token:        document.getElementById('token'),
   drop:         document.getElementById('drop'),
   file:         document.getElementById('file'),
   browse:       document.getElementById('browse'),
@@ -33,15 +32,7 @@ const els = {
   statusLink:   document.getElementById('status-link'),
 };
 
-const TOKEN_KEY = 'slides.uploadToken';
 const PENDING_KEY = 'slides.pendingUpload';
-
-// ----- token persistence -----
-const savedToken = localStorage.getItem(TOKEN_KEY) || '';
-if (savedToken) els.token.value = savedToken;
-els.token.addEventListener('input', () => {
-  localStorage.setItem(TOKEN_KEY, els.token.value || '');
-});
 
 // ----- file selection -----
 let currentFile = null;
@@ -118,12 +109,6 @@ els.publish.addEventListener('click', async () => {
 });
 
 async function upload(text) {
-  const token = els.token.value.trim();
-  if (!token) {
-    showStatus('error', 'No upload token', 'Paste a token in the field above.');
-    return;
-  }
-
   // Stash for retry if the network breaks mid-flight
   try { localStorage.setItem(PENDING_KEY, text); } catch {}
 
@@ -133,10 +118,7 @@ async function upload(text) {
   try {
     res = await fetch('/api/upload', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'text/html',
-        'X-Deck-Auth': token,
-      },
+      headers: { 'Content-Type': 'text/html' },
       body: text,
     });
   } catch (e) {
@@ -182,7 +164,7 @@ function hideStatus() {
 const pending = (() => { try { return localStorage.getItem(PENDING_KEY); } catch { return null; } })();
 if (pending) {
   showStatus('working', 'Pending upload',
-    'A previous upload was interrupted. Paste your token (if missing) and retry.');
+    'A previous upload was interrupted. Click Publish to retry.');
   // Show preview from the pending text
   showPreview(pending);
   currentText = pending;

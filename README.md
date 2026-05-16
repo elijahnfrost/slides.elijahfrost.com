@@ -15,7 +15,7 @@ The site uses a **file-passing agent workflow**:
        │  ◄──────── upload edited .html ─────────    │
        │                                             │
    server: validate → mint version_id →
-   commit to GitHub → Vercel auto-deploys
+   write to Vercel Blob → live on next request
 ```
 
 ## Layout
@@ -73,7 +73,7 @@ To run the serverless functions locally:
 
 ```sh
 npm install
-cp .env.example .env.local && $EDITOR .env.local   # set DECK_UPLOAD_TOKEN, GITHUB_PAT
+cp .env.example .env.local && $EDITOR .env.local   # set BLOB_READ_WRITE_TOKEN
 vercel dev
 ```
 
@@ -93,13 +93,16 @@ vercel dev
 
 3. **Upload the result** via [/upload/](upload/). The server validates
    schema, fences, structure, embed/script allow-lists, optimistic
-   concurrency, then commits to GitHub. Vercel deploys in ~30s.
+   concurrency, then writes to Vercel Blob. The piece is live on the
+   next request.
 
-## Editing an existing deck
+## Editing an existing deck or template
 
 Same loop. On the hub, click the ⇣ button on a card to download the
-piece. The download stamps a fresh `version_id` so optimistic concurrency
-catches the case where two parallel agent sessions try to publish.
+piece. The download stamps `parent_version_id` with the current
+`version_id`, so the agent can re-upload without touching either field —
+optimistic concurrency catches the case where two parallel agent
+sessions try to publish.
 
 ## Deck file format
 
@@ -117,18 +120,17 @@ in a popup. Sync happens via a same-origin `BroadcastChannel`. Press
 
 ## Deploy
 
-Connected to Vercel via GitHub. Pushing to `main` triggers a deploy.
-The upload endpoint commits via the GitHub REST API; Vercel picks it up
-on the next webhook.
+Connected to Vercel via GitHub. Pushing to `main` triggers a deploy of
+the static site + serverless functions. The upload endpoint writes
+pieces to Vercel Blob, so a published piece is live on the next request
+without waiting for a redeploy.
 
 Required env vars (set in Vercel + `.env.local` for `vercel dev`):
 
-- `DECK_UPLOAD_TOKEN` — shared bearer token the `/upload` page sends
-- `GITHUB_PAT` — fine-grained PAT with `contents:write` on this repo
+- `BLOB_READ_WRITE_TOKEN` — Vercel Blob token; created when you connect a Blob store to the project
 
 Optional:
 
-- `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH` (defaults shown in `.env.example`)
 - `ALLOWED_EMBED_HOSTS` — comma-separated extra hosts for `<iframe>`/`<video>`/`<audio>`
 
 Domain: `slides.elijahfrost.com` (DNS CNAME → `cname.vercel-dns.com`).

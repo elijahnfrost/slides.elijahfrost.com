@@ -61,8 +61,15 @@ export default async function handler(req, res) {
     metaObj = p.ok ? p.meta : null;
   }
   if (metaObj) {
-    metaObj.version_id = metaObj.version_id || ulid();
-    metaObj.updated_at = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
+    // Set parent_version_id to the current version_id so the agent's
+    // re-upload satisfies optimistic concurrency without manual fiddling.
+    // The server mints a fresh version_id on accept.
+    if (metaObj.version_id) {
+      metaObj.parent_version_id = metaObj.version_id;
+    } else {
+      metaObj.version_id = ulid();
+      metaObj.parent_version_id = null;
+    }
     html = rewriteDeckMeta(html, metaObj);
   }
 

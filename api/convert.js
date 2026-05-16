@@ -2,7 +2,6 @@
  * api/convert.js — duplicate a piece, flipping kind between deck/template.
  *
  * POST /api/convert
- *   Headers: X-Deck-Auth: <DECK_UPLOAD_TOKEN>
  *   Body (JSON): { slug: string, to: "deck"|"template", new_slug?: string }
  *
  * Reads source from Vercel Blob (or disk fallback). Writes the converted
@@ -18,19 +17,11 @@ import {
 } from '../lib/blob-storage.js';
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const TOKEN_ENV = 'DECK_UPLOAD_TOKEN';
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') {
     return send(res, 405, { ok: false, code: 'E_METHOD', message: 'POST required' });
-  }
-
-  const expected = process.env[TOKEN_ENV];
-  if (!expected) return send(res, 500, { ok: false, code: 'E_AUTH', message: 'Server missing DECK_UPLOAD_TOKEN' });
-  const auth = req.headers['x-deck-auth'];
-  if (!auth || auth !== expected) {
-    return send(res, 401, { ok: false, code: 'E_AUTH', message: 'Wrong upload token' });
   }
 
   const body = await readJsonBody(req);

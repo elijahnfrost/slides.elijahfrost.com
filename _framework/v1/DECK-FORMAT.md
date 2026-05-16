@@ -167,7 +167,6 @@ The upload validator returns structured errors. Names map to recovery paths:
 
 | Code | Trigger | Recovery |
 |---|---|---|
-| `E_AUTH` | bad upload token | re-paste token |
 | `E_TOO_LARGE` | > 2 MB | strip heavy inlines, externalize media |
 | `E_PARSE` | HTML parser threw | send excerpt back to agent |
 | `E_SCHEMA_MISSING_FIELD` | required `<deck-meta>` field absent | agent regenerates with field |

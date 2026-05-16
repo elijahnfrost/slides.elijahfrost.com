@@ -86,6 +86,9 @@ const els = {
   frameNext:    document.getElementById('frame-next'),
   curNum:       document.getElementById('cur-num'),
   curTotal:     document.getElementById('cur-total'),
+  curFragment:  document.getElementById('cur-fragment'),
+  curFragNum:   document.getElementById('cur-frag-num'),
+  curFragTotal: document.getElementById('cur-frag-total'),
   nextMeta:     document.getElementById('next-meta'),
   notes:        document.getElementById('notes'),
   notesStatus:  document.getElementById('notes-status'),
@@ -215,11 +218,21 @@ function nextVisibleIndex(from) {
 // ----- render -----
 
 function render() {
-  const { index, total } = state;
+  const { index, total, fragment, fragmentTotal } = state;
   els.curNum.textContent = total ? String(index + 1) : '–';
   els.curTotal.textContent = total ? String(total) : '–';
   els.navCur.textContent = total ? String(index + 1) : '–';
   els.navTotal.textContent = total ? String(total) : '–';
+
+  // Fragment indicator: shown only when the current slide has reveals.
+  // Lets the presenter see "I have 2 more taps before the next slide".
+  if (fragmentTotal > 0) {
+    els.curFragment.hidden = false;
+    els.curFragNum.textContent = String(fragment);
+    els.curFragTotal.textContent = String(fragmentTotal);
+  } else {
+    els.curFragment.hidden = true;
+  }
 
   if (total) {
     loadFrame('current', index);

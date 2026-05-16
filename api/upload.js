@@ -1,17 +1,16 @@
 /**
  * api/upload.js — Vercel serverless function that accepts an HTML deck
- * file and commits it to the repo after running the validation pipeline.
+ * or template file and stores it in Vercel Blob after validation.
  *
  * Request:  POST /api/upload
- *   Headers: X-Deck-Auth (token), Content-Type: text/html
+ *   Headers: Content-Type: text/html
  *   Body:    the raw HTML bytes
  *
- * Response: JSON. 200 with { slug, version_id, commit_sha, deploy_url }
- *           on success; 4xx/5xx with { ok: false, code, message, ... }
- *           on failure.
+ * Response: JSON. 200 with { slug, version_id, deploy_url } on success;
+ *           4xx/5xx with { ok: false, code, message, ... } on failure.
  *
- * Rate limit: 30/hour per IP. Uses Vercel KV if KV_REST_API_URL is set;
- * otherwise an in-memory window per cold instance (best-effort).
+ * Rate limit: 30/hour per IP. In-memory window per cold instance
+ * (best-effort) — this is the only gate against runaway upload traffic.
  */
 import { runUpload } from '../lib/upload-pipeline.js';
 
@@ -76,12 +75,11 @@ export default async function handler(req, res) {
     return;
   }
 
-  const authHeader = req.headers['x-deck-auth'] || req.headers['X-Deck-Auth'] || '';
   const origin = getOrigin(req);
   const allowedEmbedHosts = (process.env.ALLOWED_EMBED_HOSTS || '')
     .split(',').map(s => s.trim()).filter(Boolean);
 
-  const result = await runUpload({ rawHtml, authHeader, origin, allowedEmbedHosts });
+  const result = await runUpload({ rawHtml, origin, allowedEmbedHosts });
 
   if (result.ok) {
     res.status(200).json(result);
@@ -90,7 +88,6 @@ export default async function handler(req, res) {
 
   // Map error codes to HTTP status
   const status = {
-    E_AUTH: 401,
     E_RATE_LIMIT: 429,
     E_TOO_LARGE: 413,
     E_PARSE: 400,

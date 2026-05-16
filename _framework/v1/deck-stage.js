@@ -950,7 +950,7 @@
       overlay.querySelector('.prev').addEventListener('click', () => this._advance(-1, 'click'));
       overlay.querySelector('.next').addEventListener('click', () => this._advance(1, 'click'));
       overlay.querySelector('.rail-toggle').addEventListener('click', () => this._setRailVisible(!this._railVisible));
-      overlay.querySelector('.reset').addEventListener('click', () => this._go(0, 'click'));
+      overlay.querySelector('.reset').addEventListener('click', () => this._reset('click'));
       overlay.querySelector('.present').addEventListener('click', () => this._openPresenter());
       overlay.querySelector('.fullscreen').addEventListener('click', () => this._toggleFullscreen());
 
@@ -1582,7 +1582,7 @@
       } else if (key === 'End') {
         this._go(this._slides.length - 1, 'keyboard');
       } else if (key === 'r' || key === 'R') {
-        this._go(0, 'keyboard');
+        this._reset('keyboard');
       } else if (key === 'p' || key === 'P') {
         this._openPresenter();
       } else if (key === 'f' || key === 'F') {
@@ -1649,6 +1649,21 @@
       // Keyboard nav shouldn't reveal chrome during a presentation; the
       // mouse-move path is the explicit "I want chrome" gesture.
       this._applyIndex({ showOverlay: reason !== 'keyboard', broadcast: true, reason });
+    }
+
+    /** Reset to slide 0 and clear fragment reveals. _go() short-circuits when
+     *  the target index equals the current index, so a plain _go(0) leaves
+     *  revealed fragments on slide 0 untouched — call this instead so R is
+     *  consistently "back to the start", including fragment state. */
+    _reset(reason = 'api') {
+      if (!this._slides.length) return;
+      if (this._index === 0) {
+        // Already on slide 0 — _applyIndex resets fragments + rebroadcasts
+        // state. _index stays at 0 either way.
+        this._applyIndex({ showOverlay: reason !== 'keyboard', broadcast: true, reason });
+      } else {
+        this._go(0, reason);
+      }
     }
 
     /** Step forward/back skipping any slide marked data-deck-skip. Falls

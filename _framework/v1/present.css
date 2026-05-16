@@ -221,6 +221,13 @@ body {
   color: var(--color-fg-dim);
   margin: 0 0.35em;
 }
+.p-pane-fragment {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
 
 /* The frame fills the pane's grid cell; the deck-stage inside scales to
    fit and letterboxes any leftover space. No border or radius — the

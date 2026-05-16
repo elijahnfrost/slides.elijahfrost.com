@@ -20,15 +20,9 @@
 
   <header class="up-header">
     <a class="up-back" href="/">← Slides</a>
-    <h1 class="up-title">Upload deck</h1>
-    <p class="up-sub">Drop an HTML file that came back from your agent. The server validates it, mints a version_id, and commits to the repo.</p>
+    <h1 class="up-title">Upload</h1>
+    <p class="up-sub">Drop an HTML file that came back from your agent — a deck or a template. The server validates it, mints a version_id, and stores it.</p>
   </header>
-
-  <section class="up-token">
-    <label for="token" class="up-label">Upload token</label>
-    <input id="token" type="password" class="up-input" placeholder="DECK_UPLOAD_TOKEN" autocomplete="off" spellcheck="false">
-    <p class="up-hint">Saved in this browser's localStorage. Paste once.</p>
-  </section>
 
   <section class="up-drop" id="drop">
     <input type="file" id="file" accept=".html,text/html" hidden>
