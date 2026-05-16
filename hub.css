@@ -3,6 +3,12 @@
  * Depends on /_framework/tokens.css for colors, fonts, motion.
  */
 
+/* HTML's `hidden` attribute must beat any explicit `display:` rule in
+ * this file (otherwise the modal overlay and bulk bar render on page
+ * load because they set display:flex which overrides the user-agent
+ * `[hidden] { display: none }`). */
+[hidden] { display: none !important; }
+
 .hub {
   max-width: 56rem;
   margin-inline: auto;
