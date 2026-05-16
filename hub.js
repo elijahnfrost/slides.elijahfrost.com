@@ -177,7 +177,21 @@
         }
       }
 
-      node.querySelector('.hub-card-title').textContent = p.title;
+      const titleTextEl = node.querySelector('.hub-card-title-text');
+      if (titleTextEl) titleTextEl.textContent = p.title;
+      else node.querySelector('.hub-card-title').textContent = p.title;
+
+      // Source chip: git for disk-managed pieces, blob for uploaded ones.
+      // Seed templates (framework-owned) don't have a source.
+      const sourceEl = node.querySelector('.hub-card-source');
+      if (sourceEl && !p._seed && p.source) {
+        sourceEl.textContent = p.source === 'disk' ? 'git' : 'blob';
+        sourceEl.dataset.source = p.source;
+        sourceEl.hidden = false;
+      } else if (sourceEl) {
+        sourceEl.remove();
+      }
+
       const desc = node.querySelector('.hub-card-description');
       if (p.description) desc.textContent = p.description; else desc.remove();
       const dateEl = node.querySelector('.hub-card-date');

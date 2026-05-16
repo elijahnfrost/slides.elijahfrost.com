@@ -79,32 +79,54 @@ cp .env.example .env.local && $EDITOR .env.local   # set BLOB_READ_WRITE_TOKEN
 vercel dev
 ```
 
-## Creating a new deck (the workflow)
+## Creating a new deck
 
-1. **Download a blank template** from the hub ("New from template") or:
+There are two workflows. Both produce the same kind of piece. Pick by
+whether you have the repo checked out.
 
-   ```sh
-   curl -s https://slides.elijahfrost.com/api/export/template/blank-deck > new.html
-   ```
+### A — Agent in the repo (preferred)
 
-2. **Hand `new.html` to an agent** (Claude.ai or similar). Tell it what
-   the deck is about. The agent reads
-   [_framework/v1/DECK-FORMAT.md](_framework/v1/DECK-FORMAT.md) and
-   [_framework/v1/SLIDE-TYPES.md](_framework/v1/SLIDE-TYPES.md) to know
-   the format and slide vocabulary.
+Open the repo in an agent that can run `git` (Claude Code on the Web,
+Claude Code CLI, an IDE with Claude/Cursor plugin, etc.). Tell it what
+you want; it follows [CLAUDE.md](CLAUDE.md):
 
-3. **Upload the result** via [/upload/](upload/). The server validates
+```sh
+node bin/new-piece.mjs <slug> "Title"
+# scaffolds <slug>/index.html from the blank-deck template
+# agent edits <slug>/index.html
+git add <slug>/ && git commit -m "Add <slug>" && git push origin main
+```
+
+Vercel builds (`node bin/build-catalog.mjs` regenerates `catalog.json`),
+the piece is live at `/<slug>/`, and the hub shows it with a `git` chip.
+No API tokens.
+
+### B — Browser, no checkout
+
+1. Download a blank template from the hub ("New from template") or
+   `curl -s https://slides.elijahfrost.com/api/export/template/blank-deck > new.html`.
+2. Hand `new.html` to an agent that can edit text but not commit.
+3. Upload the edited file at [/upload/](upload/). The server validates
    schema, fences, structure, embed/script allow-lists, optimistic
-   concurrency, then writes to Vercel Blob. The piece is live on the
-   next request.
+   concurrency, then writes to Vercel Blob. Hub shows it with a `blob`
+   chip.
 
-## Editing an existing deck or template
+## Editing an existing piece
 
-Same loop. On the hub, click the ⇣ button on a card to download the
-piece. The download stamps `parent_version_id` with the current
-`version_id`, so the agent can re-upload without touching either field —
-optimistic concurrency catches the case where two parallel agent
-sessions try to publish.
+**Git-managed pieces** (chip says `git`, directory exists in the repo):
+edit `<slug>/index.html` in place, commit, push.
+
+**Blob-managed pieces** (chip says `blob`, no directory in the repo):
+either use the download-edit-upload loop (download stamps
+`parent_version_id` so re-upload satisfies optimistic concurrency), or
+import once and switch to in-repo:
+
+```sh
+node bin/import-piece.mjs <slug>
+# writes <slug>/index.html from prod
+# edit, commit, push as above
+# then hard-delete the Blob copy from the hub Trash so git becomes canonical
+```
 
 ## Deck file format
 

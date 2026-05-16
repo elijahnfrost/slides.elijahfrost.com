@@ -329,6 +329,26 @@
   line-height: 1.2;
   color: var(--color-fg);
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+.hub-card-source {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  color: var(--color-fg-muted);
+  align-self: center;
+  font-weight: 400;
+}
+.hub-card-source[data-source="disk"] {
+  color: var(--color-fg);
+  border-color: var(--color-fg-muted);
 }
 
 .hub-card-description {
