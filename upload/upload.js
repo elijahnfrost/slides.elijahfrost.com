@@ -140,20 +140,51 @@ async function upload(text, kind) {
 
   if (res.ok && body.ok) {
     try { localStorage.removeItem(PENDING_KEY); } catch {}
-    const renamedNote = body.renamed_from && body.renamed_from !== body.slug
-      ? ` Slug "${body.renamed_from}" was already taken — published as "${body.slug}" instead.`
-      : '';
+    const parts = [`Slug: ${body.slug}`, `version_id: ${body.version_id}`];
+    let warning = null;
+    if (body.renamed_from && body.renamed_from !== body.slug) {
+      parts.push(`renamed from "${body.renamed_from}"`);
+    }
+    if (body.og_status === 'failed') {
+      warning = 'OG image render failed — the piece is live but has no preview image. ' + (body.og_error || '');
+    }
     showStatus('success',
       'Published',
-      `Slug: ${body.slug} · version_id: ${body.version_id}. Stored to Vercel Blob — live now.${renamedNote}`,
-      null,
+      parts.join(' · ') + '. Live now.',
+      warning,
       body.deploy_url
     );
     return;
   }
 
-  const detail = JSON.stringify(body, null, 2);
-  showStatus('error', body.code || ('HTTP ' + res.status), body.message || 'Upload failed', detail);
+  const headline = friendlyHeadline(body.code, res.status);
+  const detail = friendlyDetail(body);
+  showStatus('error', headline, body.message || 'Upload failed', detail);
+}
+
+function friendlyHeadline(code, status) {
+  return ({
+    E_TOO_LARGE: 'File is too large',
+    E_PARSE: 'Could not read the HTML',
+    E_SCHEMA_MISSING_FIELD: 'Missing required field',
+    E_SCHEMA_UNKNOWN: 'Unknown schema version',
+    E_FRAMEWORK_UNKNOWN: 'Unknown framework version',
+    E_FRAMEWORK_FENCE_MODIFIED: 'Framework region was edited',
+    E_STRUCTURE: 'Structural rule violated',
+    E_DISALLOWED_EMBED: 'Embed host not allow-listed',
+    E_DISALLOWED_SCRIPT: 'Disallowed <script> tag',
+    E_VERSION_CONFLICT: 'Another upload landed first',
+    E_RATE_LIMIT: 'Rate limit hit',
+    E_STORAGE: 'Storage write failed',
+  })[code] || ('HTTP ' + status);
+}
+
+function friendlyDetail(body) {
+  // Surface fields that actually help the user act, not the whole envelope.
+  const useful = ['code', 'field', 'rule', 'fence', 'current_version_id', 'slug'];
+  const obj = {};
+  for (const k of useful) if (body[k]) obj[k] = body[k];
+  return Object.keys(obj).length ? JSON.stringify(obj, null, 2) : null;
 }
 
 function showStatus(state, head, body, detail, link) {
@@ -161,8 +192,13 @@ function showStatus(state, head, body, detail, link) {
   els.status.dataset.state = state;
   els.statusHead.textContent = head;
   els.statusBody.textContent = body || '';
-  if (detail) { els.statusDetail.hidden = false; els.statusDetail.textContent = detail; }
-  else { els.statusDetail.hidden = true; els.statusDetail.textContent = ''; }
+  if (detail) {
+    els.statusDetail.hidden = false;
+    els.statusDetail.textContent = detail;
+  } else {
+    els.statusDetail.hidden = true;
+    els.statusDetail.textContent = '';
+  }
   if (link) { els.statusLink.hidden = false; els.statusLink.href = link; els.statusLink.textContent = 'Open piece →'; }
   else { els.statusLink.hidden = true; }
 }

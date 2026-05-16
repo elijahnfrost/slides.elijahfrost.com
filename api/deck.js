@@ -11,7 +11,7 @@
  * The disk fallback below handles the edge case where check:true doesn't
  * intercept a static piece — belt-and-suspenders.
  */
-import { getPieceFromBlob, getPieceFromDisk } from '../lib/blob-storage.js';
+import { getPieceFromBlob, getPieceFromDisk, getCatalog } from '../lib/blob-storage.js';
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -23,6 +23,15 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, code: 'E_BAD_SLUG', message: 'Bad slug' });
   }
 
+  // Tombstoned slugs (hard-deleted disk pieces) 404 even though the disk
+  // file still exists.
+  const catalog = await getCatalog();
+  if (catalog.tombstones.includes(slug)) {
+    return res.status(404).send(
+      `<!doctype html><html><body><h1>404</h1><p>No piece &ldquo;${slug}&rdquo;</p><p><a href="/">← Back to hub</a></p></body></html>`
+    );
+  }
+
   // Blob-stored piece (new uploads)
   const blobPiece = await getPieceFromBlob(slug);
   if (blobPiece) {
@@ -30,7 +39,7 @@ export default async function handler(req, res) {
     return res.status(200).send(blobPiece.content);
   }
 
-  // Disk fallback (static git pieces, shouldn't normally reach here)
+  // Disk fallback (static git pieces)
   const diskPiece = await getPieceFromDisk(slug);
   if (diskPiece) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');

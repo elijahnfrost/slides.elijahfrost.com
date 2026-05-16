@@ -46,12 +46,19 @@
       <nav class="hub-tabs" role="tablist" aria-label="Catalog">
         <button class="hub-tab" role="tab" data-tab="decks" aria-selected="true">Decks</button>
         <button class="hub-tab" role="tab" data-tab="templates" aria-selected="false">Templates</button>
+        <button class="hub-tab" role="tab" data-tab="trash" aria-selected="false">Trash <span class="hub-tab-count" id="trash-count" hidden></span></button>
       </nav>
 
       <div class="hub-search-wrap">
         <input id="search" class="hub-search" type="search"
                placeholder="Search pieces" aria-label="Search pieces"
                autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="hub-bulk" id="bulk-bar" hidden>
+        <span class="hub-bulk-count"><span id="bulk-count">0</span> selected</span>
+        <div class="hub-bulk-actions" id="bulk-actions"></div>
+        <button class="hub-bulk-clear" type="button" data-bulk="clear">Clear</button>
       </div>
 
       <section id="catalog" class="hub-catalog" aria-live="polite"></section>
@@ -77,12 +84,14 @@
 
 <template id="card-template">
   <article class="hub-card-row">
+    <input type="checkbox" class="hub-card-select" aria-label="Select piece">
     <a class="hub-card">
       <h2 class="hub-card-title"></h2>
       <p class="hub-card-description"></p>
       <p class="hub-card-meta">
         <span class="hub-card-date"></span>
         <span class="hub-card-tags"></span>
+        <span class="hub-card-parent" hidden></span>
       </p>
     </a>
     <div class="hub-card-actions">
@@ -91,11 +100,33 @@
               aria-pressed="false">★</button>
       <button class="hub-card-action hub-card-reclassify" type="button"
               title="Reclassify" aria-label="Reclassify">↻</button>
+      <button class="hub-card-action hub-card-rename" type="button"
+              title="Rename" aria-label="Rename">✎</button>
       <a class="hub-card-action hub-card-download"
          title="Download .html to edit with an agent"
          aria-label="Download to edit">⇣</a>
       <button class="hub-card-action hub-card-delete" type="button"
-              title="Delete" aria-label="Delete">×</button>
+              title="Move to trash" aria-label="Move to trash">×</button>
+    </div>
+  </article>
+</template>
+
+<template id="trash-template">
+  <article class="hub-card-row hub-card-row-trash">
+    <input type="checkbox" class="hub-card-select" aria-label="Select piece">
+    <a class="hub-card">
+      <h2 class="hub-card-title"></h2>
+      <p class="hub-card-description"></p>
+      <p class="hub-card-meta">
+        <span class="hub-card-deleted"></span>
+        <span class="hub-card-tags"></span>
+      </p>
+    </a>
+    <div class="hub-card-actions">
+      <button class="hub-card-action hub-card-restore" type="button"
+              title="Restore" aria-label="Restore">↶</button>
+      <button class="hub-card-action hub-card-purge" type="button"
+              title="Delete permanently" aria-label="Delete permanently">⌫</button>
     </div>
   </article>
 </template>
@@ -108,296 +139,24 @@
   </li>
 </template>
 
-<script>
-(async () => {
-  const catalogEl       = document.getElementById('catalog');
-  const searchEl        = document.getElementById('search');
-  const tpl             = document.getElementById('card-template');
-  const pinnedTpl       = document.getElementById('pinned-template');
-  const tabsEl          = document.querySelector('.hub-tabs');
-  const pinnedTplListEl = document.getElementById('pinned-templates');
-  const pinnedDeckListEl= document.getElementById('pinned-decks');
-  const pinnedEmptyEl   = document.getElementById('pinned-empty');
+<div id="toasts" class="toasts" aria-live="polite" aria-atomic="true"></div>
 
-  // Load catalog (decks + user-uploaded templates) and the seed-template
-  // manifest in parallel. Both lists are merged into the templates tab;
-  // the decks tab only shows catalog pieces with kind === "deck". Seed
-  // templates can also be flagged pinned in their manifest.
-  let pieces = [];
-  let seedTemplates = [];
-  try {
-    const [cat, seeds] = await Promise.all([
-      fetch('/api/catalog/', { cache: 'no-store' }).then(r => r.json()),
-      fetch('/_framework/v1/templates/index.json', { cache: 'no-store' })
-        .then(r => r.ok ? r.json() : { templates: [] })
-        .catch(() => ({ templates: [] })),
-    ]);
-    pieces = (cat.pieces || []).slice().sort((a, b) =>
-      (b.date || '').localeCompare(a.date || '')
-    );
-    seedTemplates = seeds.templates || [];
-  } catch (err) {
-    catalogEl.textContent = 'Could not load catalog.';
-    return;
-  }
+<div id="modal-overlay" class="modal-overlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <h3 class="modal-title" id="modal-title">Confirm</h3>
+    <p class="modal-body" id="modal-body"></p>
+    <div class="modal-input-wrap" id="modal-input-wrap" hidden>
+      <input id="modal-input" type="text" class="modal-input" autocomplete="off">
+      <p class="modal-input-hint" id="modal-input-hint"></p>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" type="button" id="modal-cancel">Cancel</button>
+      <button class="modal-confirm" type="button" id="modal-confirm">OK</button>
+    </div>
+  </div>
+</div>
 
-  // Active tab + URL sync. ?tab=templates deep-links to that view; the
-  // /templates/ route rewrites to the same hub with that query.
-  const initial = new URLSearchParams(location.search).get('tab') === 'templates'
-    ? 'templates' : 'decks';
-  let activeTab = initial;
-  setActiveTab(activeTab, /* skipUrl */ true);
-
-  tabsEl.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-tab]');
-    if (!btn) return;
-    setActiveTab(btn.dataset.tab);
-  });
-
-  function setActiveTab(name, skipUrl) {
-    activeTab = name;
-    tabsEl.querySelectorAll('[data-tab]').forEach((b) => {
-      const on = b.dataset.tab === name;
-      b.setAttribute('aria-selected', on ? 'true' : 'false');
-    });
-    if (!skipUrl) {
-      const u = new URL(location.href);
-      if (name === 'templates') u.searchParams.set('tab', 'templates');
-      else u.searchParams.delete('tab');
-      history.replaceState(null, '', u);
-    }
-    render(searchEl.value);
-  }
-
-  function entries() {
-    if (activeTab === 'templates') {
-      // User-uploaded templates (catalog kind:"template") + seed templates.
-      const userTpls = pieces
-        .filter(p => p.kind === 'template')
-        .map(p => ({ ...p, _seed: false }));
-      const seeds = seedTemplates.map(t => ({
-        slug: t.name,
-        title: t.title,
-        description: t.description || '',
-        date: '',
-        tags: t.tags || [],
-        pinned: !!t.pinned,
-        _seed: true,
-      }));
-      return userTpls.concat(seeds);
-    }
-    // Decks tab — anything not explicitly a template (kind unset or "deck").
-    return pieces.filter(p => (p.kind || 'deck') === 'deck');
-  }
-
-  function render(query) {
-    renderPinned();
-    catalogEl.innerHTML = '';
-    const q = (query || '').trim().toLowerCase();
-    const all = entries();
-    const matched = q
-      ? all.filter(p => {
-          const hay = [p.title, p.description, ...(p.tags || [])]
-            .filter(Boolean).join(' ').toLowerCase();
-          return hay.includes(q);
-        })
-      : all;
-
-    if (matched.length === 0) {
-      const empty = document.createElement('p');
-      empty.className = 'hub-empty';
-      empty.textContent = activeTab === 'templates'
-        ? 'No templates yet. Upload one.'
-        : 'No decks matched.';
-      catalogEl.appendChild(empty);
-      return;
-    }
-
-    for (const p of matched) {
-      const node = tpl.content.cloneNode(true);
-      const row = node.querySelector('.hub-card-row');
-      const a  = node.querySelector('.hub-card');
-      const dl = node.querySelector('.hub-card-download');
-      const pin = node.querySelector('.hub-card-pin');
-      const rc  = node.querySelector('.hub-card-reclassify');
-      const del = node.querySelector('.hub-card-delete');
-
-      row.dataset.slug = p.slug;
-      row.dataset.kind = p._seed ? 'template' : (p.kind || 'deck');
-      if (p.pinned) row.dataset.pinned = '';
-
-      if (p._seed) {
-        // Seed templates download as a fresh file; no /slug/ page, and
-        // they can't be reclassified, unpinned, or deleted from the hub
-        // (they're canonical, owned by the framework).
-        a.href = '/api/export-template?name=' + encodeURIComponent(p.slug);
-        a.setAttribute('download', '');
-        dl.remove();
-        pin.remove();
-        rc.remove();
-        del.remove();
-      } else {
-        a.href = '/' + p.slug + '/';
-        dl.href = '/api/export-piece?slug=' + encodeURIComponent(p.slug);
-        pin.setAttribute('aria-pressed', p.pinned ? 'true' : 'false');
-        pin.title = p.pinned ? 'Unpin from sidebar' : 'Pin to sidebar';
-        pin.setAttribute('aria-label', pin.title);
-        const otherKind = (p.kind || 'deck') === 'deck' ? 'template' : 'deck';
-        rc.title = 'Convert to ' + otherKind;
-        rc.setAttribute('aria-label', rc.title);
-        rc.dataset.to = otherKind;
-      }
-
-      node.querySelector('.hub-card-title').textContent = p.title;
-      const desc = node.querySelector('.hub-card-description');
-      if (p.description) desc.textContent = p.description; else desc.remove();
-      node.querySelector('.hub-card-date').textContent = p.date || '';
-      node.querySelector('.hub-card-tags').textContent =
-        (p.tags || []).join(' · ');
-      catalogEl.appendChild(node);
-    }
-  }
-
-  function renderPinned() {
-    pinnedTplListEl.innerHTML = '';
-    pinnedDeckListEl.innerHTML = '';
-
-    const pinnedSeeds = seedTemplates
-      .filter(t => t.pinned)
-      .map(t => ({
-        slug: t.name,
-        title: t.title,
-        kind: 'template',
-        _seed: true,
-        href: '/api/export-template?name=' + encodeURIComponent(t.name),
-        download: true,
-      }));
-    const pinnedUserTpls = pieces
-      .filter(p => p.pinned && p.kind === 'template')
-      .map(p => ({
-        slug: p.slug, title: p.title, kind: 'template', _seed: false,
-        href: '/api/export-piece?slug=' + encodeURIComponent(p.slug),
-        download: true,
-      }));
-    const pinnedDecks = pieces
-      .filter(p => p.pinned && (p.kind || 'deck') === 'deck')
-      .map(p => ({
-        slug: p.slug, title: p.title, kind: 'deck', _seed: false,
-        href: '/' + p.slug + '/',
-        download: false,
-      }));
-
-    const tpls = pinnedSeeds.concat(pinnedUserTpls);
-    for (const item of tpls) appendPinned(pinnedTplListEl, item);
-    for (const item of pinnedDecks) appendPinned(pinnedDeckListEl, item);
-
-    const empty = tpls.length === 0 && pinnedDecks.length === 0;
-    pinnedEmptyEl.hidden = !empty;
-    pinnedTplListEl.parentElement.hidden = tpls.length === 0;
-    pinnedDeckListEl.parentElement.hidden = pinnedDecks.length === 0;
-  }
-
-  function appendPinned(listEl, item) {
-    const node = pinnedTpl.content.cloneNode(true);
-    const link = node.querySelector('.hub-pinned-link');
-    const unpin = node.querySelector('.hub-pinned-unpin');
-    link.href = item.href;
-    link.textContent = item.title;
-    if (item.download) link.setAttribute('download', '');
-    if (item._seed) {
-      // Seed pins are canonical; no unpin control.
-      unpin.remove();
-    } else {
-      unpin.dataset.slug = item.slug;
-    }
-    listEl.appendChild(node);
-  }
-
-  // ----- mutations -----
-  catalogEl.addEventListener('click', async (e) => {
-    const pinBtn = e.target.closest('.hub-card-pin');
-    const rcBtn  = e.target.closest('.hub-card-reclassify');
-    const delBtn = e.target.closest('.hub-card-delete');
-    if (!pinBtn && !rcBtn && !delBtn) return;
-    e.preventDefault();
-    const row = e.target.closest('.hub-card-row');
-    const slug = row?.dataset.slug;
-    if (!slug) return;
-
-    if (pinBtn) {
-      const next = pinBtn.getAttribute('aria-pressed') !== 'true';
-      await applyMutation(row, { slug, pinned: next });
-    } else if (rcBtn) {
-      const to = rcBtn.dataset.to;
-      await applyMutation(row, { slug, kind: to });
-    } else if (delBtn) {
-      const title = row.querySelector('.hub-card-title')?.textContent || slug;
-      if (!confirm(`Delete "${title}"? This can't be undone.`)) return;
-      await applyDelete(row, slug);
-    }
-  });
-
-  document.querySelector('.hub-pinned').addEventListener('click', async (e) => {
-    const btn = e.target.closest('.hub-pinned-unpin');
-    if (!btn) return;
-    e.preventDefault();
-    const slug = btn.dataset.slug;
-    if (!slug) return;
-    await applyMutation(null, { slug, pinned: false });
-  });
-
-  async function applyDelete(row, slug) {
-    if (row) row.dataset.busy = '';
-    try {
-      const res = await fetch('/api/item-delete', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) {
-        alert('Delete failed: ' + (data.message || res.status));
-        return;
-      }
-      pieces = pieces.filter(p => p.slug !== slug);
-      render(searchEl.value);
-    } catch (err) {
-      alert('Network error: ' + err.message);
-    } finally {
-      if (row) delete row.dataset.busy;
-    }
-  }
-
-  async function applyMutation(row, body) {
-    if (row) row.dataset.busy = '';
-    try {
-      const res = await fetch('/api/item-update', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) {
-        alert('Update failed: ' + (data.message || res.status));
-        return;
-      }
-      // Patch local catalog and re-render.
-      const idx = pieces.findIndex(p => p.slug === data.slug);
-      if (idx >= 0) {
-        pieces[idx] = { ...pieces[idx], kind: data.kind, pinned: !!data.pinned };
-      }
-      render(searchEl.value);
-    } catch (err) {
-      alert('Network error: ' + err.message);
-    } finally {
-      if (row) delete row.dataset.busy;
-    }
-  }
-
-  render('');
-  searchEl.addEventListener('input', e => render(e.target.value));
-})();
-</script>
+<script src="/hub.js"></script>
 
 </body>
 </html>

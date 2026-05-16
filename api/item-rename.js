@@ -1,23 +1,13 @@
 /**
- * api/item-delete.js — soft-delete (default) or hard-delete a piece.
+ * api/item-rename.js — change a piece's slug. Copies storage, rewrites the
+ * slug field inside <deck-meta>, and tombstones the old disk slug if needed.
  *
- * Request:  POST /api/item-delete
- *   Headers: Content-Type: application/json
- *   Body:    { "slug": "<slug>", "hard"?: boolean }
+ * Request:  POST /api/item-rename
+ *   Body:    { "slug": "<old>", "new_slug": "<new>" }
  *
- *   Soft delete (default) sets deleted_at on the catalog entry; the piece
- *   stays in storage and is restorable from the hub's Trash tab.
- *
- *   Hard delete wipes the Blob objects under pieces/{slug}/, drops the
- *   catalog entry, and tombstones disk-only slugs (so /<slug>/ returns
- *   404 instead of falling back to the git-committed copy).
- *
- * Response: 200 { ok: true, slug, soft, ... } on success;
- *           4xx/5xx { ok: false, code, message } on failure.
- *
- * Rate limit: 30/hour per IP, same pattern as /api/upload.
+ * Rate limit: 30/hour per IP.
  */
-import { removeItem } from '../lib/item-mutate.js';
+import { renameItem } from '../lib/item-mutate.js';
 
 const RATE_LIMIT_MAX = 30;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
@@ -57,10 +47,8 @@ export default async function handler(req, res) {
     res.status(405).json({ ok: false, code: 'E_METHOD', message: 'POST required' });
     return;
   }
-
-  const ip = getClientIp(req);
-  if (!checkRateLimit(ip)) {
-    res.status(429).json({ ok: false, code: 'E_RATE_LIMIT', message: `> ${RATE_LIMIT_MAX} deletes/hour from this IP` });
+  if (!checkRateLimit(getClientIp(req))) {
+    res.status(429).json({ ok: false, code: 'E_RATE_LIMIT', message: `> ${RATE_LIMIT_MAX} renames/hour from this IP` });
     return;
   }
 
@@ -73,16 +61,18 @@ export default async function handler(req, res) {
     return;
   }
 
-  const result = await removeItem({ slug: body.slug, hard: !!body.hard });
+  const result = await renameItem({ slug: body.slug, new_slug: body.new_slug });
 
   if (result.ok) {
     res.status(200).json(result);
     return;
   }
-
   const status = {
     E_BAD_SLUG: 400,
+    E_NO_OP: 400,
     E_NOT_FOUND: 404,
+    E_SLUG_TAKEN: 409,
+    E_SCHEMA_MISSING_FIELD: 422,
     E_STORAGE: 502,
   }[result.code] || 500;
   res.status(status).json(result);

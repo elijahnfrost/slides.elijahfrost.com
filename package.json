@@ -7,6 +7,7 @@
   "scripts": {
     "build-catalog": "node bin/build-catalog.mjs",
     "dev": "python3 -m http.server 8765",
+    "test": "node --test test/*.test.mjs",
     "vercel-build": "node bin/build-catalog.mjs"
   },
   "dependencies": {
