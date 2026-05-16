@@ -78,8 +78,10 @@ export default async function handler(req, res) {
   const origin = getOrigin(req);
   const allowedEmbedHosts = (process.env.ALLOWED_EMBED_HOSTS || '')
     .split(',').map(s => s.trim()).filter(Boolean);
+  const kindOverride = (req.query?.kind === 'deck' || req.query?.kind === 'template')
+    ? req.query.kind : undefined;
 
-  const result = await runUpload({ rawHtml, origin, allowedEmbedHosts });
+  const result = await runUpload({ rawHtml, origin, allowedEmbedHosts, kindOverride });
 
   if (result.ok) {
     res.status(200).json(result);

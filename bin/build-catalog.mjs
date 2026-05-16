@@ -59,6 +59,7 @@ async function main() {
       date: m.meta.date,
       tags: m.meta.tags || [],
       parent_template: m.meta.parent_template || null,
+      pinned: !!m.meta.pinned,
     });
   }
 

@@ -15,7 +15,6 @@ const els = {
   browse:       document.getElementById('browse'),
   preview:      document.getElementById('preview'),
   pvSlug:       document.getElementById('pv-slug'),
-  pvKind:       document.getElementById('pv-kind'),
   pvTitle:      document.getElementById('pv-title'),
   pvDesc:       document.getElementById('pv-description'),
   pvTags:       document.getElementById('pv-tags'),
@@ -23,6 +22,7 @@ const els = {
   pvVers:       document.getElementById('pv-versions'),
   pvCounts:     document.getElementById('pv-counts'),
   pvTypes:      document.getElementById('pv-types'),
+  kindRadios:   document.querySelectorAll('input[name="kind"]'),
   publish:      document.getElementById('publish'),
   cancel:       document.getElementById('cancel'),
   status:       document.getElementById('status'),
@@ -84,7 +84,7 @@ function showPreview(html) {
   try { notesLen = JSON.parse(notesTag?.textContent || '[]').length; } catch {}
 
   els.pvSlug.textContent     = meta?.slug || '—';
-  els.pvKind.textContent     = meta?.kind || 'deck';
+  setKind(meta?.kind === 'template' ? 'template' : 'deck');
   els.pvTitle.textContent    = meta?.title || '—';
   els.pvDesc.textContent     = meta?.description || '—';
   els.pvTags.textContent     = (meta?.tags || []).join(' · ') || '—';
@@ -105,10 +105,19 @@ els.cancel.addEventListener('click', () => {
 
 els.publish.addEventListener('click', async () => {
   if (!currentText) return;
-  await upload(currentText);
+  await upload(currentText, getKind());
 });
 
-async function upload(text) {
+function getKind() {
+  for (const r of els.kindRadios) if (r.checked) return r.value;
+  return 'deck';
+}
+
+function setKind(value) {
+  for (const r of els.kindRadios) r.checked = (r.value === value);
+}
+
+async function upload(text, kind) {
   // Stash for retry if the network breaks mid-flight
   try { localStorage.setItem(PENDING_KEY, text); } catch {}
 
@@ -116,7 +125,7 @@ async function upload(text) {
 
   let res;
   try {
-    res = await fetch('/api/upload', {
+    res = await fetch('/api/upload?kind=' + encodeURIComponent(kind), {
       method: 'POST',
       headers: { 'Content-Type': 'text/html' },
       body: text,

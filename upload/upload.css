@@ -135,6 +135,35 @@ body {
 }
 .up-preview-actions { display: flex; gap: 0.75rem; }
 
+.up-kind {
+  display: inline-flex;
+  gap: 0.5rem;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.up-kind-opt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--color-fg-muted);
+  transition: border-color var(--duration-base) var(--ease-out-quint),
+              color var(--duration-base) var(--ease-out-quint),
+              background var(--duration-base) var(--ease-out-quint);
+}
+.up-kind-opt:hover { color: var(--color-fg); border-color: var(--color-fg-muted); }
+.up-kind-opt input { accent-color: var(--color-fg); margin: 0; }
+.up-kind-opt:has(input:checked) {
+  color: var(--color-fg);
+  border-color: var(--color-fg);
+  background: rgba(255,255,255,0.04);
+}
+
 .up-status-head {
   font-family: var(--font-display);
   font-weight: 300;

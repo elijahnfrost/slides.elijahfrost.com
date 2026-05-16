@@ -34,6 +34,7 @@ The site uses a **file-passing agent workflow**:
 │   ├── deck.js             # GET /<slug>/ — serve a piece's HTML
 │   ├── export-piece.js     # GET /api/export/<slug> — download a piece
 │   ├── export-template.js  # GET /api/export/template/<name> — download a fresh template
+│   ├── item-update.js      # POST /api/item-update — toggle kind / pinned
 │   └── upload.js           # POST /api/upload — validate + store in Blob
 ├── lib/                    # shared modules used by api/*
 │   ├── schema.js           # deck-meta validator (zod)
@@ -42,6 +43,7 @@ The site uses a **file-passing agent workflow**:
 │   ├── parse.js            # HTML parsing + structural validation
 │   ├── og.js               # server-side OG image (1200×630 PNG)
 │   ├── blob-storage.js     # Vercel Blob piece + catalog read/write
+│   ├── item-mutate.js      # in-place kind/pinned edits for /api/item-update
 │   └── upload-pipeline.js  # the upload validation pipeline
 ├── bin/
 │   └── build-catalog.mjs   # regenerates catalog.json from each piece's <deck-meta>

@@ -136,6 +136,23 @@
   color: var(--color-fg-muted);
 }
 
+/* ----- layout (main + pinned sidebar) ----- */
+
+.hub-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+@media (min-width: 960px) {
+  .hub-layout {
+    grid-template-columns: minmax(0, 1fr) 14rem;
+    gap: 4rem;
+    align-items: start;
+  }
+}
+
+.hub-main { min-width: 0; }
+
 /* ----- catalog list ----- */
 
 .hub-catalog {
@@ -158,6 +175,7 @@
 .hub-catalog:hover .hub-card-row:not(:hover) {
   opacity: 0.55;
 }
+.hub-card-row[data-busy] { opacity: 0.4; pointer-events: none; }
 
 .hub-card {
   display: block;
@@ -170,25 +188,40 @@
   outline-offset: 4px;
 }
 
-.hub-card-download {
+.hub-card-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.hub-card-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: var(--color-fg-muted);
   text-decoration: none;
+  background: transparent;
   border: 1px solid transparent;
   border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
   transition: border-color var(--duration-base) var(--ease-out-quint),
               color var(--duration-base) var(--ease-out-quint);
 }
-.hub-card-download:hover,
-.hub-card-download:focus-visible {
+.hub-card-action:hover,
+.hub-card-action:focus-visible {
   color: var(--color-fg);
   border-color: var(--color-border);
   outline: none;
+}
+.hub-card-download { font-size: 1.125rem; }
+.hub-card-pin[aria-pressed="true"] {
+  color: var(--color-fg);
+  border-color: var(--color-border);
 }
 
 .hub-card-title {
@@ -228,5 +261,115 @@
   color: var(--color-fg-muted);
   font-style: italic;
   padding: 2rem 0;
+  margin: 0;
+}
+
+/* ----- pinned sidebar ----- */
+
+.hub-pinned {
+  position: sticky;
+  top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--color-border-divider);
+}
+@media (min-width: 960px) {
+  .hub-pinned {
+    border-top: 0;
+    padding: 0;
+    border-left: 1px solid var(--color-border-divider);
+    padding-left: 2rem;
+  }
+}
+
+.hub-pinned-head {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-eyebrow);
+  color: var(--color-fg-muted);
+  margin: 0;
+  font-weight: 400;
+}
+
+.hub-pinned-group { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.hub-pinned-label {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  color: var(--color-fg-dim);
+  margin: 0;
+}
+
+.hub-pinned-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.hub-pinned-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.hub-pinned-link {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.25;
+  color: var(--color-fg);
+  text-decoration: none;
+  padding: 0.375rem 0;
+  word-break: break-word;
+  transition: color var(--duration-base) var(--ease-out-quint);
+}
+.hub-pinned-link:hover,
+.hub-pinned-link:focus-visible { color: var(--color-fg-bright); outline: none; }
+
+/* Lighter visual weight for pinned decks vs pinned templates. */
+.hub-pinned-group[data-group="decks"] .hub-pinned-link {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  color: var(--color-fg-soft);
+  font-weight: 300;
+}
+.hub-pinned-group[data-group="decks"] .hub-pinned-link:hover {
+  color: var(--color-fg);
+}
+
+.hub-pinned-unpin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--color-fg-dim);
+  cursor: pointer;
+  padding: 0;
+  transition: color var(--duration-base) var(--ease-out-quint),
+              border-color var(--duration-base) var(--ease-out-quint);
+}
+.hub-pinned-unpin:hover,
+.hub-pinned-unpin:focus-visible {
+  color: var(--color-fg);
+  border-color: var(--color-border);
+  outline: none;
+}
+
+.hub-pinned-empty {
+  color: var(--color-fg-dim);
+  font-size: 0.8125rem;
+  font-style: italic;
   margin: 0;
 }
