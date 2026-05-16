@@ -10,7 +10,6 @@
     "vercel-build": "node bin/build-catalog.mjs"
   },
   "dependencies": {
-    "@octokit/rest": "^21.0.2",
     "@vercel/blob": "^0.27.0",
     "@vercel/og": "^0.6.4",
     "linkedom": "^0.18.5",

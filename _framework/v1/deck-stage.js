@@ -139,9 +139,9 @@
        deck's <style id="piece-style"> if you want a paint-during-exit:
          deck-stage section[data-deck-leaving] { opacity: 1; visibility: visible; } */
 
-    /* Single-slide view (?_view=slide / ?_snthumb=1) — used by the
-       presenter's CURRENT/NEXT iframes. Hides all framework chrome so
-       the iframe shows just the slide. Skips overlay, tapzones, rail. */
+    /* Single-slide view (?_view=slide) — used by the presenter's
+       CURRENT/NEXT iframes. Hides all framework chrome so the iframe
+       shows just the slide. Skips overlay, tapzones, rail. */
     :host([data-view="slide"]) .overlay,
     :host([data-view="slide"]) .tapzones,
     :host([data-view="slide"]) .rail,
@@ -608,12 +608,11 @@
     }
 
     connectedCallback() {
-      // URL params drive three view modes:
+      // URL params drive view modes:
       //   ?_view=slide&n=N  presenter thumb: one slide, no chrome, no broadcast.
-      //   ?_snthumb=1       legacy alias for _view=slide (kept for back-compat).
       //   ?edit=1           author/edit mode: rail visible by default.
       const params = new URLSearchParams(location.search);
-      const thumbMode = params.get('_view') === 'slide' || params.has('_snthumb');
+      const thumbMode = params.get('_view') === 'slide';
       this._viewMode = thumbMode ? 'slide' : 'normal';
       this._editMode = params.get('edit') === '1';
       this._initialSlideParam = parseInt(params.get('n') || '', 10);
@@ -1180,8 +1179,7 @@
 
     _restoreIndex() {
       // Single-slide thumb mode: ?n=<int> (1-indexed) is authoritative.
-      // Falls through to the hash form when absent so back-compat
-      // ?_snthumb=1#N still selects the slide.
+      // Otherwise fall through to the hash form below.
       if (this._viewMode === 'slide' && Number.isFinite(this._initialSlideParam)) {
         const n = this._initialSlideParam - 1;
         if (n >= 0 && n < this._slides.length) { this._index = n; return; }

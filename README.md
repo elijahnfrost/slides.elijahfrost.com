@@ -22,36 +22,37 @@ The site uses a **file-passing agent workflow**:
 
 ```
 .
-├── index.html              # hub (reads catalog.json, lists pieces)
+├── index.html              # hub (lists pieces; fetches /api/catalog/)
 ├── hub.css                 # hub styles
-├── catalog.json            # generated — do not hand-edit
+├── catalog.json            # disk fallback for /api/catalog; do not hand-edit
 ├── upload/                 # the /upload page client
 │   ├── index.html
 │   ├── upload.css
 │   └── upload.js
-├── api/                    # Vercel serverless functions
-│   ├── upload.js                            # POST: validate + commit
-│   └── export/
-│       ├── [slug].js                        # GET: download a piece
-│       └── template/[name].js               # GET: download a fresh template
+├── api/                    # Vercel serverless functions (flat layout)
+│   ├── catalog.js          # GET /catalog.json — unified piece catalog
+│   ├── deck.js             # GET /<slug>/ — serve a piece's HTML
+│   ├── export-piece.js     # GET /api/export/<slug> — download a piece
+│   ├── export-template.js  # GET /api/export/template/<name> — download a fresh template
+│   ├── convert.js          # POST /api/convert — flip kind between deck/template
+│   └── upload.js           # POST /api/upload — validate + store in Blob
 ├── lib/                    # shared modules used by api/*
 │   ├── schema.js           # deck-meta validator (zod)
 │   ├── fences.js           # FRAMEWORK-MANAGED region fingerprints
 │   ├── migrations.js       # schema migration chain (currently empty)
 │   ├── parse.js            # HTML parsing + structural validation
-│   ├── github.js           # Octokit multi-file commit wrapper
 │   ├── og.js               # server-side OG image (1200×630 PNG)
-│   └── upload-pipeline.js  # the 15-step validation pipeline
+│   ├── blob-storage.js     # Vercel Blob piece + catalog read/write
+│   └── upload-pipeline.js  # the upload validation pipeline
 ├── bin/
-│   ├── build-catalog.mjs   # regenerates catalog.json from each piece's <deck-meta>
-│   ├── gen-og.py           # legacy local OG generator (server uses lib/og.js)
-│   └── new-piece           # deprecated; see /api/export/template/blank-deck
+│   └── build-catalog.mjs   # regenerates catalog.json from each piece's <deck-meta>
 ├── _framework/v1/          # the deck framework. pinned, immutable per version.
 │   ├── deck-stage.js               # the <deck-stage> Web Component
 │   ├── tokens.css                  # design tokens
 │   ├── slide-types.css             # canonical 18 slide-types
 │   ├── present.html / present.js / present.css   # the presenter view
 │   ├── templates/blank-deck.html   # the agent's starting point
+│   ├── templates/index.json        # manifest of pinned seed templates
 │   ├── SLIDE-TYPES.md              # agent reference: the 18 layouts
 │   └── DECK-FORMAT.md              # agent reference: the file contract
 ├── soft-halo/              # an example piece using the new format

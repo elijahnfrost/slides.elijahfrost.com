@@ -196,8 +196,7 @@ const frameSrc = { current: '', next: '' };
 function thumbUrl(index) {
   // ?_view=slide hides all framework chrome (rail, overlay, tap zones)
   // and disables keyboard nav + BroadcastChannel inside the iframe so it
-  // can't echo state back. &n=N (1-indexed) selects the slide; the
-  // legacy ?_snthumb=1#N form still works via an alias in deck-stage.js.
+  // can't echo state back. &n=N (1-indexed) selects the slide.
   return DECK_URL + '?_view=slide&n=' + (index + 1);
 }
 
