@@ -140,9 +140,12 @@ async function upload(text, kind) {
 
   if (res.ok && body.ok) {
     try { localStorage.removeItem(PENDING_KEY); } catch {}
+    const renamedNote = body.renamed_from && body.renamed_from !== body.slug
+      ? ` Slug "${body.renamed_from}" was already taken — published as "${body.slug}" instead.`
+      : '';
     showStatus('success',
       'Published',
-      `Slug: ${body.slug} · version_id: ${body.version_id}. Stored to Vercel Blob — live now.`,
+      `Slug: ${body.slug} · version_id: ${body.version_id}. Stored to Vercel Blob — live now.${renamedNote}`,
       null,
       body.deploy_url
     );

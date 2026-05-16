@@ -94,6 +94,8 @@
       <a class="hub-card-action hub-card-download"
          title="Download .html to edit with an agent"
          aria-label="Download to edit">⇣</a>
+      <button class="hub-card-action hub-card-delete" type="button"
+              title="Delete" aria-label="Delete">×</button>
     </div>
   </article>
 </template>
@@ -218,6 +220,7 @@
       const dl = node.querySelector('.hub-card-download');
       const pin = node.querySelector('.hub-card-pin');
       const rc  = node.querySelector('.hub-card-reclassify');
+      const del = node.querySelector('.hub-card-delete');
 
       row.dataset.slug = p.slug;
       row.dataset.kind = p._seed ? 'template' : (p.kind || 'deck');
@@ -225,13 +228,14 @@
 
       if (p._seed) {
         // Seed templates download as a fresh file; no /slug/ page, and
-        // they can't be reclassified or unpinned from the hub (they're
-        // canonical, owned by the framework).
+        // they can't be reclassified, unpinned, or deleted from the hub
+        // (they're canonical, owned by the framework).
         a.href = '/api/export-template?name=' + encodeURIComponent(p.slug);
         a.setAttribute('download', '');
         dl.remove();
         pin.remove();
         rc.remove();
+        del.remove();
       } else {
         a.href = '/' + p.slug + '/';
         dl.href = '/api/export-piece?slug=' + encodeURIComponent(p.slug);
@@ -313,7 +317,8 @@
   catalogEl.addEventListener('click', async (e) => {
     const pinBtn = e.target.closest('.hub-card-pin');
     const rcBtn  = e.target.closest('.hub-card-reclassify');
-    if (!pinBtn && !rcBtn) return;
+    const delBtn = e.target.closest('.hub-card-delete');
+    if (!pinBtn && !rcBtn && !delBtn) return;
     e.preventDefault();
     const row = e.target.closest('.hub-card-row');
     const slug = row?.dataset.slug;
@@ -325,6 +330,10 @@
     } else if (rcBtn) {
       const to = rcBtn.dataset.to;
       await applyMutation(row, { slug, kind: to });
+    } else if (delBtn) {
+      const title = row.querySelector('.hub-card-title')?.textContent || slug;
+      if (!confirm(`Delete "${title}"? This can't be undone.`)) return;
+      await applyDelete(row, slug);
     }
   });
 
@@ -336,6 +345,28 @@
     if (!slug) return;
     await applyMutation(null, { slug, pinned: false });
   });
+
+  async function applyDelete(row, slug) {
+    if (row) row.dataset.busy = '';
+    try {
+      const res = await fetch('/api/item-delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        alert('Delete failed: ' + (data.message || res.status));
+        return;
+      }
+      pieces = pieces.filter(p => p.slug !== slug);
+      render(searchEl.value);
+    } catch (err) {
+      alert('Network error: ' + err.message);
+    } finally {
+      if (row) delete row.dataset.busy;
+    }
+  }
 
   async function applyMutation(row, body) {
     if (row) row.dataset.busy = '';

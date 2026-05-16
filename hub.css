@@ -223,6 +223,12 @@
   color: var(--color-fg);
   border-color: var(--color-border);
 }
+.hub-card-delete { font-size: 1.125rem; }
+.hub-card-delete:hover,
+.hub-card-delete:focus-visible {
+  color: var(--color-error-text, #d97757);
+  border-color: var(--color-error-text, #d97757);
+}
 
 .hub-card-title {
   font-family: var(--font-display);
