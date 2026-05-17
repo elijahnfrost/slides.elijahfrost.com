@@ -438,6 +438,14 @@
         body: JSON.stringify(body),
       });
       const data = await res.json().catch(() => ({}));
+      // Edge auth gate rejects writes from non-write scopes with a 401 +
+      // structured body. Surface the upgrade prompt so a stale or
+      // insufficient cookie doesn't fail silently.
+      if (res.status === 401 && data && data.error === 'write_auth_required') {
+        if (window.efScope && typeof window.efScope.showUpgradePrompt === 'function') {
+          window.efScope.showUpgradePrompt('write');
+        }
+      }
       return { ...data, _status: res.status };
     } catch (e) {
       return { ok: false, message: e.message };

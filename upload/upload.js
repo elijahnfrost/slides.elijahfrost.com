@@ -138,6 +138,16 @@ async function upload(text, kind) {
   let body;
   try { body = await res.json(); } catch (e) { body = { ok: false, code: 'E_PARSE_RESPONSE', message: 'Could not parse server response' }; }
 
+  // Edge auth gate rejects writes from non-write scopes with 401 + structured
+  // body. Surface the upgrade prompt so a stale or insufficient cookie doesn't
+  // fail silently behind a generic error message.
+  if (res.status === 401 && body && body.error === 'write_auth_required') {
+    if (typeof window !== 'undefined' && window.efScope &&
+        typeof window.efScope.showUpgradePrompt === 'function') {
+      window.efScope.showUpgradePrompt('write');
+    }
+  }
+
   if (res.ok && body.ok) {
     try { localStorage.removeItem(PENDING_KEY); } catch {}
     const parts = [`Slug: ${body.slug}`, `version_id: ${body.version_id}`];

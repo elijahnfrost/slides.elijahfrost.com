@@ -23,7 +23,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap">
 <link rel="stylesheet" href="/_framework/v1/tokens.css">
+<link rel="stylesheet" href="/_framework/v1/ef-scope.css">
 <link rel="stylesheet" href="/hub.css">
+<script src="/_framework/v1/ef-scope.js" defer></script>
 </head>
 <body>
 
@@ -35,7 +37,7 @@
       <p class="hub-eyebrow">Elijah Frost</p>
     </div>
     <nav class="hub-header-actions" aria-label="Deck actions">
-      <a class="hub-action" href="/upload/">Upload</a>
+      <a class="hub-action" href="/upload/" data-requires-scope="write">Upload</a>
     </nav>
   </header>
 
@@ -99,16 +101,20 @@
     </a>
     <div class="hub-card-actions">
       <button class="hub-card-action hub-card-pin" type="button"
+              data-requires-scope="write"
               title="Pin to sidebar" aria-label="Pin to sidebar"
               aria-pressed="false">★</button>
       <button class="hub-card-action hub-card-reclassify" type="button"
+              data-requires-scope="write"
               title="Reclassify" aria-label="Reclassify">↻</button>
       <button class="hub-card-action hub-card-rename" type="button"
+              data-requires-scope="write"
               title="Rename" aria-label="Rename">✎</button>
       <a class="hub-card-action hub-card-download"
          title="Download .html to edit with an agent"
          aria-label="Download to edit">⇣</a>
       <button class="hub-card-action hub-card-delete" type="button"
+              data-requires-scope="write"
               title="Move to trash" aria-label="Move to trash">×</button>
     </div>
   </article>
@@ -130,8 +136,10 @@
     </a>
     <div class="hub-card-actions">
       <button class="hub-card-action hub-card-restore" type="button"
+              data-requires-scope="write"
               title="Restore" aria-label="Restore">↶</button>
       <button class="hub-card-action hub-card-purge" type="button"
+              data-requires-scope="write"
               title="Delete permanently" aria-label="Delete permanently">⌫</button>
     </div>
   </article>
@@ -141,6 +149,7 @@
   <li class="hub-pinned-item">
     <a class="hub-pinned-link"></a>
     <button class="hub-pinned-unpin" type="button"
+            data-requires-scope="write"
             title="Unpin" aria-label="Unpin">×</button>
   </li>
 </template>

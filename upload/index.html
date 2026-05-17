@@ -12,7 +12,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap">
 <link rel="stylesheet" href="/_framework/v1/tokens.css">
+<link rel="stylesheet" href="/_framework/v1/ef-scope.css">
 <link rel="stylesheet" href="/upload/upload.css">
+<script src="/_framework/v1/ef-scope.js" defer></script>
 </head>
 <body>
 
@@ -24,11 +26,11 @@
     <p class="up-sub">Drop an HTML file that came back from your agent — a deck or a template. The server validates it, mints a version_id, and stores it.</p>
   </header>
 
-  <section class="up-drop" id="drop">
-    <input type="file" id="file" accept=".html,text/html" hidden>
+  <section class="up-drop" id="drop" data-requires-scope="write">
+    <input type="file" id="file" accept=".html,text/html" hidden data-requires-scope="write">
     <p class="up-drop-eyebrow">Step 1</p>
     <p class="up-drop-prompt">Drop an .html file here</p>
-    <p class="up-drop-or">or <button class="up-link" id="browse" type="button">browse</button></p>
+    <p class="up-drop-or">or <button class="up-link" id="browse" type="button" data-requires-scope="write">browse</button></p>
   </section>
 
   <section class="up-preview" id="preview" hidden>
@@ -56,7 +58,7 @@
       <dt>Slide-types used</dt><dd id="pv-types">–</dd>
     </dl>
     <div class="up-preview-actions">
-      <button class="up-btn up-btn-primary" id="publish" type="button">Publish</button>
+      <button class="up-btn up-btn-primary" id="publish" type="button" data-requires-scope="write">Publish</button>
       <button class="up-btn" id="cancel" type="button">Cancel</button>
     </div>
   </section>

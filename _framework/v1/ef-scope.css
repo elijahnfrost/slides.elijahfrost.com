@@ -1,0 +1,129 @@
+/*
+ * Scope guard styles. Required by both the vanilla auto-script and the
+ * <RequireScope> React component. Imported automatically when an app
+ * pulls @elijahfrost/design-system/styles.css; can also be imported on
+ * its own at @elijahfrost/design-system/scope.css.
+ *
+ * Depends on tokens.css for --color-*, --font-*, --tracking-*.
+ */
+
+.ef-scope-locked {
+  opacity: 0.55;
+  cursor: not-allowed;
+  /* Keep clickable so the capture listener fires; native :disabled would
+     swallow the event in some browsers. */
+  pointer-events: auto;
+}
+
+.ef-scope-locked:focus-visible {
+  outline: 2px solid var(--color-fg-muted);
+  outline-offset: 2px;
+}
+
+.ef-scope-dialog-root {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.ef-scope-dialog__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  cursor: pointer;
+}
+
+.ef-scope-dialog {
+  position: relative;
+  background: var(--color-bg-page, #0f0f0f);
+  color: var(--color-fg, #f3f3f3);
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.12));
+  border-radius: 0;
+  padding: 1.75rem;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-sans, system-ui, sans-serif);
+}
+
+.ef-scope-dialog__title {
+  font-family: var(--font-display, var(--font-sans, system-ui, sans-serif));
+  font-weight: 300;
+  font-size: 1.35rem;
+  letter-spacing: var(--tracking-tight, -0.01em);
+  line-height: 1.15;
+  margin: 0;
+  color: var(--color-fg, #f3f3f3);
+}
+
+.ef-scope-dialog__title strong {
+  font-weight: 500;
+}
+
+.ef-scope-dialog__sub {
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+  color: var(--color-fg-muted, rgba(255, 255, 255, 0.6));
+  line-height: 1.4;
+}
+
+.ef-scope-dialog__sub strong {
+  color: var(--color-fg, #f3f3f3);
+  font-weight: 500;
+}
+
+.ef-scope-dialog__actions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.ef-scope-dialog__primary,
+.ef-scope-dialog__secondary {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  text-align: center;
+  border-radius: 0;
+  cursor: pointer;
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.12));
+}
+
+.ef-scope-dialog__primary {
+  background: var(--color-fg, #f3f3f3);
+  color: var(--color-bg-page, #0f0f0f);
+  border-color: var(--color-fg, #f3f3f3);
+}
+
+.ef-scope-dialog__primary:hover,
+.ef-scope-dialog__primary:focus-visible {
+  filter: brightness(0.92);
+}
+
+.ef-scope-dialog__secondary {
+  background: transparent;
+  color: var(--color-fg-muted, rgba(255, 255, 255, 0.6));
+  letter-spacing: var(--tracking-display-eyebrow, 0.18em);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.ef-scope-dialog__secondary:hover,
+.ef-scope-dialog__secondary:focus-visible {
+  color: var(--color-fg, #f3f3f3);
+  border-color: var(--color-fg-muted, rgba(255, 255, 255, 0.6));
+}
+
+.ef-scope-dialog__primary:focus-visible,
+.ef-scope-dialog__secondary:focus-visible {
+  outline: 2px solid var(--color-fg-muted, rgba(255, 255, 255, 0.6));
+  outline-offset: 2px;
+}
