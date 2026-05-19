@@ -650,6 +650,8 @@
                 index: this._index,
                 total: this._slides.length,
                 skipped: this._skippedIndices(),
+                fragment: this._fragmentIndex || 0,
+                fragmentTotal: this._fragmentTotal || 0,
                 reason: 'heartbeat',
               });
             } catch (e) {}
@@ -1456,6 +1458,17 @@
         this._setRailVisible(d.on);
       }
       if (d && d.type === '__omelette_rail_enabled') this._enableRail();
+      // Parent-to-iframe nav for the presenter's thumbnail panes. The
+      // presenter holds two long-lived iframes (current + next) and
+      // changes which slide they show by postMessage rather than by
+      // setting iframe.src — that avoids a full deck reload (with font
+      // load + slot collection + first-paint scale fit) on every step.
+      // Only honored in single-slide thumb mode; the broadcast-channel
+      // path is still the canonical route for in-window decks.
+      if (d && d.type === '__deck_goto' && this._viewMode === 'slide'
+          && Number.isInteger(d.index)) {
+        this._go(d.index, 'api');
+      }
     }
 
     _setRailVisible(on) {

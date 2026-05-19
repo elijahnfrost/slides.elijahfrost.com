@@ -188,24 +188,87 @@ setTimeout(() => {
 }, 600);
 
 // ----- thumbnails -----
+//
+// Each pane (current, next) holds ONE long-lived iframe. The src is set
+// once with ?_view=slide&n=<initial-N>; subsequent slide changes are
+// delivered by postMessage({type:'__deck_goto', index:N}) into the
+// iframe's deck, which handles it in slide mode by calling _go(index).
+//
+// Reloading the iframe on every nav (the old approach) re-ran the full
+// deck boot: font load, slot collection, scale-fit. That made every
+// step feel like a "compile" and produced visible white flashes between
+// slides. Persisting the iframe removes both.
+//
+// frameSlide tracks which slide each pane is currently SHOWING (the
+// post-goto truth), framePending tracks a target requested while the
+// iframe is still loading its initial src (the load event drains it).
 
-// Cache the iframe src per index so we don't re-trigger a load when the
-// channel re-broadcasts the same state (e.g. on 'sync' or 'mutation').
-const frameSrc = { current: '', next: '' };
+const frameSlide   = { current: -1, next: -1 };
+const framePending = { current: -1, next: -1 };
+const frameReady   = { current: false, next: false };
 
-function thumbUrl(index) {
-  // ?_view=slide hides all framework chrome (rail, overlay, tap zones)
-  // and disables keyboard nav + BroadcastChannel inside the iframe so it
-  // can't echo state back. &n=N (1-indexed) selects the slide.
-  return DECK_URL + '?_view=slide&n=' + (index + 1);
+function frameEl(key) {
+  return key === 'current' ? els.frameCurrent : els.frameNext;
 }
 
+function postGoto(key, index) {
+  const el = frameEl(key);
+  if (!el.contentWindow) return false;
+  try {
+    el.contentWindow.postMessage({ type: '__deck_goto', index }, '*');
+    frameSlide[key] = index;
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function onFrameLoad(key) {
+  frameReady[key] = true;
+  // Drain any pending goto that arrived while the iframe was still
+  // booting. The deck inside has already navigated to the slide we
+  // baked into its src; we only need to send a follow-up if the target
+  // has changed since.
+  if (framePending[key] >= 0 && framePending[key] !== frameSlide[key]) {
+    postGoto(key, framePending[key]);
+  }
+  framePending[key] = -1;
+  // Forward keyboard nav from the iframe (same-origin, so we can attach
+  // a listener directly) so a click into the thumbnail doesn't trap
+  // arrow keys inside it — the in-iframe deck ignores keys in slide
+  // mode, and the presenter window's own keydown listener never fires
+  // when the iframe owns focus. The shared handler runs the same nav
+  // path used by clicks.
+  try {
+    const el = frameEl(key);
+    el.contentWindow.addEventListener('keydown', onWindowKeydown);
+  } catch (e) {}
+}
+
+// Wire up load handlers once. Each iframe fires 'load' exactly once for
+// the lifetime of the presenter (we never change its src), so a plain
+// addEventListener is enough — no cleanup needed.
+els.frameCurrent.addEventListener('load', () => onFrameLoad('current'));
+els.frameNext.addEventListener('load', () => onFrameLoad('next'));
+
 function loadFrame(key, index) {
-  const url = thumbUrl(index);
-  if (frameSrc[key] === url) return;
-  frameSrc[key] = url;
-  const el = key === 'current' ? els.frameCurrent : els.frameNext;
-  el.src = url;
+  const el = frameEl(key);
+  if (!el.src) {
+    // First time we've ever loaded this pane: bake the target slide
+    // into the URL so the iframe's first paint is the right slide
+    // (postMessage can't reach the deck until after its 'load' fires).
+    frameSlide[key] = index;
+    el.src = DECK_URL + '?_view=slide&n=' + (index + 1);
+    return;
+  }
+  if (frameSlide[key] === index) return;
+  if (frameReady[key]) {
+    postGoto(key, index);
+  } else {
+    // Iframe is still loading its initial src — remember the target and
+    // let onFrameLoad finish the navigation when the deck is alive.
+    framePending[key] = index;
+  }
 }
 
 function nextVisibleIndex(from) {
@@ -335,15 +398,22 @@ els.notesReset.addEventListener('click', () => {
 
 // ----- nav -----
 //
-// Each nav action does two things: send the cmd on the channel (drives
-// any connected deck) AND optimistically update local state. If a deck
-// is connected it'll broadcast back authoritative state and overwrite
-// the optimistic guess; if not, the optimistic update keeps the
-// presenter usable as a standalone slide stepper.
+// Each nav action sends a cmd on the channel and — only when there is no
+// deck window connected — optimistically updates local state so the
+// presenter doubles as a standalone slide stepper.
+//
+// When a deck IS connected, the deck is authoritative: 'next' might
+// advance a fragment instead of a slide, or hit a clamped edge, and the
+// deck's 'state' broadcast carries the truth. Doing an optimistic
+// state.index++ here and then waiting for the broadcast to overwrite
+// caused a visible "advance then revert" glitch on fragmented decks
+// (and any case where the deck's interpretation differed from ours).
 
 function nav(cmd) {
   send(cmd);
   if (!state.total) return;
+  // Deck connected — wait for authoritative state, don't guess.
+  if (state.connected) return;
   const skipped = new Set(state.skipped);
   const before = state.index;
   if (cmd === 'next') {
@@ -365,7 +435,7 @@ function nav(cmd) {
 els.navPrev.addEventListener('click', () => nav('prev'));
 els.navNext.addEventListener('click', () => nav('next'));
 
-window.addEventListener('keydown', (e) => {
+function onWindowKeydown(e) {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   const t = e.target;
   const inEditor = t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
@@ -397,7 +467,8 @@ window.addEventListener('keydown', (e) => {
     case 't': case 'T': els.timerToggle.click(); e.preventDefault(); break;
     case 'f': case 'F': toggleFullscreen(); e.preventDefault(); break;
   }
-});
+}
+window.addEventListener('keydown', onWindowKeydown);
 
 // ----- fullscreen -----
 
