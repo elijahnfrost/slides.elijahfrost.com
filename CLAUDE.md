@@ -10,6 +10,10 @@ API calls needed for the common case.
 
 ## New piece
 
+Two starting points, pick by how much pre-built motion you need:
+
+**Minimal scaffold — `bin/new-piece.mjs`**
+
 ```sh
 node bin/new-piece.mjs <slug> "Optional title"
 ```
@@ -17,7 +21,33 @@ node bin/new-piece.mjs <slug> "Optional title"
 Scaffolds `<slug>/index.html` from `_framework/v1/templates/blank-deck.html`
 with the slug, title, and a fresh `version_id` pre-filled. Then edit the
 file: fill in `<deck-meta>` (description, tags, slide_types_used) and
-add sections inside `<deck-stage>`.
+add sections inside `<deck-stage>`. Use this when you want to build the
+motion system from scratch.
+
+**Editorial fork — copy `editorial-template/`**
+
+```sh
+cp -R editorial-template <slug>
+```
+
+Use this when you want the full editorial template: 22 canonical slide
+layouts, the text-driven tile/letter cascade, picture tile-reveal, count-up
+numbers, and the persistent scribe/brand chrome already wired. Then in
+`<slug>/index.html`:
+
+1. Update `<deck-meta>`: change `slug` to `<slug>`, set `version_id` to
+   `null`, set `parent_version_id` to the editorial-template's `version_id`
+   (the server will mint a fresh `version_id` on upload).
+2. Update meta tags (`<title>`, `og:*`, `twitter:*`) and the title slide
+   hero copy + `.brand .wordmark` in the persistent overlay.
+3. Replace dummy `picsum.photos` images on slides 9, 14, 15, 20 with
+   your own (drop `<img>` inside the same `.placeholder` — it auto-
+   promotes to tile-reveal).
+4. Edit slide content under `<deck-stage>` and keep `#speaker-notes`
+   length equal to the section count.
+
+The in-file author guide at the top of `<style id="piece-style">` walks
+through every motion knob and the count-up system in detail.
 
 Read once before your first piece:
 
