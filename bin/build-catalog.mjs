@@ -15,6 +15,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseDeckHtml, extractDeckMetaText } from '../lib/parse.js';
 import { parseDeckMeta } from '../lib/schema.js';
+import { pruneBlobShadowsForDiskSlugs } from '../lib/blob-storage.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -68,6 +69,26 @@ async function main() {
   const out = JSON.stringify({ pieces }, null, 2) + '\n';
   await writeFile(join(ROOT, 'catalog.json'), out);
   console.log(`[build-catalog] wrote catalog.json with ${pieces.length} piece(s)`);
+
+  // Auto-supersede: wipe any Blob copy (storage + catalog entry) of a slug
+  // that's now present on disk. Without this step the merge in
+  // mergeCatalogs would keep showing the stale Blob version with its old
+  // metadata and "blob" chip — exactly the editorial-template shadowing
+  // we hit on 2026-05-19. No-op when BLOB_READ_WRITE_TOKEN is absent
+  // (i.e. local `npm run build-catalog`), so local runs stay offline.
+  try {
+    const result = await pruneBlobShadowsForDiskSlugs(pieces.map(p => p.slug));
+    if (result.skipped) {
+      console.log('[build-catalog] blob prune skipped (no BLOB_READ_WRITE_TOKEN)');
+    } else {
+      console.log(`[build-catalog] blob prune: wiped ${result.wiped_storage} object(s), dropped ${result.wiped_catalog} catalog entry(ies)`);
+    }
+  } catch (e) {
+    // Don't fail the build over a cleanup miss — the catalog.json on
+    // disk is already correct; the worst case is a stale Blob shadow
+    // that the next deploy will clean up.
+    console.warn(`[build-catalog] blob prune failed (non-fatal): ${e.message}`);
+  }
 }
 
 main().catch((e) => {

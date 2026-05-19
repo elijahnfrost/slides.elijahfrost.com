@@ -1,1 +1,31 @@
-{"pieces":[{"slug":"soft-halo","kind":"deck","title":"Grid Studies — soft halo","description":"A typographic study about backgrounds.","date":"2026-05-14","tags":["typography","grid"],"parent_template":null,"pinned":false},{"slug":"editorial-template","kind":"deck","title":"Editorial Template — Grid Studies","description":"A typographic study about backgrounds.","date":"2026-05-14","tags":["typography","grid"],"parent_template":null,"pinned":false}]}
+{
+  "pieces": [
+    {
+      "slug": "editorial-template",
+      "kind": "deck",
+      "title": "Editorial Template — Slide layouts and motion",
+      "description": "Twenty-two editorial slide layouts with text-driven cascade and tile-reveal motion. A starting point for new decks.",
+      "date": "2026-05-14",
+      "tags": [
+        "template",
+        "typography",
+        "grid"
+      ],
+      "parent_template": null,
+      "pinned": false
+    },
+    {
+      "slug": "soft-halo",
+      "kind": "deck",
+      "title": "Grid Studies — soft halo",
+      "description": "A typographic study about backgrounds.",
+      "date": "2026-05-14",
+      "tags": [
+        "typography",
+        "grid"
+      ],
+      "parent_template": null,
+      "pinned": false
+    }
+  ]
+}
