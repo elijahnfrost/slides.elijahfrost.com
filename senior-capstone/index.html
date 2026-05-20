@@ -1,0 +1,4104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- FRAMEWORK-MANAGED:head-pin — do not edit -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..600&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap">
+<link rel="stylesheet" href="/_framework/v1/tokens.css">
+<link rel="stylesheet" href="/_framework/v1/slide-types.css">
+<!-- /FRAMEWORK-MANAGED:head-pin -->
+
+<title>Senior Capstone Presentation — Elijah Frost</title>
+<meta name="description" content="Senior capstone for the Center for Advanced Learning, Health Sciences: Medical track. Two summers of OHSU research, three nonprofits, and a pathway to pediatric neurology.">
+<meta name="robots" content="noindex">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://slides.elijahfrost.com/senior-capstone/">
+<meta property="og:title" content="Senior Capstone Presentation — Elijah Frost">
+<meta property="og:description" content="Senior capstone for the Center for Advanced Learning, Health Sciences: Medical track. Two summers of OHSU research, three nonprofits, and a pathway to pediatric neurology.">
+<meta property="og:image" content="https://slides.elijahfrost.com/senior-capstone/og-image.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Senior Capstone Presentation — Elijah Frost">
+<meta name="twitter:description" content="Senior capstone for the Center for Advanced Learning, Health Sciences: Medical track. Two summers of OHSU research, three nonprofits, and a pathway to pediatric neurology.">
+<meta name="twitter:image" content="https://slides.elijahfrost.com/senior-capstone/og-image.png">
+
+<script type="application/json" id="deck-meta">{
+  "schema": "deck/1",
+  "framework": "v1",
+  "slug": "senior-capstone",
+  "kind": "deck",
+  "parent_template": null,
+  "pinned": false,
+  "title": "Senior Capstone Presentation — Elijah Frost",
+  "description": "Senior capstone for the Center for Advanced Learning, Health Sciences: Medical track. Two summers of OHSU research, three nonprofits, and a pathway to pediatric neurology.",
+  "tags": [
+    "capstone",
+    "neuroscience",
+    "medical"
+  ],
+  "date": "2026-05-19",
+  "version_id": null,
+  "parent_version_id": "01KRY6WV4S3Q7EJRKB2NJ3TGYS",
+  "created_at": null,
+  "updated_at": null,
+  "slide_types_used": [
+    "slide-title",
+    "slide-colophon",
+    "slide-contents",
+    "slide-section",
+    "slide-body",
+    "slide-list",
+    "slide-pull",
+    "slide-quote",
+    "slide-quote-portrait",
+    "slide-stat",
+    "slide-stat-grid",
+    "slide-split",
+    "slide-triptych",
+    "slide-plate",
+    "slide-image-text",
+    "slide-timeline",
+    "slide-compare",
+    "slide-process",
+    "slide-prompt",
+    "slide-diagram",
+    "slide-sources",
+    "slide-close"
+  ],
+  "agent": {
+    "model": "",
+    "session": ""
+  }
+}</script>
+
+<style id="piece-style">
+  /* ==================================================================
+     EDITORIAL TEMPLATE — AUTHOR GUIDE
+     ------------------------------------------------------------------
+     A 22-slide deck with one canonical example of every available
+     layout. Edit slide content directly under <deck-stage>; the motion
+     system needs no per-slide wiring beyond two optional knobs.
+
+       0. FORKING THIS TEMPLATE    (copying to a new deck)
+       1. SECTION ANATOMY
+       2. THE TWO PER-SLIDE KNOBS  (data-halo, data-cascade)
+       3. THE MOTION SYSTEM        (tile grid, letters, halo)
+       4. ANIMATING PICTURES       (.cascades-block, .tile-reveal)
+       5. COUNT-UP NUMBERS         (data-count-to, data-count-dur)
+       6. RISE FOR DECORATION      (rules, dashes, pips)
+       7. SLIDE-TYPE CLASSES       (the 22 layouts)
+       8. LAYOUT + TYPE HELPERS
+       9. CHROME                   (brand mark, counter, scribe)
+      10. DON’T BREAK
+
+     ------------------------------------------------------------------
+     0. FORKING THIS TEMPLATE
+     ------------------------------------------------------------------
+     Copy this entire directory to a new piece, then update the deck
+     identity. The motion system is self-contained — nothing outside
+     this file needs to change.
+
+     STEP 1  Copy the folder.
+       cp -R editorial-template <new-slug>
+
+     STEP 2  In <new-slug>/index.html, update <deck-meta> (JSON in
+     <head>). The slug MUST match the new directory name (kebab-case):
+
+       "slug":               "<new-slug>",
+       "title":              "Your Deck Title",
+       "description":        "Short description for the hub card.",
+       "tags":               ["…"],
+       "date":               "YYYY-MM-DD",
+       "version_id":         null,
+       "parent_version_id":  "01KRY6WV4S3Q7EJRKB2NJ3TGYS",  // this deck
+
+     Leave version_id null — the upload server mints one. Set
+     parent_version_id to the editorial-template's version_id so the
+     lineage is recorded. created_at / updated_at stay null.
+
+     STEP 3  Update meta tags and brand:
+       <title>…</title>
+       og:url, og:title, og:description, og:image           (use new slug)
+       twitter:title, twitter:description, twitter:image    (use new slug)
+       .slide-title .hero-name                              (title slide)
+       .slide-title .eyebrow / .sub                         (title slide)
+       .brand .wordmark                                     (persistent overlay)
+       .counter .tot                                        (cosmetic — JS overwrites)
+
+     STEP 4  Replace dummy images. Slides 9, 14, 15, 20 use
+     picsum.photos as placeholders:
+       9   editorial-portrait      portrait 3:4
+       14  editorial-plate         full-bleed 16:5
+       15  editorial-specimen      19:16
+       20  editorial-schema        roughly square
+     Drop your own <img> inside the same .placeholder div. The
+     auto-promotion to .tile-reveal still kicks in; the .placeholder-tag
+     hides when an <img>, <video>, or <iframe> is present.
+
+     STEP 5  Edit slide content under <deck-stage>. Every <section>
+     must have data-numeral and data-name; #speaker-notes JSON array
+     length must match the section count (use "" for slides with no
+     notes).
+
+     STEP 6  Commit and push to main. Vercel runs build-catalog.mjs
+     and the deck is live at /<new-slug>/ on the next request. The
+     hub at / picks it up automatically.
+
+     WHAT NOT TO TOUCH WHEN FORKING
+       - The two FRAMEWORK-MANAGED fences (head pin, deck-stage.js
+         bootstrap). Their byte content is server-fingerprinted.
+       - The 32×18 grid count anywhere in #piece-style or
+         #piece-script. Letter delays, halo radii, tile reveal cells —
+         all hard-coded to it.
+       - The order of the four top-level <script> slots: #deck-meta,
+         #speaker-notes, framework bootstrap, #piece-script. No extras.
+
+     ------------------------------------------------------------------
+     1. SECTION ANATOMY
+     ------------------------------------------------------------------
+       <section class="slide-body"
+                data-numeral="V" data-name="Argument" data-halo="4">
+         <div class="slide [center|left]">
+           <h2>Heading</h2>
+           <p class="body">Body copy.</p>
+         </div>
+       </section>
+
+     REQUIRED per <section>
+       class="slide-*"   one of the 22 slide-type classes (§6)
+       data-numeral      short scribe label (Roman numeral or §1)
+       data-name         section name shown below the numeral
+
+     REQUIRED: a matching string in #speaker-notes (use "" for none).
+     Array length must equal section count or the upload validator
+     rejects the deck.
+
+     ------------------------------------------------------------------
+     2. THE TWO PER-SLIDE KNOBS
+     ------------------------------------------------------------------
+     data-halo  (cells, default 0)
+       Radius of the soft halo the cascade pools around the text.
+         0  no halo
+         3  tight pool around the headline
+         5  comfortable spread for a body slide
+         8+ slide-filling glow (use for hero/plate slides)
+       Also valid on any descendant — set data-halo="0" on the
+       section and data-halo="8" on a single element to isolate the
+       halo to that element. (Slide 10 "Stat" does this.)
+
+     data-cascade  (direction the load-in wave travels, default ‘tl’)
+       tl   top-left → diagonal sweep        (default)
+       br   bottom-right origin diagonal
+       tr   top-right origin diagonal
+       bl   bottom-left origin diagonal
+       ltr  left-to-right column sweep
+       rtl  right-to-left
+       ttb  top-to-bottom row sweep
+       btt  bottom-to-top
+       scan legacy block-by-block reading order
+       Reverse-nav auto-flips opposites (tl↔br, tr↔bl,
+       ltr↔rtl, ttb↔btt) so a backwards step still feels right.
+
+     ------------------------------------------------------------------
+     3. THE MOTION SYSTEM
+     ------------------------------------------------------------------
+     One wave drives every entry animation. Picture a 32×18 grid
+     laid over the 1920×1080 canvas (cells of 60px).
+
+     TILE GRID  (the background)
+       On each slide change, the grid fades in cell-by-cell. The cells
+       that light are the ones the TEXT occupies — each letter’s
+       bbox is rasterised into the grid, accumulating "loudness" per
+       cell. Brightness scales with stacked coverage. The grid IS the
+       text’s silhouette. data-halo adds a softer pool of dimmer
+       cells around the lit ones.
+
+     LETTERS  (the type)
+       Every text element is auto-split into per-character spans at
+       load. Each letter’s animation-delay is stamped from its
+       (col, row) cell using the IDENTICAL formula the tile loop uses
+       — so each letter clicks on at the exact moment its cell
+       lights. No drift. The total wave is capped to ~900ms regardless
+       of letter count (steps(1,end), no fade curve).
+
+     ------------------------------------------------------------------
+     4. ANIMATING PICTURES (and other big visual blocks)
+     ------------------------------------------------------------------
+     Two opt-in classes hook non-text elements into the wave.
+
+     .cascades-block
+       Element SNAPS ON as ONE UNIT at the block delay for its centre
+       cell — instant binary toggle, same character as the letter
+       snap. The default for placeholders, list rows, KPI cards,
+       timeline beats, columns — anything you want "in step" with
+       the surrounding text but not unveiled cell-by-cell.
+
+     .tile-reveal
+       Element unveils CELL-BY-CELL in the same wave. JS injects an
+       overlay grid of page-bg cells over the element; each cell
+       fades out at its block delay, revealing the image beneath.
+       The visual signature matches the background tile grid exactly.
+       Best for full-bleed images and large media.
+
+       Density:  data-reveal-cols / data-reveal-rows on the element
+                 (defaults 8×3). For a full-bleed plate, 28×9
+                 gives a cell size that matches the background grid.
+
+     PLACEHOLDER PRIMITIVE (the image-slot pattern this deck uses)
+       <div class="placeholder cascades-block" data-halo="8">
+         <div class="placeholder-tag">Description &middot; ratio</div>
+       </div>
+       Hatched rectangle with a monospace tag. The tag is real text,
+       so the halo system seeds from it — image regions light the
+       grid even before you swap an image in.
+
+     AUTO-PROMOTION
+       Any .placeholder that contains an <img>, <video>, or <iframe>
+       gets .tile-reveal applied for you, with sensible cell density.
+       Drop an image into a placeholder and it cascades correctly
+       without further class changes. The .placeholder-tag also hides
+       automatically when real media is present.
+
+     ------------------------------------------------------------------
+     5. COUNT-UP NUMBERS
+     ------------------------------------------------------------------
+     Any element with data-count-to="N" animates its text from 0 to N
+     in step with the surrounding cascade. The count starts when the
+     nearest cascading ancestor (.cascades-block or .rise) arrives.
+
+       Single number, inside a card that already cascades:
+         <div class="kpi cascades-block">                 (slide 11)
+           <div class="kpi-num">
+             <span data-count-to="32">32</span><span class="unit">columns</span>
+           </div>
+         </div>
+
+       Isolated number (no surrounding cascading element):
+         <span class="cascades-block" data-count-to="4">4</span>   (slide 10)
+
+       Decimal:
+         <span data-count-to="3.4">3.4</span>            (1-decimal display)
+
+     RULES
+       - If the count-to span is INSIDE a .cascades-block (a card,
+         item, beat), don't add .cascades-block to the span itself.
+       - If the count-to span is ISOLATED, add .cascades-block to
+         the span so it has a cascade anchor. Otherwise it sits at
+         opacity 1 from t=0 and arrives before everything else.
+       - Optional data-count-dur="ms" overrides the default duration.
+         Default = 700ms for big counts; for small integer targets
+         (|N| ≤ 12) it auto-scales to ≥220ms per integer so each
+         tick is visible (linear easing). Big counts use ease-out-quint.
+       - prefers-reduced-motion users skip the animation and see N
+         immediately.
+
+     IMPLEMENTATION NOTE
+       The count uses explicit setTimeout waypoints (not an rAF loop)
+       because rAF gets heavily throttled when the deck renders in a
+       low-refresh preview iframe — a single rAF tick would collapse
+       the whole count to its final value. Don't switch back to rAF.
+
+     ------------------------------------------------------------------
+     6. DECORATIVE LINES (one decision tree)
+     ------------------------------------------------------------------
+     Anything decorative — pips, separators, hero rules, timeline
+     rules, closing dashes — has to participate in the cascade. A
+     static `background: var(--scribe-line)` div sitting at opacity:1
+     on slide entry breaks the rhythm. There are three primitives;
+     pick by length.
+
+     SHORT  (~1 cell or less — pips, name/role separators)
+       <span class="pip"></span>     (a 10–28px hairline)
+       <span class="sep"></span>     (a 24px attribution rule)
+
+       .pip and .sep are auto-promoted: they behave like
+       .cascades-block (opacity:0 at rest, JS-stamped delay on entry,
+       instant snap-on). No further wiring. Style them however
+       you like; the cascade hook follows the class name.
+
+     MEDIUM  (a single visual unit you want in step with the wave)
+       <div class="my-divider cascades-block"></div>
+
+       .cascades-block is the explicit opt-in. JS finds the element's
+       centre cell and stamps a delay that matches the cascade beat
+       at that cell. The element snaps on as one unit. Use this for
+       anything that isn't a long line and isn't covered by .pip/.sep.
+
+     LONG  (a line that should draw cell-by-cell with the letters)
+       <div class="hero-rule tile-rule"></div>           horizontal
+       <div class="cols-rule tile-rule"></div>           vertical
+       <div class="tl-rule tile-rule"></div>             horizontal
+
+       .tile-rule is the segmented variant. On entry JS chops the
+       rule's bbox into cell-aligned segments and stamps each segment
+       with its own cell's cascade delay, so the line draws in step
+       with the surrounding letters. Orientation is detected from the
+       bbox (wider than tall → horizontal). Default segment colour is
+       --scribe-line; override per-rule with `--rule-color: …` on the
+       host element. Rules do NOT contribute to the tile loudness map
+       — a 1px rule's bbox would light tile borders offset from the
+       rule itself, reading as a ghost duplicate line.
+
+     RISE  (a non-line that should appear at a fixed late delay)
+       <div class="eyebrow rise d-1">…</div>
+
+       .rise.d-N (N=1..5) is for non-text decoration that should land
+       in the final ~200ms of the wave (eyebrow on title slide, the
+       hero-rule's late draw, etc.). Same instant `steps(1, end)`
+       toggle. Don't use .rise on something that already cascades;
+       pick one anchor per element.
+
+     If you add a new short-line CSS class (e.g. `.bullet`, `.divider`)
+     and want it auto-promoted, extend the selector in piece-style
+     (`.cascades-block, .pip, .sep, .bullet, .divider`) AND the matching
+     `slide.querySelectorAll(...)` line in applyElementBlockDelays.
+     Both must stay in sync.
+
+     ------------------------------------------------------------------
+     7. SLIDE-TYPE CLASSES  (one per <section>)
+     ------------------------------------------------------------------
+       01 .slide-title           hero cover
+       02 .slide-colophon        printed title page (key/value)
+       03 .slide-contents        agenda / table of contents
+       04 .slide-section         section opener
+       05 .slide-body            heading + body paragraph
+       06 .slide-list            numbered list, item + brief
+       07 .slide-pull            single full-bleed italic statement
+       08 .slide-quote           pull quote with attribution
+       09 .slide-quote-portrait  quote + portrait slot
+       10 .slide-stat            single big figure + meta column
+       11 .slide-stat-grid       three KPIs in a row
+       12 .slide-split           two-column compare
+       13 .slide-triptych        three-column compare
+       14 .slide-plate           full-bleed image + caption
+       15 .slide-image-text      50/50 image + text
+       16 .slide-timeline        horizontal four-beat sequence
+       17 .slide-compare         two-column stance comparison
+       18 .slide-process         four numbered horizontal steps
+       19 .slide-prompt          large italic discussion question
+       20 .slide-diagram         labeled specimen + side glosses
+       21 .slide-sources         numbered citations
+       22 .slide-close           thank-you / coda
+
+     ------------------------------------------------------------------
+     8. LAYOUT + TYPE HELPERS
+     ------------------------------------------------------------------
+     LAYOUT (on .slide)
+       .center   centred both axes
+       .left     left-aligned, vertically centred
+
+     TYPE (anywhere)
+       .display       large serif headline
+       .serif-italic  serif italic at body size
+       .body          sans body copy
+       .label         tracked uppercase mini-label
+       .eyebrow       small italic serif eyebrow
+
+     ------------------------------------------------------------------
+     9. CHROME (the persistent overlay)
+     ------------------------------------------------------------------
+     The brand mark (top-left), counter (top-right), and scribe
+     (bottom rule + carriage) live in a #overlay div OUTSIDE
+     <deck-stage>. They mirror the deck-stage canvas position via a
+     per-frame transform sync, so they feel pinned to the slide.
+
+     On slide change, the carriage glides between ticks and the
+     numeral + name crossfade in place. Slide count is read off
+     <section> children at boot — no number to update by hand.
+
+     To rebrand: edit .brand .wordmark in the overlay markup.
+
+     ------------------------------------------------------------------
+     10. DON’T BREAK
+     ------------------------------------------------------------------
+     - Don’t remove .cascades-block / .tile-reveal. They start at
+       opacity:0; without them, JS has nothing to delay-fade in and
+       the element stays invisible. (.pip and .sep are auto-promoted
+       under the same rule — see §6.)
+     - Don’t leave a decorative line sitting on the page at opacity:1.
+       Any hairline divider — `background: var(--scribe-line)` with
+       1px height or width — must route through .pip / .sep / .tile-rule
+       / .cascades-block (see §6). A static line breaks the cascade
+       rhythm and reads as an artefact.
+     - Don’t change the 32×18 grid count. Letter delays, halo
+       radii, and tile delays are all hard-coded to it.
+     - Don’t add CSS that fades .slide content longer than ~900ms.
+       It will fight the cascade and read as drag.
+     - Don’t add raw <img>/<video> outside a .placeholder unless you
+       also add .cascades-block or .tile-reveal — without one of
+       those it won’t participate in the entry wave.
+     - Don’t put a count-up span inside a .cascades-block ancestor
+       AND on the span itself — pick one (see §5). Doubled-up, the
+       span fades in twice and the count fires twice.
+     - Don’t touch the FRAMEWORK-MANAGED fences in <head> or near
+       the deck-stage.js bootstrap (the upload validator rejects edits).
+     ================================================================== */
+
+  @property --car-x { syntax: '<length>'; inherits: true; initial-value: 0px; }
+
+  :root {
+    --font-inter: "Inter";
+    --font-cormorant: "Cormorant Garamond";
+
+    --pad-x: 120px;
+    --pad-y: 96px;
+
+    /* Scribe accents — a triplet of values derived from --color-fg so
+       they hold against the page in both dark and light themes. */
+    --scribe-line:     color-mix(in srgb, var(--color-fg) 22%, var(--color-bg-page));
+    --scribe-line-dim: color-mix(in srgb, var(--color-fg) 10%, var(--color-bg-page));
+    --scribe-glow:     color-mix(in srgb, var(--color-fg) 42%, var(--color-bg-page));
+
+    /* Motion */
+    /* S-curve glide: slow start, fast middle, slow stop. Duration
+       matches the grid/letter cascade (~800ms) so the carriage and
+       the wave arrive together. */
+    --ease-glide:  cubic-bezier(0.83, 0, 0.17, 1);
+    --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+    /* Mechanical curves used by tiles + letters. The tile fade is a
+       very fast near-linear ramp; letters snap on as a single step. */
+    --ease-tile:   cubic-bezier(0.2, 0, 0.1, 1);
+    --ease-ltr:    steps(1, end);
+    --dur-nav:     820ms;
+    --dur-grid:    900ms;
+    --dur-label:   280ms;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Deck shell                                                         */
+  /* ------------------------------------------------------------------ */
+  deck-stage:not(:defined) { visibility: hidden; }
+  body { background: var(--color-bg-page); margin: 0; }
+
+  /* Sections OWN their background — without this the white .canvas of
+     deck-stage's shadow root shows through and the deck looks lit. */
+  deck-stage section {
+    background: var(--color-bg-page);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* ==================================================================
+     PERSISTENT OVERLAY                                                 */
+  .deck-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    transform-origin: 0 0;
+    pointer-events: none;
+    z-index: 5;
+    --car-x: 0px;
+  }
+
+  /* ==================================================================
+     TILE GRID
+     32 columns × 18 rows (60px cells across a 1920×1080 canvas). Each
+     tile draws its top + left edges; on-tiles share edges to form a
+     continuous crosshatch.
+
+     The reveal is typewriter-like: row-major, left-to-right, with
+     rows overlapping slightly so the surface fills as a clean wave.
+     A spotlight ellipse is computed each slide from the text's
+     bounding box, so the grid focuses on the words rather than
+     filling the whole canvas. Tiles outside the ellipse feather to
+     zero; a small mask softens the canvas perimeter as a safety net.
+     ================================================================== */
+  .grid-tiles {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(32, 1fr);
+    grid-template-rows: repeat(18, 1fr);
+    pointer-events: none;
+    /* Perimeter falloff — a LONG, smoothly-eased mask on each axis.
+       The fade spans ~38% of each side (5 stops approximating an
+       ease-in-out curve, no visible band). Tiles dissolve gradually
+       into the page background; importantly the falloff is opacity-
+       only, so any text-lit (.is-on) cells INSIDE the fade region
+       still read — they just sit at lower contrast as they approach
+       the edge, which preserves the telltale block-in. The two axes
+       are composited with `intersect` so the corners get the product
+       of both fades and disappear before the sides do.
+
+       Stops were picked to lie on a cubic ease (0.06 / 0.24 / 0.56 /
+       0.84 / 0.97 of the fade interval) so the eye reads it as one
+       smooth ramp rather than a stepped gradient. */
+    -webkit-mask-image:
+      linear-gradient(to right,
+        transparent          0%,
+        rgba(0,0,0,0.02)     2%,
+        rgba(0,0,0,0.08)     6%,
+        rgba(0,0,0,0.20)    11%,
+        rgba(0,0,0,0.38)    17%,
+        rgba(0,0,0,0.58)    23%,
+        rgba(0,0,0,0.78)    29%,
+        rgba(0,0,0,0.92)    35%,
+        #000                42%,
+        #000                58%,
+        rgba(0,0,0,0.92)    65%,
+        rgba(0,0,0,0.78)    71%,
+        rgba(0,0,0,0.58)    77%,
+        rgba(0,0,0,0.38)    83%,
+        rgba(0,0,0,0.20)    89%,
+        rgba(0,0,0,0.08)    94%,
+        rgba(0,0,0,0.02)    98%,
+        transparent        100%),
+      linear-gradient(to bottom,
+        transparent          0%,
+        rgba(0,0,0,0.02)     2%,
+        rgba(0,0,0,0.08)     6%,
+        rgba(0,0,0,0.20)    11%,
+        rgba(0,0,0,0.38)    17%,
+        rgba(0,0,0,0.58)    23%,
+        rgba(0,0,0,0.78)    29%,
+        rgba(0,0,0,0.92)    35%,
+        #000                42%,
+        #000                58%,
+        rgba(0,0,0,0.92)    65%,
+        rgba(0,0,0,0.78)    71%,
+        rgba(0,0,0,0.58)    77%,
+        rgba(0,0,0,0.38)    83%,
+        rgba(0,0,0,0.20)    89%,
+        rgba(0,0,0,0.08)    94%,
+        rgba(0,0,0,0.02)    98%,
+        transparent        100%);
+            mask-image:
+      linear-gradient(to right,
+        transparent          0%,
+        rgba(0,0,0,0.02)     2%,
+        rgba(0,0,0,0.08)     6%,
+        rgba(0,0,0,0.20)    11%,
+        rgba(0,0,0,0.38)    17%,
+        rgba(0,0,0,0.58)    23%,
+        rgba(0,0,0,0.78)    29%,
+        rgba(0,0,0,0.92)    35%,
+        #000                42%,
+        #000                58%,
+        rgba(0,0,0,0.92)    65%,
+        rgba(0,0,0,0.78)    71%,
+        rgba(0,0,0,0.58)    77%,
+        rgba(0,0,0,0.38)    83%,
+        rgba(0,0,0,0.20)    89%,
+        rgba(0,0,0,0.08)    94%,
+        rgba(0,0,0,0.02)    98%,
+        transparent        100%),
+      linear-gradient(to bottom,
+        transparent          0%,
+        rgba(0,0,0,0.02)     2%,
+        rgba(0,0,0,0.08)     6%,
+        rgba(0,0,0,0.20)    11%,
+        rgba(0,0,0,0.38)    17%,
+        rgba(0,0,0,0.58)    23%,
+        rgba(0,0,0,0.78)    29%,
+        rgba(0,0,0,0.92)    35%,
+        #000                42%,
+        #000                58%,
+        rgba(0,0,0,0.92)    65%,
+        rgba(0,0,0,0.78)    71%,
+        rgba(0,0,0,0.58)    77%,
+        rgba(0,0,0,0.38)    83%,
+        rgba(0,0,0,0.20)    89%,
+        rgba(0,0,0,0.08)    94%,
+        rgba(0,0,0,0.02)    98%,
+        transparent        100%);
+    -webkit-mask-composite: source-in;
+            mask-composite: intersect;
+  }
+  .tile {
+    border-top:  1px solid color-mix(in srgb, var(--color-fg) 11%, transparent);
+    border-left: 1px solid color-mix(in srgb, var(--color-fg) 11%, transparent);
+    opacity: 0;
+    transition: opacity 200ms var(--ease-tile);
+    /* per-tile transitionDelay + --t-op set inline by JS */
+  }
+  /* JS flags tiles whose grid hairlines run alongside a .tile-rule and
+     would otherwise read as a ghost duplicate line at the row/col
+     boundary. Suppress the offending edge so only the rule shows. */
+  .tile.is-rule-suppress-h { border-top:  1px solid transparent; }
+  .tile.is-rule-suppress-v { border-left: 1px solid transparent; }
+  .tile.is-on { opacity: var(--t-op, 1); }
+  /* Briefly suppress transitions while we reset all tiles to off at the
+     start of each slide change, so the cascade-on wave reads as fresh
+     instead of a global fade. */
+  .grid-tiles.is-resetting .tile { transition: none !important; }
+
+  /* counter — top-right of canvas, mirrors brand mark on the left */
+  .counter {
+    position: absolute;
+    top: 60px;
+    right: 60px;
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .counter .cur { color: var(--color-fg); }
+  .counter .of  { color: var(--color-fg-dim); margin: 0 6px; }
+
+  /* brand mark — top-left, persistent, quiet */
+  .brand {
+    position: absolute;
+    top: 60px;
+    left: 60px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--color-fg);
+  }
+  .brand svg { width: 22px; height: 22px; display: block; color: var(--color-fg); }
+  .brand .wordmark {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    letter-spacing: 0.01em;
+    color: var(--color-fg);
+  }
+
+  /* ==================================================================
+     SCRIBE
+     ------------------------------------------------------------------
+     Geometry (in 1920×1080 design space):
+
+       outer container        left:120 right:120 bottom:60   height:100
+       rule                   bottom:30 of container   1px hairline
+       ticks                  start at top:24 below rule's vertical
+                              center; six positions at 0, 20, 40, 60,
+                              80, 100% of inner width.
+       pearl                  centered on the rule (vertically) at
+                              car-x (horizontally).  7×7 hollow circle.
+       numeral                bottom 44 of container, centered on car-x.
+       name                   top 78 of container, centered on car-x.
+       brand mark             top 78 of container, anchored left.
+       count                  top 78 of container, anchored right.
+
+     The carriage (pearl + numeral + name) is one positioned ancestor
+     with left:var(--car-x); transition applies to that single transform
+     so the three pieces stay perfectly together.                       */
+
+  .scribe {
+    position: absolute;
+    left: 120px;
+    right: 120px;
+    bottom: 60px;
+    height: 100px;
+  }
+  .scribe-rule {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 30px;
+    height: 1px;
+    background: var(--scribe-line-dim);
+  }
+  /* trail: a soft wash that lights between old and new carriage X.
+     Lives just under the rule, briefly raised in opacity by JS. */
+  .scribe-trail {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    height: 1px;
+    width: 0;
+    background: linear-gradient(90deg, transparent, var(--scribe-glow), transparent);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .scribe-ticks {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 24px;
+    height: 6px;
+    pointer-events: none;
+  }
+  .scribe-ticks .tick {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 6px;
+    background: var(--scribe-line-dim);
+    transform: translateX(-0.5px);
+  }
+
+  /* Carriage — a single anchor that moves */
+  .scribe-carriage {
+    position: absolute;
+    left: var(--car-x);
+    top: 0;
+    bottom: 0;
+    width: 0;
+    transition: left var(--dur-nav) var(--ease-glide);
+  }
+  .scribe-carriage .pearl { display: none; }
+  .scribe-carriage .cursor {
+    position: absolute;
+    left: 0;
+    bottom: 30px;
+    width: 2px;
+    height: 12px;
+    background: var(--scribe-glow);
+    transform: translateX(-50%);
+  }
+
+  .scribe-fill {
+    position: absolute;
+    left: 0;
+    bottom: 30px;
+    height: 1px;
+    width: 0;
+    background: var(--scribe-line);
+    transition: width var(--dur-nav) var(--ease-glide);
+    pointer-events: none;
+  }
+
+  /* Numeral + name use a two-layer crossfade so a label is ALWAYS
+     visible during nav: the outgoing layer fades up + out while the
+     incoming layer fades up + in, and the two overlap mid-transit.
+     The container is a zero-size anchor at car-x; layers are
+     absolute children centred horizontally via translateX(-50%). */
+  .scribe-carriage .numeral,
+  .scribe-carriage .name {
+    position: absolute;
+    left: 0;
+    width: 0;
+    height: 0;
+  }
+  .scribe-carriage .numeral { bottom: 44px; }
+  .scribe-carriage .name    { top: 78px; }
+
+  .scribe-carriage .numeral .layer,
+  .scribe-carriage .name    .layer {
+    position: absolute;
+    left: 0;
+    white-space: nowrap;
+    opacity: 1;
+    transform: translateX(-50%);
+    /* Pure opacity crossfade — no vertical drift. The carriage glides
+       horizontally and the labels are anchored to it; any extra Y
+       motion reads as a wobble. */
+    transition: opacity var(--dur-label) ease;
+  }
+  /* Anchor each label to match the side its container is anchored on:
+     the numeral hangs above the rule (container bottom-anchored), the
+     name sits below it (container top-anchored). */
+  .scribe-carriage .numeral .layer { bottom: 0; }
+  .scribe-carriage .name    .layer { top: 0; }
+  .scribe-carriage .numeral .layer {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--color-fg);
+    letter-spacing: 0.01em;
+  }
+  .scribe-carriage .name .layer {
+    font-family: var(--font-inter), sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-fg-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+  }
+  .scribe-carriage .numeral .layer.is-incoming,
+  .scribe-carriage .name    .layer.is-incoming {
+    opacity: 0;
+  }
+  .scribe-carriage .numeral .layer.is-outgoing,
+  .scribe-carriage .name    .layer.is-outgoing {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Scramble cells — one per character of the final label text. Cells
+     cycle through random letters at the cascade rhythm, then snap to
+     their final character. Fixed min-width keeps the label's centre
+     stable while wide/narrow random chars cycle through. */
+  .scribe-carriage .scramble-cell {
+    display: inline-block;
+    text-align: center;
+    opacity: 0;
+  }
+  .scribe-carriage .scramble-cell.is-on { opacity: 1; }
+  .scribe-carriage .numeral .scramble-cell { min-width: 0.62em; }
+  .scribe-carriage .name    .scramble-cell { min-width: 0.78em; }
+  /* Spaces don't need a min-width; let them collapse to natural. */
+  .scribe-carriage .scramble-cell.is-space { min-width: 0; }
+
+  /* Overlay chrome — brand mark + scribe — fade in once on initial
+     mount so they arrive at the same time as the first slide's content
+     (which uses `.rise` with delays 0–240ms). The `data-mounted` attr
+     is set on the overlay after one rAF; before that, both are at
+     opacity 0. No exit animation; this only runs at load.            */
+  /* Above-fallback rule for older browsers without color-mix — ensure
+     brand/counter/scribe always start hidden until JS mounts. */
+  .brand, .counter, .scribe { opacity: 0; }
+  .deck-overlay[data-mounted] .brand,
+  .deck-overlay[data-mounted] .counter,
+  .deck-overlay[data-mounted] .scribe {
+    animation: rise 0.6s var(--ease-settle) both;
+  }
+  .deck-overlay[data-mounted] .counter { animation-delay: 30ms; }
+  .deck-overlay[data-mounted] .scribe  { animation-delay: 60ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scribe-carriage,
+    .scribe-carriage .numeral, .scribe-carriage .name { transition: none !important; }
+    .tile { transition: none !important; }
+  }
+  @media print {
+    .deck-overlay { display: none !important; }
+  }
+
+  /* ==================================================================
+     SLIDE CONTENT
+     Slides carry no chrome of their own. The persistent overlay
+     handles brand mark, progress, numerals.
+     ================================================================== */
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: var(--pad-y) var(--pad-x) 200px;  /* leave room for scribe */
+    box-sizing: border-box;
+    z-index: 1;
+  }
+  .slide.center { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 8px; }
+  .slide.left   { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; text-align: left; }
+
+  /* Title slide needs more breathing room — display line-height of 0.95
+     means the ascenders of the hero name can punch up into the eyebrow
+     above without an explicit gap. */
+  .slide-title.slide.center { gap: 0; }
+  .slide-title .eyebrow { margin-bottom: 40px; }
+  .slide-title .sub     { margin-top: 32px; }
+
+  /* Type helpers */
+  .eyebrow {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-fg-dim);
+    font-size: 28px;
+    line-height: 1;
+  }
+  .label {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 26px;
+    color: var(--color-fg-muted);
+    font-weight: 400;
+  }
+  .display {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    color: var(--color-fg);
+    line-height: 0.95;
+  }
+  .serif-italic {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-fg);
+  }
+  .body {
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    color: var(--color-fg-body);
+    line-height: 1.5;
+    font-size: 30px;
+  }
+
+  /* ==================================================================
+     ENTRY MOTION
+     ------------------------------------------------------------------
+     Letters arrive in the same block-scan rhythm as the tiles. Each
+     text element is split into per-character spans (.ltr) at load; on
+     slide change, each letter's animation-delay is stamped from the
+     block its (col,row) cell belongs to, using the IDENTICAL formula
+     the tile loop uses. So each letter clicks on at the exact moment
+     its block lights up — typewriter snap, no drift.
+
+     Decorative non-text rises (hero rule, split-slide column rule,
+     closing dash) keep the older `.rise` animation — but with delays
+     tuned to land near the END of the letter wave, not the start.
+     ================================================================== */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  /* In-section .rise — snaps on at the d-N delay, matching the letter
+     snap. The `rise` keyframe still includes a 4px translateY, but at
+     1ms with steps(1, end) the transform commits in one frame so the
+     element appears at its final position. */
+  deck-stage section[data-deck-active] .rise        { animation: rise 1ms steps(1, end) both; }
+  deck-stage section[data-deck-active] .rise.d-1    { animation-delay: 420ms; }
+  deck-stage section[data-deck-active] .rise.d-2    { animation-delay: 560ms; }
+  deck-stage section[data-deck-active] .rise.d-3    { animation-delay: 700ms; }
+  deck-stage section[data-deck-active] .rise.d-4    { animation-delay: 840ms; }
+  deck-stage section[data-deck-active] .rise.d-5    { animation-delay: 980ms; }
+
+  /* Cascade-block opt-in: any element with this class rides the same
+     block wave as the letters and tiles. JS stamps its animation-delay
+     to match the block under the element's centre; the element then
+     SNAPS ON at that delay — instant binary toggle, matching the
+     letter `steps(1, end)` snap. Gated on .letters-ready so it
+     (re)starts cleanly on each slide entry.
+
+     AUTO-PROMOTED CLASSES — small decorative line/divider primitives
+     (.pip, .sep) are folded into the same selector. They behave
+     identically to .cascades-block — opacity:0 at rest, JS-stamped
+     delay on entry, instant snap-on. So a label-row pip or an
+     attribution separator drawn with `background: var(--scribe-line)`
+     joins the cascade without per-element wiring. Keep this list in
+     sync with `slide.querySelectorAll(...)` in applyElementBlockDelays
+     and with the author-guide §6. */
+  /* Held-until-end keyframes + linear easing — same Chromium workaround
+     as .ltr-snap. `steps(1, end)` with 1ms duration and `fill: both`
+     fails to commit the final frame when (delay + duration) crosses
+     ~1s, leaving late cascades-block elements stuck at opacity:0. */
+  @keyframes block-fade {
+    0%, 99% { opacity: 0; }
+    100%    { opacity: 1; }
+  }
+  .cascades-block,
+  .pip,
+  .sep { opacity: 0; }
+  deck-stage section.letters-ready :is(.cascades-block, .pip, .sep) {
+    animation: block-fade 1ms linear both;
+  }
+
+  /* Tile-rule — a line that's been chopped into cell-aligned segments
+     by the cascade JS. Each segment snaps on at its own cell's delay,
+     same character as the letter snap. JS also adds each segment's
+     cell to the background-grid loudness map, so the rule lights the
+     tile grid as it passes (same way text does). The .tile-rule itself
+     is just a container; its --rule-color custom prop is the colour
+     each .rule-seg paints.
+
+     The `background: none !important;` is intentional — when an
+     element opts into .tile-rule, the framework's own static
+     `background: var(--slide-hairline)` on the element (e.g.
+     `.slide-title .hero-rule`, `.slide-close .dash`) would otherwise
+     paint a persistent line UNDERNEATH the cascading segments. The
+     !important wins over the more-specific framework selectors. */
+  .tile-rule {
+    --rule-color: var(--scribe-line);
+    position: relative;
+    display: flex;
+    background: none !important;
+    pointer-events: none;
+  }
+  .tile-rule.is-vertical { flex-direction: column; }
+  .tile-rule .rule-seg {
+    flex: 1 1 0;
+    background: var(--rule-color);
+    opacity: 0;
+  }
+  deck-stage section.letters-ready .tile-rule .rule-seg {
+    animation: rule-seg-snap 1ms linear both;
+  }
+  /* Held-until-end + linear: same Chromium workaround as .ltr-snap.
+     Late rule segments (delay > ~1s) would otherwise stay at 0. */
+  @keyframes rule-seg-snap {
+    0%, 99% { opacity: 0; }
+    100%    { opacity: 1; }
+  }
+
+  /* ==================================================================
+     FRAMEWORK STATIC-LINE OVERRIDES
+     ------------------------------------------------------------------
+     The framework's slide-types.css paints multiple decorative lines
+     as static element backgrounds, borders, and ::before/::after
+     pseudo-elements. By default they sit at opacity:1 from slide
+     mount, which reads as a persistent artefact beneath the cascade.
+
+     Three suppression strategies, by line type:
+
+       1. Element backgrounds (.hero-rule, .dash) — handled above by
+          `.tile-rule { background: none !important; }`. The cascading
+          .rule-seg children now paint the line; the framework's
+          element-level background is suppressed.
+
+       2. Pseudo-element dividers (.slide-split .cols::before,
+          .slide-timeline .tl::before) — suppressed below where the
+          piece-style introduces a cascade-aware .tile-rule replacement
+          (.cols-rule, .tl-rule). Without `display: none`, both paint
+          and you see a ghost duplicate behind the cascade.
+
+       3. Element borders (.colophon dd) — the framework paints a
+          1px border-bottom between rows. Border-color isn't easily
+          delay-stamped per-cell, and the parent dd is .has-letters
+          (so element-level animations are killed). The replacement
+          is an ::after pseudo-line on each dd that fades in with the
+          cascade, staggered top-down to match the wave direction.
+
+     When you fork this template and add new content, audit any
+     framework-provided divider line and either route it through
+     one of these strategies or accept that it will sit static. */
+
+  /* (2) Pseudo-element divider suppression. */
+  .slide-split .cols::before  { display: none !important; } /* replaced by .cols-rule */
+  .slide-timeline .tl::before { display: none !important; } /* replaced by .tl-rule  */
+
+  /* (3) Colophon row dividers — cascade-aware replacement. The dd
+     element itself is .has-letters (its text is split into .ltr
+     spans), so element-level animations are blocked. We paint the
+     rule as a ::after pseudo positioned at the dd's bottom, which
+     is NOT under the has-letters opacity gate and animates cleanly.
+     Stagger via :nth-of-type so each row's rule lands in step with
+     its own letter wave instead of all four snapping at once. */
+  .slide-colophon .colophon dd {
+    border-bottom: none !important;
+    position: relative;
+  }
+  .slide-colophon .colophon dd::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: var(--slide-divider);
+    opacity: 0;
+  }
+  .slide-colophon .colophon dd:last-of-type::after { display: none; }
+  deck-stage section.slide-colophon.letters-ready .colophon dd::after {
+    animation: block-fade 1ms linear both;
+  }
+  deck-stage section.slide-colophon.letters-ready .colophon dd:nth-of-type(1)::after { animation-delay: 640ms; }
+  deck-stage section.slide-colophon.letters-ready .colophon dd:nth-of-type(2)::after { animation-delay: 760ms; }
+  deck-stage section.slide-colophon.letters-ready .colophon dd:nth-of-type(3)::after { animation-delay: 880ms; }
+  deck-stage section.slide-colophon.letters-ready .colophon dd:nth-of-type(4)::after { animation-delay: 1000ms; }
+
+  /* Per-letter span. Inline-block so transform works; spaces stay as
+     raw text nodes so wrapping is preserved BETWEEN words. Words are
+     wrapped in `.word` spans (inline-block + white-space:nowrap) so the
+     browser can't break inside a word. */
+  .word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .ltr {
+    display: inline-block;
+    opacity: 0;
+    will-change: opacity;
+  }
+  /* Typewriter snap: each letter switches on at its stamped delay
+     with no drift, no fade-curve — a hard binary step. The 1ms
+     duration is a no-op carrier for the delay; the step is encoded
+     in the keyframes (held at 0 until 99%, jumps to 1 at 100%) with
+     linear easing, so the prior frame's 0-opacity holds until the
+     exact moment the letter clicks on. (Earlier this used
+     `steps(1,end)` on the animation; Chromium fails to commit the
+     final keyframe for `fill:both` when delay+duration crosses a
+     ~1s threshold, leaving the last cascade letters stuck at 0.) */
+  deck-stage section.letters-ready .ltr {
+    animation: ltr-snap 1ms linear both;
+  }
+  @keyframes ltr-snap {
+    0%, 99% { opacity: 0; }
+    100%    { opacity: 1; }
+  }
+  /* Parents of split text shed their own .rise so only the letters
+     animate — otherwise the parent's opacity gate hides the staggered
+     children behind a single global fade. */
+  .has-letters,
+  deck-stage section[data-deck-active] .has-letters {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ltr { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+
+  /* (01) Title — hero rises; a hairline rule draws beneath after the
+         hero has settled. The rule's draw is the bespoke moment. */
+  .slide-title .hero-name {
+    font-size: clamp(96px, 8vw, 160px);
+    text-align: center;
+    white-space: nowrap;
+  }
+  .slide-title .hero-rule {
+    width: 360px;
+    height: 1px;
+    margin: 36px auto 0;
+    /* Segmented by .tile-rule — 6 chunks snap in at cell delays. */
+  }
+  .slide-title .sub {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 22px;
+    color: var(--color-fg-muted);
+    margin-top: 28px;
+  }
+
+  /* (02) Section opener — two-column composition, both rise. */
+  .slide-section .opener {
+    width: 100%;
+    max-width: 1100px;
+  }
+  .slide-section .label-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+  .slide-section .label-row .pip {
+    width: 28px; height: 1px; background: var(--scribe-line);
+  }
+  .slide-section h2 {
+    margin: 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 96px;
+    color: var(--color-fg);
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .slide-section .lede { margin-top: 36px; max-width: 720px; }
+
+  /* (03) Quote — one rise on the body, one on the attribution. */
+  .slide-quote .quote {
+    font-size: 72px;
+    line-height: 1.22;
+    max-width: 1400px;
+    text-align: center;
+  }
+  .slide-quote .marks {
+    color: var(--color-numeral);
+    font-style: italic;
+    font-family: var(--font-cormorant), serif;
+    font-size: 1.1em;
+    line-height: 1;
+  }
+  .slide-quote .attrib {
+    margin-top: 56px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-size: 26px;
+  }
+
+  /* (04) Stat — the big figure rises with everything else. No count-up. */
+  .slide-stat .stat-wrap {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .slide-stat .stat-num {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 320px;
+    color: var(--color-fg);
+    letter-spacing: -0.01em;
+    line-height: 0.85;
+    text-align: right;
+    font-feature-settings: "tnum" 1;
+  }
+  .slide-stat .stat-num .times { color: var(--color-numeral); margin-left: 2px; }
+  .slide-stat .stat-num .unit {
+    font-style: italic;
+    color: var(--color-fg-dim);
+    font-size: 0.28em;
+    margin-left: 18px;
+    letter-spacing: 0.02em;
+  }
+  .slide-stat .stat-meta { padding-right: 60px; }
+  .slide-stat .stat-meta h3 {
+    margin: 0 0 32px 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 56px;
+    color: var(--color-fg);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+
+  /* (05) Split — two columns slide in from their own sides. A vertical
+         rule traces between them in the same beat. Bespoke because the
+         direction of motion carries the slide's meaning (mis-registration). */
+  .slide-split .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 120px;
+    width: 100%;
+    align-items: flex-start;
+    position: relative;
+  }
+  /* Center rule between the two columns — chopped into vertical
+     cell-aligned segments by .tile-rule, each snapping in at its
+     cell's cascade delay (and lighting the tile grid as it lands). */
+  .slide-split .cols-rule {
+    --rule-color: color-mix(in srgb, var(--color-fg) 22%, transparent);
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    transform: translateX(-50%);
+  }
+  .slide-split .col-left, .slide-split .col-right { opacity: 0; }
+  deck-stage section[data-deck-active].slide-split .col-left {
+    animation: rise 1ms 0.50s steps(1, end) both;
+  }
+  deck-stage section[data-deck-active].slide-split .col-right {
+    animation: rise 1ms 0.72s steps(1, end) both;
+  }
+  .slide-split h2 {
+    margin: 0 0 36px 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 56px;
+    color: var(--color-fg);
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+  }
+  .slide-split .label-row {
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .slide-split .label-row .pip {
+    width: 10px; height: 1px; background: var(--scribe-line);
+  }
+
+  /* (06) Close — eyebrow rises, dash draws, name rises. No letterspacing
+         tricks. */
+  .slide-close .closing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+  }
+  .slide-close .end-eyebrow {
+    font-size: 32px;
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-fg-muted);
+  }
+  .slide-close .dash {
+    width: 240px;
+    height: 1px;
+    /* Segmented by .tile-rule — each 60px chunk snaps in at its
+       cell's cascade delay, in step with the surrounding text. */
+  }
+  .slide-close .end-name {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 84px;
+    color: var(--color-fg);
+    letter-spacing: -0.01em;
+  }
+
+  /* ==================================================================
+     ADDITIONAL TEMPLATE LAYOUTS
+     ------------------------------------------------------------------
+     Layouts beyond the six original studies. Each follows the same
+     vocabulary: serif italic accents, sans body, tracked uppercase
+     micro-labels, hairline rules. New shared primitive: `.placeholder`
+     for image slots — a hatched rectangle with a monospace tag that
+     also doubles as a halo seed so the tile grid lights around it.
+
+       .slide-colophon       printed title page details (key/value rows)
+       .slide-contents       agenda / table of contents
+       .slide-body           eyebrow + heading + body paragraph
+       .slide-list           numbered list with item title + brief
+       .slide-pull           single full-bleed italic statement
+       .slide-quote-portrait quote next to portrait placeholder
+       .slide-stat-grid      three KPIs in a row
+       .slide-triptych       three short columns
+       .slide-plate          full-bleed image placeholder + caption
+       .slide-image-text     50/50 image placeholder + text
+       .slide-timeline       horizontal sequence of beats
+       .slide-sources        citations list
+     ================================================================== */
+
+  /* Image placeholder. Subtle hatch on the page background; a mono tag
+     declares what should drop in. The tag is real text so the halo
+     system seeds from it — image regions still light the grid. */
+  .placeholder {
+    position: relative;
+    background:
+      repeating-linear-gradient(
+        135deg,
+        transparent 0 13px,
+        color-mix(in srgb, var(--color-fg) 5%, transparent) 13px 14px
+      );
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+  }
+  .placeholder-tag {
+    font-family: ui-monospace, "SF Mono", "Menlo", monospace;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-fg-muted);
+    padding: 18px 22px;
+  }
+  .placeholder.center { align-items: center; justify-content: center; }
+  .placeholder.center .placeholder-tag { padding: 0; }
+  /* When a real image is dropped into a placeholder slot it fills the
+     frame; the hatch beneath is hidden, but the cascade timing and the
+     placeholder's geometry still apply. Absolute positioning keeps the
+     image clear of the placeholder's flex layout (which otherwise
+     would put the image NEXT to the tag instead of beneath it). */
+  .placeholder img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* The tag is a stand-in label for an empty slot. When real media
+     drops in, the tag retires. */
+  .placeholder:has(img) > .placeholder-tag,
+  .placeholder:has(video) > .placeholder-tag,
+  .placeholder:has(iframe) > .placeholder-tag { display: none; }
+
+  /* Tile-reveal: an opt-in for images (or any element) that should
+     unveil block-by-block in time with the surrounding grid cascade.
+     A grid of page-bg cells sits over the content. The reveal is
+     twofold:
+       1. PHASE A — the cell grid lines fade in from invisible across
+          the whole cover at once. The content is still hidden behind
+          the solid page-bg cover; only the chunked grid appears.
+       2. PHASE B — each cell's background fades to transparent in a
+          per-cell cascade (delay stamped from the canvas-block under
+          the cell), pages-revealing the image chunk by chunk. The
+          grid lines persist after the bg dissolves, so the image
+          settles inside the same chunked frame.
+     --reveal-delay is the per-cell phase-B start (stamped by JS).
+     data-reveal-cols / data-reveal-rows control density. */
+  .tile-reveal { position: relative; overflow: hidden; }
+  /* The framework gives .placeholder a faint outer hairline; the
+     tile-reveal cells already paint their own lattice, so the
+     rectangle around it is redundant. */
+  .placeholder.tile-reveal { border: none; }
+  .tile-reveal > .reveal-cover {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .tile-reveal > .reveal-cover > .reveal-cell {
+    --grid-delay: 0ms;
+    --bg-delay:   0ms;
+    background-color: var(--color-bg-page);
+    border-top:  1px solid transparent;
+    border-left: 1px solid transparent;
+  }
+  /* Two-stage cascade, paced against the letter wave:
+     Phase A — the grid frame lands 150ms ahead of the text snap at
+       every cell, on a fine 2×2 subdivision of the canvas blocks so
+       the lattice fills in in small chunks.
+     Phase B — the page-bg dissolves on a tight (200ms) window
+       starting 60ms AFTER text snap, on the same 4×3 cascade blocks
+       the letters ride — so the image reveals in larger chunks. */
+  deck-stage section.letters-ready .tile-reveal > .reveal-cover > .reveal-cell {
+    animation:
+      reveal-grid 0.22s var(--ease-settle) calc(var(--grid-delay) - 150ms) both,
+      reveal-bg   0.20s var(--ease-settle) calc(var(--bg-delay)   +  60ms) both;
+  }
+  @keyframes reveal-grid {
+    from { border-top-color: transparent;                                                 border-left-color: transparent; }
+    to   { border-top-color: color-mix(in srgb, var(--color-fg) 11%, transparent);        border-left-color: color-mix(in srgb, var(--color-fg) 11%, transparent); }
+  }
+  @keyframes reveal-bg {
+    from { background-color: var(--color-bg-page); }
+    to   { background-color: transparent; }
+  }
+
+  /* (02) Colophon — left-aligned key/value rows */
+  .slide-colophon .colophon-head {
+    margin-bottom: 56px;
+  }
+  .slide-colophon .colophon-title {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 80px;
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    color: var(--color-fg);
+  }
+  .slide-colophon .colophon {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    row-gap: 24px;
+    column-gap: 60px;
+    max-width: 1200px;
+    margin: 0;
+  }
+  .slide-colophon .colophon dt {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 16px;
+    color: var(--color-fg-muted);
+    font-weight: 400;
+    padding-top: 16px;
+    align-self: start;
+  }
+  .slide-colophon .colophon dd {
+    margin: 0;
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 38px;
+    color: var(--color-fg);
+    line-height: 1.15;
+    letter-spacing: -0.005em;
+    padding-bottom: 8px;
+  }
+
+  /* (03) Contents — agenda list */
+  .slide-contents .toc-wrap {
+    width: 100%;
+    max-width: 1400px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .slide-contents .toc-head .label { font-size: 18px; }
+  .slide-contents .toc-head h2 {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .slide-contents .toc-list {
+    display: grid;
+    gap: 6px;
+  }
+  .slide-contents .toc-item {
+    display: grid;
+    grid-template-columns: 90px 1fr 180px;
+    gap: 32px;
+    align-items: baseline;
+    padding: 14px 0;
+  }
+  .slide-contents .toc-num {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 32px;
+    color: var(--color-fg-muted);
+    letter-spacing: 0.02em;
+  }
+  .slide-contents .toc-name {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 38px;
+    color: var(--color-fg);
+    letter-spacing: -0.005em;
+    line-height: 1;
+  }
+  .slide-contents .toc-page {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 14px;
+    color: var(--color-fg-muted);
+    text-align: right;
+  }
+
+  /* (05) Body — eyebrow + heading + body */
+  .slide-body .body-stack { max-width: 1300px; }
+  .slide-body h2 {
+    margin: 28px 0 36px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 76px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .slide-body .lede {
+    max-width: 1050px;
+    font-size: 28px;
+  }
+  .slide-body .lede + .lede {
+    margin-top: 22px;
+    color: var(--color-fg-muted);
+    font-size: 24px;
+  }
+
+  /* (06) List — numbered list */
+  .slide-list .list-wrap {
+    width: 100%;
+    max-width: 1500px;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 96px;
+    align-items: start;
+  }
+  .slide-list .list-lede .label { font-size: 18px; }
+  .slide-list .list-lede h2 {
+    margin: 14px 0 28px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 60px;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+  .slide-list .list-lede p {
+    margin: 0;
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: var(--color-fg-body);
+    line-height: 1.55;
+    max-width: 460px;
+  }
+  .slide-list .num-list {
+    display: grid;
+    gap: 4px;
+  }
+  .slide-list .num-item {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 24px;
+    align-items: baseline;
+    padding: 14px 0;
+  }
+  .slide-list .num-tag {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 28px;
+    color: var(--color-fg-muted);
+    line-height: 1.3;
+  }
+  .slide-list .num-text h3 {
+    margin: 0 0 6px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 30px;
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+  }
+  .slide-list .num-text p {
+    margin: 0;
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: var(--color-fg-body);
+    line-height: 1.5;
+    max-width: 720px;
+  }
+
+  /* (07) Pull headline — single huge italic statement */
+  .slide-pull .pull {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 132px;
+    line-height: 0.98;
+    letter-spacing: -0.015em;
+    max-width: 1560px;
+    text-align: center;
+    color: var(--color-fg);
+  }
+  .slide-pull .pull .accent {
+    color: var(--color-numeral);
+  }
+  .slide-pull .pull-foot {
+    margin-top: 64px;
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 18px;
+    color: var(--color-fg-muted);
+  }
+
+  /* (09) Quote with portrait */
+  .slide-quote-portrait .qp {
+    display: grid;
+    grid-template-columns: 460px 1fr;
+    gap: 100px;
+    width: 100%;
+    align-items: center;
+    max-width: 1560px;
+  }
+  .slide-quote-portrait .portrait {
+    width: 460px;
+    height: 620px;
+  }
+  .slide-quote-portrait .qp-quote {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 52px;
+    line-height: 1.22;
+    letter-spacing: -0.005em;
+    color: var(--color-fg);
+  }
+  .slide-quote-portrait .qp-quote .marks {
+    color: var(--color-numeral);
+    font-family: var(--font-cormorant), serif;
+  }
+  .slide-quote-portrait .qp-attrib {
+    margin-top: 44px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .slide-quote-portrait .qp-attrib .name {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 16px;
+    color: var(--color-fg);
+  }
+  .slide-quote-portrait .qp-attrib .role {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--color-fg-muted);
+  }
+  .slide-quote-portrait .qp-attrib .sep {
+    width: 24px;
+    height: 1px;
+    background: var(--scribe-line);
+    display: inline-block;
+    align-self: center;
+  }
+
+  /* (11) Stat grid — three KPIs in a row */
+  .slide-stat-grid .grid-lede {
+    margin-bottom: 72px;
+    max-width: 1100px;
+  }
+  .slide-stat-grid .grid-lede .label { font-size: 18px; }
+  .slide-stat-grid .grid-lede h2 {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 48px;
+    letter-spacing: -0.005em;
+    line-height: 1.1;
+  }
+  .slide-stat-grid .grid3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 80px;
+    width: 100%;
+  }
+  .slide-stat-grid .kpi {
+    display: grid;
+    gap: 18px;
+    padding-right: 30px;
+    position: relative;
+  }
+  .slide-stat-grid .kpi-num {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 168px;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--color-fg);
+  }
+  .slide-stat-grid .kpi-num .unit {
+    font-size: 0.30em;
+    color: var(--color-fg-dim);
+    font-style: italic;
+    margin-left: 6px;
+  }
+  .slide-stat-grid .kpi-label {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 14px;
+    color: var(--color-fg-muted);
+    margin-top: 4px;
+  }
+  .slide-stat-grid .kpi-note {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--color-fg-body);
+    line-height: 1.4;
+    max-width: 360px;
+    margin-top: 4px;
+  }
+
+  /* (13) Triptych — three columns */
+  .slide-triptych .tri-lede {
+    margin-bottom: 64px;
+    max-width: 1100px;
+  }
+  .slide-triptych .tri-lede .label { font-size: 18px; }
+  .slide-triptych .tri-lede h2 {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .slide-triptych .tri {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 96px;
+    width: 100%;
+    align-items: start;
+  }
+  .slide-triptych .tri-col {
+    position: relative;
+    padding-top: 28px;
+  }
+  .slide-triptych .tri-num {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 24px;
+    color: var(--color-fg-muted);
+    margin-bottom: 14px;
+  }
+  .slide-triptych .tri-col h3 {
+    margin: 0 0 20px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 38px;
+    line-height: 1.05;
+    letter-spacing: -0.005em;
+  }
+  .slide-triptych .tri-col p {
+    margin: 0;
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: var(--color-fg-body);
+    line-height: 1.55;
+  }
+
+  /* (14) Plate — full bleed image placeholder + caption */
+  .slide-plate .plate-wrap {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 120px 120px 200px;
+    box-sizing: border-box;
+    gap: 28px;
+  }
+  .slide-plate .plate {
+    width: 100%;
+    min-height: 0;
+  }
+  .slide-plate .plate-cap {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: end;
+  }
+  .slide-plate .plate-cap .caption {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 28px;
+    color: var(--color-fg);
+    max-width: 1100px;
+    line-height: 1.35;
+    margin: 0;
+  }
+  .slide-plate .plate-cap .credit {
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 13px;
+    color: var(--color-fg-muted);
+    text-align: right;
+    line-height: 1.6;
+  }
+  .slide-plate .plate-cap .credit .credit-num {
+    display: block;
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-size: 22px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--color-fg);
+    margin-bottom: 4px;
+  }
+
+  /* (15) Image + text — 50/50 */
+  .slide-image-text .it {
+    display: grid;
+    grid-template-columns: 760px 1fr;
+    gap: 100px;
+    width: 100%;
+    align-items: center;
+  }
+  .slide-image-text .it-image {
+    width: 760px;
+    height: 640px;
+  }
+  .slide-image-text .it-text .label { font-size: 18px; }
+  .slide-image-text .it-text h2 {
+    margin: 18px 0 28px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 60px;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+  .slide-image-text .it-text p {
+    margin: 0;
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--color-fg-body);
+    line-height: 1.55;
+    max-width: 580px;
+  }
+  .slide-image-text .it-text p + p { margin-top: 16px; }
+
+  /* (16) Timeline — horizontal sequence */
+  .slide-timeline .tl-lede {
+    margin-bottom: 80px;
+    max-width: 1200px;
+  }
+  .slide-timeline .tl-lede .label { font-size: 18px; }
+  .slide-timeline .tl-lede h2 {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .slide-timeline .tl {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 56px;
+    width: 100%;
+    position: relative;
+  }
+  /* Timeline rule — a hairline that runs through the dot centres,
+     chopped into cell-aligned segments by .tile-rule. Each segment
+     snaps in at its cell's cascade delay, so the line draws cell-
+     by-cell in step with the surrounding text and the dots. */
+  .slide-timeline .tl-rule {
+    --rule-color: color-mix(in srgb, var(--color-fg) 22%, transparent);
+    position: absolute;
+    left: calc(100% / (var(--tl-cols, 4) * 2));
+    right: calc(100% / (var(--tl-cols, 4) * 2));
+    top: 0;
+    height: 1px;
+  }
+  .slide-timeline .tl-beat {
+    padding-top: 38px;
+    position: relative;
+    text-align: center;
+  }
+  .slide-timeline .tl-beat .dot {
+    position: absolute;
+    top: 0; left: 50%;
+    width: 11px;
+    height: 11px;
+    border: 1px solid var(--color-fg);
+    background: var(--color-bg-page);
+    border-radius: 50%;
+    box-sizing: border-box;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 1; /* sit above the timeline rule */
+  }
+  .slide-timeline .tl-beat .year {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 24px;
+    color: var(--color-fg-muted);
+    margin-bottom: 14px;
+  }
+  .slide-timeline .tl-beat h3 {
+    margin: 0 0 14px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 34px;
+    line-height: 1.05;
+    letter-spacing: -0.005em;
+  }
+  .slide-timeline .tl-beat p {
+    margin: 0;
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    color: var(--color-fg-body);
+    line-height: 1.55;
+  }
+
+  /* (17) Compare — two stacks, label-led */
+  .slide-compare .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 140px;
+    width: 100%;
+    max-width: 1560px;
+    align-items: start;
+  }
+  .slide-compare .compare-lede { margin-bottom: 72px; }
+  .slide-compare .compare-lede h2 {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--color-fg);
+  }
+  .slide-compare .compare-col { opacity: 0; }
+  deck-stage section[data-deck-active].slide-compare .compare-col.col-a {
+    animation: rise 1ms 0.50s steps(1, end) both;
+  }
+  deck-stage section[data-deck-active].slide-compare .compare-col.col-b {
+    animation: rise 1ms 0.68s steps(1, end) both;
+  }
+  .slide-compare .col-label {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 28px;
+    color: var(--color-numeral);
+    margin-bottom: 22px;
+  }
+  .slide-compare h3 {
+    margin: 0 0 26px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 56px;
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    color: var(--color-fg);
+  }
+  .slide-compare p {
+    margin: 0 0 14px;
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--color-fg-body);
+    line-height: 1.55;
+    max-width: 540px;
+  }
+
+  /* (18) Process — numbered horizontal steps */
+  .slide-process .proc-lede { margin-bottom: 64px; }
+  .slide-process .proc-lede h2 {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--color-fg);
+  }
+  .slide-process .proc {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 56px;
+    width: 100%;
+  }
+  .slide-process .proc-step { position: relative; }
+  .slide-process .proc-num {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 96px;
+    line-height: 0.9;
+    color: var(--color-numeral);
+    margin-bottom: 26px;
+    letter-spacing: -0.01em;
+  }
+  .slide-process .proc-step h3 {
+    margin: 0 0 14px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 34px;
+    line-height: 1.05;
+    letter-spacing: -0.005em;
+    color: var(--color-fg);
+  }
+  .slide-process .proc-step p {
+    margin: 0;
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    color: var(--color-fg-body);
+    line-height: 1.55;
+  }
+
+  /* (19) Prompt — large italic question, centered */
+  .slide-prompt .prompt {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 116px;
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    max-width: 1560px;
+    text-align: center;
+    color: var(--color-fg);
+  }
+  .slide-prompt .prompt .marks { color: var(--color-numeral); }
+  .slide-prompt .prompt-foot {
+    margin-top: 64px;
+    font-family: var(--font-inter), sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 18px;
+    color: var(--color-fg-muted);
+  }
+
+  /* (20) Diagram — central specimen with bracketed annotations */
+  .slide-diagram .dia {
+    display: grid;
+    grid-template-columns: 1fr 680px 1fr;
+    gap: 72px;
+    width: 100%;
+    max-width: 1600px;
+    align-items: center;
+  }
+  .slide-diagram .dia-center {
+    width: 100%;
+    height: 520px;
+    position: relative;
+  }
+  .slide-diagram .dia-center .placeholder { width: 100%; height: 100%; }
+  .slide-diagram .dia-side {
+    display: grid;
+    gap: 48px;
+  }
+  .slide-diagram .dia-anno .tag {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 24px;
+    color: var(--color-numeral);
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+  .slide-diagram .dia-anno h4 {
+    margin: 0 0 10px;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 1.08;
+    letter-spacing: -0.005em;
+    color: var(--color-fg);
+  }
+  .slide-diagram .dia-anno p {
+    margin: 0;
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--color-fg-body);
+    max-width: 320px;
+  }
+  .slide-diagram .dia-side.left { text-align: right; }
+  .slide-diagram .dia-side.left p { margin-left: auto; }
+
+  /* (21) Sources — citations list */
+  .slide-sources .src-wrap {
+    width: 100%;
+    max-width: 1500px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .slide-sources .src-head .label { font-size: 18px; }
+  .slide-sources .src-head h2 {
+    margin: 14px 0 0;
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .slide-sources .src-list {
+    display: grid;
+    gap: 4px;
+  }
+  .slide-sources .src-item {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 22px;
+    align-items: baseline;
+    padding: 12px 0;
+  }
+  .slide-sources .src-num {
+    font-family: var(--font-cormorant), serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--color-fg-muted);
+  }
+  .slide-sources .src-cite {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 22px;
+    color: var(--color-fg);
+    line-height: 1.45;
+  }
+  .slide-sources .src-cite .work { font-style: italic; }
+  .slide-sources .src-cite .meta {
+    font-family: var(--font-inter), sans-serif;
+    font-size: 16px;
+    color: var(--color-fg-muted);
+    margin-left: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    deck-stage section[data-deck-active] * {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  /* ------------------------------------------------------------------
+     Capstone image frames. The template's reveal is a chunked grid of
+     opaque page-colour cells laid over the image; cells dissolve in
+     step with the background cascade so the image surfaces tile by
+     tile. Two things have to be true for the reveal to read as ONE
+     coherent animation, not two grids fighting each other:
+
+       1. The placeholder MUST be opaque page-colour. Otherwise the
+          32×18 background cascade lights up through any pixel the
+          image doesn't fill and you see a second lattice behind the
+          frame. (This was the bug.)
+       2. The reveal cells SHOULD be 60×60 so they sit on the same
+          lattice as the background cascade. The two cell pitches then
+          merge into a single texture.
+
+     Each frame below is sized to its source's native aspect so
+     object-fit:cover fills the frame edge-to-edge — the tile-reveal
+     cells map directly to the image, no letterbox.
+
+       Aspect bucket            Frame      Cells (60px)   Sources
+       Portrait (~0.77)         540×720    9×12           headshot, résumé,
+                                                          flyers
+       Tall portrait (~0.71)    540×780    9×13           cover letter
+       Landscape (~1.86)        780×420    13×7           RCSD, career,
+                                                          JHU, awards,
+                                                          Dravet
+       Squareish landscape      780×480    13×8           Galbraith (1.62)
+       Wide strip (~5.7)        780×120    13×2           Gibbs SWIR
+     ------------------------------------------------------------------ */
+  .placeholder:has(img) {
+    background: var(--color-bg-page);
+    border: none;
+  }
+  .slide-image-text .it-image img { object-fit: cover; }
+
+  .slide-image-text .it             { grid-template-columns: 780px 1fr; gap: 120px; align-items: center; }
+  .slide-image-text .it.is-portrait { grid-template-columns: 600px 1fr; gap: 80px; align-items: start; }
+  .slide-image-text .it.is-tall     { grid-template-columns: 540px 1fr; gap: 80px; align-items: start; }
+  .slide-image-text .it.is-strip    { grid-template-columns: 780px 1fr; gap: 120px; align-items: start; }
+  .slide-image-text .it.is-banner   { grid-template-columns: 1fr; gap: 36px; align-items: start; }
+
+  .slide-image-text .it-image                       { width: 780px; height: 420px; }
+  .slide-image-text .it.is-landscape-wide .it-image { width: 780px; height: 480px; }
+  .slide-image-text .it.is-portrait      .it-image  { width: 600px; height: 780px; }
+  .slide-image-text .it.is-tall          .it-image  { width: 540px; height: 780px; }
+  .slide-image-text .it.is-strip         .it-image  { width: 780px; height: 120px; margin-top: 60px; }
+  .slide-image-text .it.is-banner        .it-image  { width: 100%; height: 220px; }
+
+  /* Portrait/tall layouts: widen the body copy so it fills the right
+     side of the slide instead of stranding ~480px of dead space next to
+     the image. Framework default p max-width is 580px. */
+  .slide-image-text .it.is-portrait .it-text p,
+  .slide-image-text .it.is-tall .it-text p {
+    max-width: 760px;
+  }
+
+  /* Banner text: spread paragraphs across two columns; clear the
+     framework's 580px paragraph max-width so the text fills the slide. */
+  .slide-image-text .it.is-banner .it-text {
+    column-count: 2;
+    column-gap: 80px;
+    width: 100%;
+  }
+  .slide-image-text .it.is-banner .it-text .label,
+  .slide-image-text .it.is-banner .it-text h2 {
+    -webkit-column-span: all;
+            column-span: all;
+  }
+  .slide-image-text .it.is-banner .it-text p {
+    max-width: none;
+    -webkit-column-break-inside: avoid;
+            break-inside: avoid;
+  }
+
+  /* Image-text slides need more clearance above for the brand chrome.
+     The piece-default of 96px top / 200px bottom left tall portrait
+     images touching the brand line; this pushes content down 30+px
+     while still keeping the slide content above the scribe footer. */
+  .slide-image-text .slide {
+    padding-top: 130px;
+    padding-bottom: 170px;
+  }
+
+  /* Hero stats — a row of large animated count-ups for slides that
+     have a few headline numbers worth foregrounding. Used inline
+     inside .it-text or .num-text. */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(var(--stats, 2), 1fr);
+    gap: 48px;
+    margin: 24px 0 22px;
+    align-items: end;
+  }
+  .stat-row .stat-num {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 84px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-fg);
+    white-space: nowrap;
+  }
+  .stat-row .stat-lbl {
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--color-fg-muted);
+    margin-top: 10px;
+    line-height: 1.4;
+  }
+  .slide-list .num-text .stat-row { margin: 12px 0 14px; }
+  .slide-list .num-text .stat-row .stat-num { font-size: 64px; }
+
+  /* Timeline beat — optional hours line under the h3 for shadowing
+     experiences. Count-up animation pairs with the timeline cascade. */
+  .slide-timeline .tl-beat .hours {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 300;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--color-fg);
+    margin: -4px 0 14px;
+  }
+</style>
+
+<script type="application/json" id="speaker-notes">[
+  "Good morning. I'm Elijah Frost, a senior at Reynolds High School in the Center for Advanced Learning Health Sciences Medical track, Class of 2026. Pause. Breath. Then advance.",
+  "From Fairview, Oregon. Senior at Reynolds High School, in the CAL Health Sciences Medical track. Dyslexia at the 99th percentile of severity and the first percentile of performance on a clinical assessment — that diagnosis set the path through neuroscience and psychiatry. Heading into undergraduate neuroscience, with pediatric neurology as the long-range goal. Dyslexia said dis-LEK-see-uh. CAL said as letters. Clinical tone, not heavy.",
+  "Lead camp counselor at Montavilla Community Center, Portland Parks and Recreation. Two summers, returning for 2026. Freelance photographer since 2020. Built and maintain full-stack web infrastructure for elijahfrost.com and projects.elijahfrost.com. Point at the image, don't read it.",
+  "Written for undergraduate neuroscience admission, with pediatric neurology as the long-range target. Maps two summers of OHSU research and three nonprofits onto the training pathway. Pathway: neuroscience B.S., medical school, pediatric neurology fellowship. B.S. said bachelor of science. Don't read the image.",
+  "Summer 2023 at OHSU in the Galbraith Lab. Project: the first single-cell measurement of the Piezo1 mechanosensitive channel activation threshold. Method: a custom stimulation rig applies a calibrated point force, paired with a fluorescent calcium indicator that lights up the moment the channel opens. Analysis: image pipeline at millisecond resolution, time-locked to the force trace. Finding: threshold near 180 piconewtons, roughly the force to lift a single virus particle. OHSU said as letters. Piezo1 said pee-AY-zo one. Mechanosensitive said mek-uh-no-SEN-sih-tiv. Piconewton said PEE-ko-NEW-ton.",
+  "Summer 2024 at OHSU in the Gibbs Labs. Context: short-wave infrared, 900 to 1700 nanometers, penetrates tissue with less scattering and autofluorescence than visible light. Build: dual-channel SWIR system for two spectrally distinct fluorophores in the same field of view. Pipeline: scattering correction and deconvolution against measured point-spread functions, with a 35 percent reduction in background noise. Deliverable: standard operating procedure now used by the lab for calibration, alignment, and routine acquisition. SWIR said swer (rhymes with stir). Fluorophore said FLOR-uh-for. Deconvolution said dee-kon-vuh-LOO-shun.",
+  "Co-founder and lead instructor since October 2022. More than 1,000 hours of programming delivered. Operates under the City of Portland Safe Blocks Program, with curriculum for teen girls, women, and LGBTQIA+ youth. Train-the-trainer model has reached more than 11,000 community members. Presented outcomes to Portland City Council. FY 2025 to 2026 funding secured. LGBTQIA+ said as letters.",
+  "Generous City. Oregon nonprofit I founded in October 2024 and currently direct, 501(c)(3) in process. 30-plus volunteers, $50,000-plus in donated supplies, over 1,000 served across the Portland metro. Partners include Portland Homeless Family Solutions, Blanchet House, and regional mutual-aid networks. Ohana Self-Defense. Separate 501(c)(3) where I serve as co-president and curriculum developer. Trauma-informed self-defense for participants with diverse abilities and trauma histories. Ohana said oh-HAH-nah. 501(c)(3) said five-oh-one-c-three.",
+  "Neuroscience in Medicine deck I produced for CAL Health Sciences. Maps the training pipeline from undergraduate neuroscience through medical school, residency, and pediatric neurology fellowship. Why it matters: pediatric neurology is more than a decade of training, and mapping it now lets the high-school and undergraduate years feed forward instead of running in parallel.",
+  "SCN1A loss-of-function epileptic encephalopathy with onset in infancy. Mechanism: reduced Naᵥ 1.1 sodium-channel function on GABAergic interneurons, producing cortical disinhibition and the seizure phenotype. Care sits at the intersection of pediatric neurology, anticonvulsant pharmacology, and genetic counseling, with management coordinated across the full clinical team. Why it matters: a model case for the coordination problem in pediatric neurology, where genetics, pharmacology, and family-level care decisions all attach to one patient. Dravet said druh-VAY. SCN1A said S-C-N-one-A. Naᵥ 1.1 said Nav one-point-one. GABAergic said gab-uh-ER-jik. Anticonvulsant said an-tee-kun-VUL-sunt.",
+  "Public health flyer I wrote for Oregon high school students and families, citation-backed. United States firearm deaths totaled 46,728 in 2023. Firearms are now the leading cause of death for Americans ages 1 to 17. Strongest evidence supports extreme risk protection order laws and safe storage requirements. Why it matters: leading cause of pediatric death, and ERPO laws plus safe storage are interventions a primary-care visit can actually deliver. ERPO said as letters. Stands for extreme risk protection order.",
+  "Same audience and format as the gun-violence flyer. United States opioid overdose deaths totaled 81,806 in 2022. Naloxone is now available over the counter and reverses overdose within minutes. Fentanyl test strips and bystander training are first-line harm-reduction interventions. Why it matters: naloxone and bystander training are evidence-based harm-reduction tools any clinician can teach in a single visit. Naloxone said nuh-LOK-sone. Fentanyl said FEN-tuh-nil.",
+  "Omega-3 fatty acids, EPA and DHA, essential polyunsaturated. Clinical use: FDA-approved for severe hypertriglyceridemia. Evidence supports prevention of fatal coronary heart disease, ischemic stroke, and age-related cognitive decline. Sources: salmon, sardines, herring, flaxseed, chia, walnuts, and algal DHA. Intake: Adequate Intake of 1.6 grams per day for adult men, 1.1 for adult women. No RDA or Upper Limit in the United States. EFSA reports no safety concern up to 5 grams per day combined. Fun fact: DHA is the dominant omega-3 in the human retina and brain gray matter, which is why deficiency first presents as visual and cognitive symptoms. Why it matters: omega-3 status affects fetal brain development, pediatric cognition, and adult cardiovascular risk. EPA, DHA, ALA said as letters. Hypertriglyceridemia, just say severe high triglycerides. EFSA said as letters, European Food Safety Authority.",
+  "WR 122 research paper, approximately 15 pages, more than 30 peer-reviewed citations in APA 7. Question: does the hippocampal-entorhinal system encode physical space, or general relational structure? Sources span O'Keefe and Nadel's cognitive map through Constantinescu, O'Reilly, and Behrens 2016 on grid-like coding for non-spatial relations. Why it matters: the same circuits underlie memory loss in Alzheimer's disease, spatial disorientation in pediatric epilepsies, and developmental disorders of memory. The representational question is a prerequisite for understanding how the system breaks. Hippocampal-entorhinal said hip-uh-KAM-pul en-toh-RYE-null. Constantinescu said kon-stan-tin-ES-koo. Nadel said NAY-dul.",
+  "CNA from Northwest N.A.C. Training, Washington State. Scope covers vital signs, patient mobility and transfers, ADL support, infection control, and documentation. BLS from the American Heart Association. Healthcare-provider level CPR for adults, children, and infants, with AED and bag-mask ventilation. CPR/AED from the American Red Cross. Lay-rescuer adult and pediatric CPR with AED operation. CNA, BLS, CPR, AED said as letters.",
+  "Programming: Python, JavaScript, TypeScript, HTML, CSS, jQuery, Git. Markup and typesetting: LaTeX, XML, MathML. Full courses authored in LaTeX for Pre-Calculus, AP Statistics, AP World History, AP U.S. History, and Anatomy and Physiology. Scientific tooling: napari, image-processing pipelines, and version-controlled lab notebooks. Languages: English, and three years of ASL coursework. LaTeX said LAH-tek. napari said nuh-PAR-ee. ASL said as letters. Name the buckets, don't read every tool.",
+  "Undergraduate target, neuroscience B.S. as the intended major. Fit: top-ranked undergraduate neuroscience program, School of Medicine ranked third nationally for research, and the Kennedy Krieger Institute on the same campus. Highest annual research expenditures in the United States, near $3.6 billion. Skip the $371,000 cost number unless asked.",
+  "Fall 2023: neurology physician shadowing. Patient consultations, neurological examination protocols, and case-presentation rounds. Fall 2025: clinical psychology shadowing. Intake sessions, cognitive behavioral therapy interventions, and documentation review. Spring 2026: Mount Hood Legacy Hospital. Four-hour in-hospital observation through CAL Health Sciences. First sustained exposure to a working hospital unit outside of a research building.",
+  "Scholastic Art and Writing Awards, National Anthology Finalist for The World as You See It. Black Box Gallery, second place, Black and White Photo Contest. Clackamas County Photography Competition, first place. Work displayed in county government buildings. Washington Trails Association Northwest Exposure Photo Contest, first place. Work exhibited at the University of Washington. One breath each. Don't dwell.",
+  "Slow down. Narrative beat. Thesis: build the systems that fit how you work, rather than wait for systems built for you. Pause. Backstory: entered fourth grade reading at a kindergarten level. Most of elementary school was lost to the gap between learning and how the school measured success. Turning point: turning dyslexia accommodations into a method. The night with Kandel's Principles of Neural Science and the DSM-V open at the same time, both read for pleasure. Land on CAL as the first program where the work mapped directly onto the career, through phlebotomy lab, CNA clinicals, the disease-state case study, the public-health flyers, and the micronutrient analysis.",
+  "Undergraduate: neuroscience B.S., Johns Hopkins as the target. MD-PhD: seven to eight years at the Johns Hopkins School of Medicine. Residency: three-year pediatrics. Fellowship: three-year pediatric neurology. MD-PhD said as letters.",
+  "Open with the quote: An engram is the physical trace a memory leaves in the brain. Thank you to everyone in this room who became one of mine. Pause. Acknowledgments: Dr. Stephanie Axman, Dr. Ashley Maliken, Dr. Antonia Forster, Dr. Summer Gibbs. At CAL: Zeke, Kelsey, McNeal, Zimmerman. Pause. Invite questions. Engram said EN-gram. Maliken said MAL-ih-kin. Forster said FOR-stur."
+]</script>
+</head>
+
+<body>
+
+<style>deck-stage:not(:defined){visibility:hidden}</style>
+
+<deck-stage width="1920" height="1080" data-slide-types="slide-title,slide-colophon,slide-contents,slide-section,slide-body,slide-list,slide-pull,slide-quote,slide-quote-portrait,slide-stat,slide-stat-grid,slide-split,slide-triptych,slide-plate,slide-image-text,slide-timeline,slide-compare,slide-process,slide-prompt,slide-diagram,slide-sources,slide-close">
+
+  <!-- 01 — TITLE -->
+  <section data-screen-label="01 Title" class="slide-title"
+           data-numeral="I" data-name="Ouverture" data-halo="4">
+    <div class="slide center">
+      <div class="eyebrow rise d-1"><i>Class of 2026 &middot; Center for Advanced Learning</i></div>
+      <div class="display hero-name rise d-2">Elijah&nbsp;Frost</div>
+      <div class="hero-rule tile-rule"></div>
+      <div class="sub rise d-4">Senior Capstone Presentation &middot; Reynolds High School &middot; Health Sciences: Medical</div>
+    </div>
+  </section>
+
+  <!-- 02 — WHO I AM -->
+  <section data-screen-label="02 Who I am" class="slide-image-text"
+           data-numeral="II" data-name="Who I am" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it is-portrait">
+        <div class="placeholder cascades-block it-image portrait" data-halo="8" data-reveal-cols="10" data-reveal-rows="13">
+          <div class="placeholder-tag">Portrait &middot; Elijah Frost</div>
+          <img src="img/headshot.png" alt="Elijah Frost portrait" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">Who I am</div>
+          <h2>Fairview, Oregon &mdash;<br>headed into neuroscience.</h2>
+          <p>Senior at Reynolds High School, on the CAL Health Sciences Medical track.</p>
+          <p>Dyslexia at the <strong>99th percentile of severity</strong> and the first percentile of performance on a clinical assessment &mdash; that diagnosis set the path through neuroscience and psychiatry.</p>
+          <p>Heading into undergraduate neuroscience, with <strong>pediatric neurology</strong> as the long-range goal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 — RÉSUMÉ -->
+  <section data-screen-label="03 Résumé" class="slide-image-text"
+           data-numeral="III" data-name="R&eacute;sum&eacute;" data-halo="4">
+    <div class="slide left" style="align-items: center;">
+      <div class="it is-portrait">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="10" data-reveal-rows="13">
+          <div class="placeholder-tag">R&eacute;sum&eacute; &middot; 2026</div>
+          <img src="img/resume.jpg" alt="Elijah Frost résumé" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">R&eacute;sum&eacute;</div>
+          <h2>Camps, cameras,<br>and full-stack web.</h2>
+          <p><strong>Lead camp counselor,</strong> Montavilla Community Center, Portland Parks and Recreation &mdash; summers of 2024 and 2025, returning for 2026.</p>
+          <p><strong>Freelance photographer,</strong> since 2020.</p>
+          <p><strong>Full-stack web infrastructure</strong> for <span class="ef-link">elijahfrost.com</span> and <span class="ef-link">projects.elijahfrost.com</span>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 — COVER LETTER -->
+  <section data-screen-label="04 Cover letter" class="slide-image-text"
+           data-numeral="IV" data-name="Cover letter" data-halo="4">
+    <div class="slide left" style="align-items: center;">
+      <div class="it is-tall">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="9" data-reveal-rows="13">
+          <div class="placeholder-tag">Cover Letter &middot; V2 &middot; 2025-09-27</div>
+          <img src="img/cover-letter.jpg" alt="Cover letter" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">Cover letter</div>
+          <h2>Mapped<br>to the pathway.</h2>
+          <p><strong>Written for undergraduate neuroscience admission,</strong> with pediatric neurology as the long-range target.</p>
+          <p><strong>Maps two summers of OHSU research</strong> and three nonprofits onto the training pathway.</p>
+          <p><strong>Pathway:</strong> neuroscience B.S., medical school, pediatric neurology fellowship.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 — GALBRAITH LAB -->
+  <section data-screen-label="05 Galbraith Lab" class="slide-image-text"
+           data-numeral="V" data-name="OHSU &middot; Galbraith, &rsquo;23" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it is-landscape-wide">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="8">
+          <div class="placeholder-tag">Figure &middot; Piezo1 structure &amp; localization</div>
+          <img src="img/galbraith.png" alt="Piezo1 channel figure" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">OHSU Galbraith Lab &middot; Summer 2023</div>
+          <h2>The threshold to<br>open Piezo1.</h2>
+          <p><strong>Project.</strong> First single-cell quantification of the Piezo1 mechanosensitive channel activation threshold.</p>
+          <p><strong>Method.</strong> Custom single-cell stimulation rig that applies a calibrated point force, paired with a fluorescent calcium indicator for real-time channel activation.</p>
+          <p><strong>Analysis.</strong> Image-analysis pipeline at millisecond temporal resolution, time-locked to the force trace.</p>
+          <p><strong>Finding.</strong> Activation threshold near <span class="cascades-block" data-count-to="180" data-count-dur="900">180</span>&nbsp;piconewtons &mdash; roughly the force required to lift a single virus particle.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 — GIBBS LABS -->
+  <section data-screen-label="06 Gibbs Labs" class="slide-image-text"
+           data-numeral="VI" data-name="OHSU &middot; Gibbs, &rsquo;24" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it is-banner">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="28" data-reveal-rows="4">
+          <div class="placeholder-tag">Figure &middot; Dual-channel SWIR system</div>
+          <img src="img/gibbs.png" alt="SWIR imaging system" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">OHSU Gibbs Labs &middot; Summer 2024</div>
+          <h2>Two fluorophores,<br>one short-wave field.</h2>
+          <p><strong>Context.</strong> Short-wave infrared (900&ndash;1700&nbsp;nm) penetrates tissue with less scattering and autofluorescence than visible light.</p>
+          <p><strong>Build.</strong> Dual-channel SWIR system for simultaneous acquisition of two spectrally distinct fluorophores in the same field of view.</p>
+          <p><strong>Pipeline.</strong> Scattering correction and deconvolution against measured point-spread functions &mdash; a <span class="cascades-block" data-count-to="35">35</span>&nbsp;percent reduction in background noise.</p>
+          <p><strong>Deliverable.</strong> SOP now used by the lab for calibration, alignment, and routine acquisition.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 — ROSE CITY SELF DEFENSE -->
+  <section data-screen-label="07 Rose City Self Defense" class="slide-image-text"
+           data-numeral="VII" data-name="Rose City Self Defense" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="7">
+          <div class="placeholder-tag">Rose City Self Defense &middot; Portland</div>
+          <img src="img/rcsd.png" alt="Rose City Self Defense" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">Rose City Self Defense</div>
+          <h2>Trauma-informed,<br>train-the-trainer.</h2>
+          <p>Co-founder and lead instructor since <strong>October 2022</strong>.</p>
+          <div class="stat-row cascades-block">
+            <div class="stat">
+              <div class="stat-num"><span class="cascades-block" data-count-to="1000">1,000</span>+</div>
+              <div class="stat-lbl">Hours of<br>programming delivered</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num"><span class="cascades-block" data-count-to="11000">11,000</span>+</div>
+              <div class="stat-lbl">Community<br>members reached</div>
+            </div>
+          </div>
+          <p>Runs under the City of Portland <strong>Safe Blocks Program</strong> &mdash; curriculum for teen girls, women, and LGBTQIA+ youth.</p>
+          <p>Presented outcomes to Portland City Council &mdash; FY 2025&ndash;2026 funding secured.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 — COMMUNITY NONPROFITS -->
+  <section data-screen-label="08 Community nonprofits" class="slide-list"
+           data-numeral="VIII" data-name="Nonprofits" data-halo="4" data-cascade="ttb" data-cascade-step="2">
+    <div class="slide left">
+      <div class="list-wrap">
+        <div class="list-lede">
+          <div class="label">Community nonprofits</div>
+          <h2>Two organizations,<br>thousands served.</h2>
+          <p>Founder and director of one, co-president of the other &mdash; both registered Oregon nonprofits operating across the Portland metro.</p>
+        </div>
+        <div class="num-list">
+          <div class="num-item cascades-block">
+            <div class="num-tag">i.</div>
+            <div class="num-text">
+              <h3>Generous City</h3>
+              <div class="stat-row cascades-block" style="--stats: 3">
+                <div class="stat">
+                  <div class="stat-num"><span class="cascades-block" data-count-to="30">30</span>+</div>
+                  <div class="stat-lbl">Volunteers</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-num">$<span class="cascades-block" data-count-to="50">50</span>K+</div>
+                  <div class="stat-lbl">Donated supplies</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-num"><span class="cascades-block" data-count-to="1000">1,000</span>+</div>
+                  <div class="stat-lbl">Individuals served</div>
+                </div>
+              </div>
+              <p>Oregon nonprofit I founded in October 2024 and currently direct, 501(c)(3) in process, operating across the Portland metropolitan area. Partners include Portland Homeless Family Solutions, Blanchet House, and regional mutual-aid networks.</p>
+            </div>
+          </div>
+          <div class="num-item cascades-block">
+            <div class="num-tag">ii.</div>
+            <div class="num-text">
+              <h3>Ohana Self-Defense</h3>
+              <p>Separate 501(c)(3) where I serve as co-president and curriculum developer. Trauma-informed self-defense for participants with diverse abilities and trauma histories.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 — CAREER DEVELOPMENT PROJECT -->
+  <section data-screen-label="09 Career development project" class="slide-image-text"
+           data-numeral="IX" data-name="Career project" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="7">
+          <div class="placeholder-tag">Slide preview &middot; Neuroscience in Medicine</div>
+          <img src="img/career-pipeline.png" alt="Career pipeline deck preview" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">Career development project</div>
+          <h2>A decade of training,<br>mapped now.</h2>
+          <p><strong>Neuroscience in Medicine</strong> deck, produced for CAL Health Sciences.</p>
+          <p>Maps the training pipeline from undergraduate neuroscience through medical school, residency, and pediatric neurology fellowship.</p>
+          <p><strong>Why this matters.</strong> Pediatric neurology takes more than a decade of training &mdash; mapping it now lets the high-school and undergraduate years feed forward instead of running in parallel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 — DRAVET SYNDROME -->
+  <section data-screen-label="10 Dravet Syndrome" class="slide-image-text"
+           data-numeral="X" data-name="Disease state &middot; Dravet" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="7">
+          <div class="placeholder-tag">Mechanism &middot; Na&#x1d65; 1.1 on interneurons</div>
+          <img src="img/dravet.png" alt="Dravet mechanism diagram" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">Disease state &middot; Dravet Syndrome</div>
+          <h2>SCN1A,<br>cortical disinhibition.</h2>
+          <p><strong>Genetics.</strong> SCN1A loss-of-function epileptic encephalopathy with onset in infancy.</p>
+          <p><strong>Mechanism.</strong> Reduced Na&#x1d65;&nbsp;1.1 sodium-channel function on GABAergic interneurons &mdash; cortical disinhibition and the seizure phenotype.</p>
+          <p><strong>Care.</strong> Pediatric neurology, anticonvulsant pharmacology, and genetic counseling, coordinated across the full clinical team.</p>
+          <p><strong>Why this matters.</strong> A model case for the coordination problem in pediatric neurology, where genetics, pharmacology, and family-level care all attach to one patient.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 — GUN VIOLENCE FLYER -->
+  <section data-screen-label="11 Gun violence flyer" class="slide-image-text"
+           data-numeral="XI" data-name="Public health &middot; Gun violence" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it is-portrait">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="10" data-reveal-rows="13">
+          <div class="placeholder-tag">Flyer &middot; Gun violence prevention</div>
+          <img src="img/gun-flyer.jpg" alt="Gun violence prevention flyer" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">Public health flyer</div>
+          <h2>Evidence saves lives.<br>Storage, ERPO, action.</h2>
+          <p>Written for Oregon high school students and families &mdash; citation-backed.</p>
+          <p>United States firearm deaths totaled <strong><span class="cascades-block" data-count-to="46728">46,728</span></strong>&nbsp;in 2023.</p>
+          <p>Firearms are now the leading cause of death for Americans <strong>ages 1 to 17</strong>.</p>
+          <p>Strongest evidence supports <strong>extreme risk protection order</strong> laws and <strong>safe storage</strong> requirements.</p>
+          <p><strong>Why this matters.</strong> ERPO laws and safe storage are interventions a primary-care visit can actually deliver.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 — OPIOID FLYER -->
+  <section data-screen-label="12 Opioid flyer" class="slide-image-text"
+           data-numeral="XII" data-name="Public health &middot; Overdose" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it is-portrait">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="10" data-reveal-rows="13">
+          <div class="placeholder-tag">Flyer &middot; Opioid &amp; overdose crisis</div>
+          <img src="img/opioid-flyer.jpg" alt="Opioid and overdose crisis flyer" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">Public health flyer</div>
+          <h2>Overdose is preventable.<br>One conversation.</h2>
+          <p>Same audience and citation-backed format as the gun-violence flyer.</p>
+          <p>United States opioid overdose deaths totaled <strong><span class="cascades-block" data-count-to="81806">81,806</span></strong>&nbsp;in 2022.</p>
+          <p><strong>Naloxone</strong> is now available over the counter and reverses overdose within minutes.</p>
+          <p><strong>Fentanyl test strips</strong> and <strong>bystander training</strong> are first-line harm-reduction interventions.</p>
+          <p><strong>Why this matters.</strong> Tools any clinician can teach in a single visit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 — MICRONUTRIENT PROJECT -->
+  <section data-screen-label="13 Micronutrient project" class="slide-list"
+           data-numeral="XIII" data-name="Micronutrient" data-halo="4" data-cascade="ttb" data-cascade-step="2">
+    <div class="slide left">
+      <div class="list-wrap">
+        <div class="list-lede">
+          <div class="label">Micronutrient project</div>
+          <h2>Omega-3<br>fatty acids.</h2>
+          <p>EPA and DHA &mdash; essential polyunsaturated. Status affects fetal brain development, pediatric cognition, and adult cardiovascular risk.</p>
+        </div>
+        <div class="num-list">
+          <div class="num-item cascades-block">
+            <div class="num-tag">i.</div>
+            <div class="num-text">
+              <h3>Clinical use</h3>
+              <p>FDA-approved for severe hypertriglyceridemia. Evidence supports prevention of fatal coronary heart disease, ischemic stroke, and age-related cognitive decline.</p>
+            </div>
+          </div>
+          <div class="num-item cascades-block">
+            <div class="num-tag">ii.</div>
+            <div class="num-text">
+              <h3>Sources</h3>
+              <p>Salmon, sardines, herring, flaxseed, chia, walnuts, and algal DHA.</p>
+            </div>
+          </div>
+          <div class="num-item cascades-block">
+            <div class="num-tag">iii.</div>
+            <div class="num-text">
+              <h3>Intake</h3>
+              <p>Adequate Intake of <strong>1.6&nbsp;g/day</strong> for adult men, <strong>1.1&nbsp;g/day</strong> for adult women. No RDA or Upper Limit in the United States. EFSA reports no safety concern up to <strong>5&nbsp;g/day</strong> combined.</p>
+            </div>
+          </div>
+          <div class="num-item cascades-block">
+            <div class="num-tag">iv.</div>
+            <div class="num-text">
+              <h3>Fun fact</h3>
+              <p>DHA is the dominant omega-3 in the human retina and brain gray matter &mdash; which is why deficiency first presents as visual and cognitive symptoms.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 — SENIOR ENGLISH RESEARCH -->
+  <section data-screen-label="14 Senior English research" class="slide-body"
+           data-numeral="XIV" data-name="Senior research" data-halo="4">
+    <div class="slide left">
+      <div class="body-stack">
+        <div class="label">Senior English research &middot; WR 122</div>
+        <h2>Does the hippocampus<br>encode space, or structure?</h2>
+        <p class="body lede">A <strong>15-page research paper</strong> with more than <strong>30 peer-reviewed citations</strong> in APA 7. The question: does the hippocampal-entorhinal system encode physical space, or general relational structure?</p>
+        <p class="body lede">Sources span O&rsquo;Keefe and Nadel&rsquo;s cognitive map through Constantinescu, O&rsquo;Reilly, and Behrens (2016) on <em>grid-like coding for non-spatial relations</em>.</p>
+        <p class="body lede"><strong>Why this matters.</strong> The same circuits underlie memory loss in Alzheimer&rsquo;s disease, spatial disorientation in pediatric epilepsies, and developmental disorders of memory &mdash; the representational question is a prerequisite for understanding how the system breaks.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 — CERTIFICATIONS -->
+  <section data-screen-label="15 Certifications" class="slide-list"
+           data-numeral="XV" data-name="Certifications" data-halo="4" data-cascade="ttb" data-cascade-step="2">
+    <div class="slide left">
+      <div class="list-wrap">
+        <div class="list-lede">
+          <div class="label">Certifications</div>
+          <h2>Clinical credentials,<br>active and current.</h2>
+          <p>Healthcare-provider and lay-rescuer certifications maintained through the program and on the floor.</p>
+        </div>
+        <div class="num-list">
+          <div class="num-item cascades-block">
+            <div class="num-tag">i.</div>
+            <div class="num-text">
+              <h3>CNA &middot; Certified Nursing Assistant</h3>
+              <p>Northwest N.A.C. Training, Washington State. Scope: vital-signs measurement, patient mobility and transfers, ADL support, infection control, documentation.</p>
+            </div>
+          </div>
+          <div class="num-item cascades-block">
+            <div class="num-tag">ii.</div>
+            <div class="num-text">
+              <h3>BLS &middot; Basic Life Support</h3>
+              <p>American Heart Association. Healthcare-provider level CPR for adults, children, and infants &mdash; with AED and bag-mask ventilation.</p>
+            </div>
+          </div>
+          <div class="num-item cascades-block">
+            <div class="num-tag">iii.</div>
+            <div class="num-text">
+              <h3>CPR/AED</h3>
+              <p>American Red Cross. Lay-rescuer adult and pediatric CPR with AED operation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16 — SKILLS, LANGUAGES, TOOLS -->
+  <section data-screen-label="16 Skills" class="slide-list"
+           data-numeral="XVI" data-name="Skills &amp; tools" data-halo="4" data-cascade="ttb" data-cascade-step="2">
+    <div class="slide left">
+      <div class="list-wrap">
+        <div class="list-lede">
+          <div class="label">Skills, languages, and tools</div>
+          <h2>Four buckets.<br>Code, type, lab, language.</h2>
+          <p>Name the buckets &mdash; don&rsquo;t read every tool.</p>
+        </div>
+        <div class="num-list">
+          <div class="num-item cascades-block">
+            <div class="num-tag">i.</div>
+            <div class="num-text">
+              <h3>Programming</h3>
+              <p>Python, JavaScript, TypeScript, HTML, CSS, jQuery, Git.</p>
+            </div>
+          </div>
+          <div class="num-item cascades-block">
+            <div class="num-tag">ii.</div>
+            <div class="num-text">
+              <h3>Markup and typesetting</h3>
+              <p>LaTeX, XML, MathML. Full courses authored in LaTeX for Pre-Calculus, AP Statistics, AP World History, AP U.S. History, and Anatomy and Physiology.</p>
+            </div>
+          </div>
+          <div class="num-item cascades-block">
+            <div class="num-tag">iii.</div>
+            <div class="num-text">
+              <h3>Scientific tooling</h3>
+              <p>napari, image-processing pipelines, version-controlled lab notebooks.</p>
+            </div>
+          </div>
+          <div class="num-item cascades-block">
+            <div class="num-tag">iv.</div>
+            <div class="num-text">
+              <h3>Languages</h3>
+              <p>English &mdash; and three years of ASL coursework.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17 — JOHNS HOPKINS -->
+  <section data-screen-label="17 Johns Hopkins" class="slide-image-text"
+           data-numeral="XVII" data-name="Johns Hopkins" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="7">
+          <div class="placeholder-tag">Campus &middot; Johns Hopkins University</div>
+          <img src="img/jhu.png" alt="Johns Hopkins campus" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">Undergraduate target</div>
+          <h2>Johns Hopkins<br>University.</h2>
+          <p><strong>Neuroscience B.S.</strong> as the intended major.</p>
+          <p><strong>Fit.</strong> Top-ranked undergraduate neuroscience program, School of Medicine ranked third nationally for research, Kennedy Krieger Institute on the same campus.</p>
+          <p><strong>Highest annual research expenditures</strong> in the United States &mdash; near $<span class="cascades-block" data-count-to="3.6">3.6</span>&nbsp;billion.</p>
+          <p>Four-year cost projection near $371,000 with annual financial-aid renewal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18 — SERVICE LEARNING AND SHADOWING -->
+  <section data-screen-label="18 Service learning and shadowing" class="slide-timeline"
+           data-numeral="XVIII" data-name="Shadowing" data-halo="4">
+    <div class="slide left">
+      <div class="tl-lede">
+        <div class="label">Service learning and shadowing</div>
+        <h2>Three exposures,<br>two clinics and a hospital floor.</h2>
+      </div>
+      <div class="tl" style="grid-template-columns: repeat(3, 1fr); --tl-cols: 3">
+        <div class="tl-rule tile-rule"></div>
+        <div class="tl-beat cascades-block">
+          <span class="dot"></span>
+          <div class="year">Fall 2023</div>
+          <h3>Neurology physician shadowing</h3>
+          <div class="hours"><span class="cascades-block" data-count-to="150">150</span>+&nbsp;hours</div>
+          <p>Patient consultations, neurological examination protocols, case-presentation rounds.</p>
+        </div>
+        <div class="tl-beat cascades-block">
+          <span class="dot"></span>
+          <div class="year">Fall 2025</div>
+          <h3>Clinical psychology shadowing</h3>
+          <div class="hours">~<span class="cascades-block" data-count-to="70">70</span>&nbsp;hours</div>
+          <p>Intake sessions, cognitive behavioral therapy interventions, documentation review.</p>
+        </div>
+        <div class="tl-beat cascades-block">
+          <span class="dot"></span>
+          <div class="year">Spring 2026</div>
+          <h3>Mount Hood Legacy Hospital</h3>
+          <div class="hours"><span class="cascades-block" data-count-to="4">4</span>&nbsp;hours</div>
+          <p>In-hospital observation through CAL Health Sciences &mdash; first sustained exposure to a working hospital unit outside of a research building.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 19 — AWARDS -->
+  <section data-screen-label="19 Awards" class="slide-image-text"
+           data-numeral="XIX" data-name="Awards" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="7">
+          <div class="placeholder-tag">Photograph &middot; from the portfolio</div>
+          <img src="img/awards.png" alt="Photograph from portfolio" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">Awards</div>
+          <h2>Four photography<br>recognitions.</h2>
+          <p><strong>Scholastic Art and Writing Awards</strong> &mdash; National Anthology Finalist for &ldquo;The World as You See It.&rdquo;</p>
+          <p><strong>Black Box Gallery</strong> &mdash; second place, Black and White Photo Contest.</p>
+          <p><strong>Clackamas County Photography Competition</strong> &mdash; first place. Work displayed in county government buildings.</p>
+          <p><strong>Washington Trails Association</strong> Northwest Exposure Photo Contest &mdash; first place. Work exhibited at the University of Washington.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 20 — REFLECTION -->
+  <section data-screen-label="20 Reflection" class="slide-body"
+           data-numeral="XX" data-name="Reflection" data-halo="6">
+    <div class="slide left">
+      <div class="body-stack">
+        <div class="label">Reflection</div>
+        <h2>Build the systems<br>that fit how you work.</h2>
+        <p class="body lede">The last four years have taught me to build the systems that fit how I work, rather than wait for systems built for me. I entered fourth grade reading at a kindergarten level, and most of elementary school was lost to the gap between what I was learning and what school treated as success.</p>
+        <p class="body lede">The work since then has been turning dyslexia accommodations into a method &mdash; and the night I sat with Kandel&rsquo;s <em>Principles of Neural Science</em> and the DSM-V open in front of me and read them both for pleasure is when that translation felt complete.</p>
+        <p class="body lede">CAL was the first program where the work mapped directly onto the career I want to do &mdash; through phlebotomy lab, CNA clinicals, the disease-state case study, the public-health flyers, and the micronutrient analysis.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 21 — FUTURE PLANS -->
+  <section data-screen-label="21 Future plans" class="slide-timeline"
+           data-numeral="XXI" data-name="Future plans" data-halo="4">
+    <div class="slide left">
+      <div class="tl-lede">
+        <div class="label">Future plans</div>
+        <h2>A decade and a half,<br>through pediatric neurology.</h2>
+      </div>
+      <div class="tl">
+        <div class="tl-rule tile-rule"></div>
+        <div class="tl-beat cascades-block">
+          <span class="dot"></span>
+          <div class="year">Undergraduate</div>
+          <h3>Neuroscience B.S.</h3>
+          <p>Johns Hopkins as the target.</p>
+        </div>
+        <div class="tl-beat cascades-block">
+          <span class="dot"></span>
+          <div class="year">MD-PhD</div>
+          <h3><span class="cascades-block" data-count-to="7">7</span>&ndash;<span class="cascades-block" data-count-to="8">8</span>&nbsp;years</h3>
+          <p>Johns Hopkins School of Medicine.</p>
+        </div>
+        <div class="tl-beat cascades-block">
+          <span class="dot"></span>
+          <div class="year">Residency</div>
+          <h3><span class="cascades-block" data-count-to="3">3</span>&nbsp;years</h3>
+          <p>Pediatrics.</p>
+        </div>
+        <div class="tl-beat cascades-block">
+          <span class="dot"></span>
+          <div class="year">Fellowship</div>
+          <h3><span class="cascades-block" data-count-to="3">3</span>&nbsp;years</h3>
+          <p>Pediatric neurology.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 22 — THANK YOU -->
+  <section data-screen-label="22 Thank you" class="slide-close"
+           data-numeral="XXII" data-name="Thank you" data-halo="6" data-cascade="ltr">
+    <div class="slide center">
+      <div class="closing">
+        <div class="end-eyebrow rise d-1"><i>An <em>engram</em> is the physical trace a memory leaves in the brain.<br>Thank you to everyone in this room who became one of mine.</i></div>
+        <div class="dash tile-rule"></div>
+        <div class="end-name rise d-3">thank&nbsp;you.</div>
+        <div class="sub rise d-4" style="margin-top: 28px; opacity: 0.78; font-size: 22px; max-width: 1100px;">Dr. Stephanie Axman &middot; Dr. Ashley Maliken &middot; Dr. Antonia Forster &middot; Dr. Summer Gibbs<br>At CAL &mdash; Zeke, Kelsey, McNeal, Zimmerman</div>
+        <div class="sub rise d-5" style="margin-top: 18px; font-size: 18px; opacity: 0.6;">contact@elijahfrost.com &middot; elijahfrost.com &middot; projects.elijahfrost.com</div>
+      </div>
+    </div>
+  </section>
+
+
+</deck-stage>
+
+<!-- ================================================================== -->
+<!-- PERSISTENT OVERLAY                                                 -->
+<!-- ================================================================== -->
+<div class="deck-overlay" id="overlay" aria-hidden="true">
+  <div class="grid-tiles" id="gridTiles"></div>
+
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+      <circle cx="16" cy="16" r="11"/>
+      <circle cx="16" cy="16" r="5"/>
+      <circle cx="16" cy="16" r="1.2" fill="currentColor" stroke="none"/>
+    </svg>
+    <span class="wordmark">Elijah&nbsp;Frost &middot; Senior&nbsp;Capstone</span>
+  </div>
+
+  <div class="counter" id="counter">
+    <span class="cur">01</span><span class="of">/</span><span class="tot">22</span>
+  </div>
+
+  <div class="scribe">
+    <div class="scribe-rule"></div>
+    <div class="scribe-fill" id="scribeFill"></div>
+    <div class="scribe-trail" id="scribeTrail"></div>
+    <div class="scribe-ticks" id="scribeTicks"></div>
+
+    <div class="scribe-carriage" id="scribeCarriage">
+      <div class="cursor"></div>
+      <div class="numeral" id="scribeNumeral"><span class="layer">I</span></div>
+      <div class="name"    id="scribeName"><span class="layer">Ouverture</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- FRAMEWORK-MANAGED:deck-bootstrap — do not edit -->
+<script src="/_framework/v1/deck-stage.js"></script>
+<!-- /FRAMEWORK-MANAGED:deck-bootstrap -->
+
+<script id="piece-script">
+  /* ==================================================================
+     Mirror deck-stage's scaled .canvas with the overlay's transform.
+     The canvas is in shadow DOM; we resolve it lazily and re-sync on
+     resize / ResizeObserver / per-frame position polling.
+     ================================================================== */
+  (() => {
+    const deck = document.querySelector('deck-stage');
+    const overlay = document.getElementById('overlay');
+    if (!deck || !overlay) return;
+
+    let canvas = null;
+    const resolveCanvas = () => {
+      if (canvas && canvas.isConnected) return canvas;
+      canvas = deck.shadowRoot && deck.shadowRoot.querySelector('.canvas');
+      return canvas;
+    };
+
+    const sync = () => {
+      const c = resolveCanvas();
+      if (!c) { requestAnimationFrame(sync); return; }
+      const r = c.getBoundingClientRect();
+      const s = r.width / 1920;
+      overlay.style.transform = `translate(${r.left}px, ${r.top}px) scale(${s})`;
+      overlay.style.visibility = (r.width > 0 ? 'visible' : 'hidden');
+    };
+
+    window.addEventListener('resize', sync);
+    window.addEventListener('scroll', sync, { passive: true });
+
+    const start = () => {
+      const c = resolveCanvas();
+      if (!c) { requestAnimationFrame(start); return; }
+      sync();
+      try { new ResizeObserver(sync).observe(c); } catch (e) {}
+      // Position can change without size changing (rail toggle, etc).
+      // A per-frame poll is cheap enough for a single getBoundingClientRect.
+      let last = c.getBoundingClientRect();
+      const poll = () => {
+        const n = c.getBoundingClientRect();
+        if (n.left !== last.left || n.top !== last.top || n.width !== last.width) {
+          last = n; sync();
+        }
+        requestAnimationFrame(poll);
+      };
+      poll();
+    };
+    start();
+  })();
+
+  /* ==================================================================
+     Build ticks once we know how many slides there are.
+     ================================================================== */
+  (() => {
+    const ticks = document.getElementById('scribeTicks');
+    const count = document.getElementById('scribeCount');
+    const deck = document.querySelector('deck-stage');
+    if (!ticks || !deck) return;
+
+    const init = () => {
+      const total = deck.querySelectorAll(':scope > section').length;
+      if (!total) { requestAnimationFrame(init); return; }
+      ticks.innerHTML = '';
+      for (let i = 0; i < total; i++) {
+        const t = document.createElement('span');
+        t.className = 'tick';
+        t.style.left = (total === 1 ? 50 : (i / (total - 1)) * 100) + '%';
+        t.dataset.idx = String(i);
+        ticks.appendChild(t);
+      }
+    };
+    init();
+  })();
+
+  /* ==================================================================
+     slidechange — drive every persistent element from the active
+     slide's data-* attributes.
+     ================================================================== */
+  (() => {
+    const deck = document.querySelector('deck-stage');
+    const overlay = document.getElementById('overlay');
+    const carriage = document.getElementById('scribeCarriage');
+    const numeralEl = document.getElementById('scribeNumeral');
+    const nameEl = document.getElementById('scribeName');
+    const trail = document.getElementById('scribeTrail');
+    const fill  = document.getElementById('scribeFill');
+    const counter = document.getElementById('counter');
+    const ticks = document.getElementById('scribeTicks');
+    const gridTiles = document.getElementById('gridTiles');
+    if (!deck || !overlay) return;
+
+    // Build the 32×18 tile grid once.
+    const tiles = [];
+    if (gridTiles && gridTiles.childElementCount === 0) {
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < 32 * 18; i++) {
+        const t = document.createElement('div');
+        t.className = 'tile';
+        frag.appendChild(t);
+        tiles.push(t);
+      }
+      gridTiles.appendChild(frag);
+    } else if (gridTiles) {
+      gridTiles.querySelectorAll('.tile').forEach((t) => tiles.push(t));
+    }
+
+    // Write the total slide count into the counter.
+    if (counter) {
+      const tot = counter.querySelector('.tot');
+      const totalNow = deck.querySelectorAll(':scope > section').length;
+      if (tot && totalNow) tot.textContent = String(totalNow).padStart(2, '0');
+    }
+
+    let lastX = null;
+    let lastIdx = 0;
+    let trailFadeTimer = null;
+
+    /* --------------------------------------------------------------
+       Letter splitting: walk every text node inside each slide and
+       replace it with a fragment of <span class="ltr"> per character
+       (spaces stay as text nodes so wrap behaviour is unchanged). Run
+       once at load.
+       -------------------------------------------------------------- */
+    const slidesAll = Array.from(deck.querySelectorAll(':scope > section'));
+
+    function splitTextInSlide(slide) {
+      const walker = document.createTreeWalker(slide, NodeFilter.SHOW_TEXT, {
+        acceptNode(n) {
+          if (!n.textContent || !n.textContent.trim()) return NodeFilter.FILTER_REJECT;
+          let p = n.parentNode;
+          while (p && p !== slide) {
+            if (p.classList) {
+              if (p.classList.contains('ltr')) return NodeFilter.FILTER_REJECT;
+              if (p.classList.contains('no-split')) return NodeFilter.FILTER_REJECT;
+            }
+            const tag = p.nodeName;
+            if (tag === 'SCRIPT' || tag === 'STYLE') return NodeFilter.FILTER_REJECT;
+            p = p.parentNode;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const nodes = [];
+      let n; while ((n = walker.nextNode())) nodes.push(n);
+      for (const tn of nodes) {
+        const frag = document.createDocumentFragment();
+        let wordSpan = null;
+        const flushWord = () => { wordSpan = null; };
+        for (const ch of tn.textContent) {
+          if (ch === ' ' || ch === '\u00A0') {
+            flushWord();
+            frag.appendChild(document.createTextNode(ch));
+          } else {
+            if (!wordSpan) {
+              wordSpan = document.createElement('span');
+              wordSpan.className = 'word';
+              frag.appendChild(wordSpan);
+            }
+            const sp = document.createElement('span');
+            sp.className = 'ltr';
+            sp.textContent = ch;
+            wordSpan.appendChild(sp);
+          }
+        }
+        tn.parentNode.replaceChild(frag, tn);
+      }
+      // Mark every ancestor that now hosts .ltr children so its own
+      // .rise gets disabled in favour of the per-letter animation.
+      // Exception: a .cascades-block ancestor IS the unit that
+      // animates, so we leave it alone and let its container rise
+      // run normally — the letters inside fade in as part of the
+      // container's opacity gate.
+      slide.querySelectorAll('.ltr').forEach(span => {
+        let p = span.parentNode;
+        while (p && p !== slide) {
+          if (p.nodeType === 1 && !p.classList.contains('cascades-block')) {
+            p.classList.add('has-letters');
+          }
+          p = p.parentNode;
+        }
+      });
+    }
+    slidesAll.forEach(splitTextInSlide);
+
+    /* Stamp each letter's delay from its (col, row) cell in the SAME
+       32x18 grid the tiles use, using the IDENTICAL column-major
+       formula. The letter under tile T fires at T's exact delay, so
+       the letter cascade and the tile cascade are one wave. Direction
+       reverses on backward nav. */
+    const T_COLS = 32, T_ROWS = 18;
+    // Block-scan reveal: the grid is partitioned into BLOCK_W x BLOCK_H
+    // cell chunks. Every cell inside a block fires at the SAME delay,
+    // and blocks fire one after the next in row-major scan order. The
+    // result reads as a chunky, programmatic load (like a tiled
+    // texture decoder filling block by block), not a smooth wave.
+    // 32/4 = 8 block-cols, 18/3 = 6 block-rows -> 48 blocks.
+    const BLOCK_W = 4, BLOCK_H = 3;
+    const BLOCK_COLS = Math.ceil(T_COLS / BLOCK_W);  // 8
+    const BLOCK_ROWS = Math.ceil(T_ROWS / BLOCK_H);  // 6
+    const BLOCK_STEP = 48;  // ms between adjacent blocks in scan order
+
+    function applyLetterDelays(slide, blockDelay) {
+      const cv = deck.shadowRoot && deck.shadowRoot.querySelector('.canvas');
+      if (!cv) return;
+      const cr = cv.getBoundingClientRect();
+      if (!cr.width) return;
+      const letters = slide.querySelectorAll('.ltr');
+      for (let i = 0; i < letters.length; i++) {
+        const span = letters[i];
+        const r = span.getBoundingClientRect();
+        const cxN = (r.left + r.width / 2 - cr.left) / cr.width;
+        const cyN = (r.top  + r.height / 2 - cr.top)  / cr.height;
+        let col = Math.floor(cxN * T_COLS);
+        let row = Math.floor(cyN * T_ROWS);
+        if (col < 0) col = 0; else if (col > T_COLS - 1) col = T_COLS - 1;
+        if (row < 0) row = 0; else if (row > T_ROWS - 1) row = T_ROWS - 1;
+        const bc = (col / BLOCK_W) | 0;
+        const br = (row / BLOCK_H) | 0;
+        const bid = br * BLOCK_COLS + bc;
+        const k = blockDelay[bid] >= 0 ? blockDelay[bid] : 0;
+        span.style.animationDelay = k + 'ms';
+      }
+    }
+
+    // Tile-reveal: any element opted in via `.tile-reveal` gets an
+    // overlay grid of page-bg cells injected (lazily); each cell's
+    // animation-delay is stamped from the canvas-block it covers so
+    // the cells fade out in the same wave as the letters and tiles.
+    // The effect is that an image (or any element) reveals itself
+    // block-by-block in step with the surrounding cascade.
+    // data-reveal-cols / data-reveal-rows control density (default 8×3).
+    function applyImageReveal(slide, blockDelay, cascade, sweepStep) {
+      const cv = deck.shadowRoot && deck.shadowRoot.querySelector('.canvas');
+      if (!cv) return;
+      const cr = cv.getBoundingClientRect();
+      if (!cr.width) return;
+      // If the block has no text it isn't on the cascade ladder and
+      // blockDelay[bid] is -1. For tile-reveal we still want a sensible
+      // delay there, so synthesise the value the cascade WOULD have
+      // assigned if the block were active.
+      const synth = (bc, br) => {
+        let stage;
+        if      (cascade === 'tl')  stage = bc + br;
+        else if (cascade === 'br')  stage = (BLOCK_COLS - 1 - bc) + (BLOCK_ROWS - 1 - br);
+        else if (cascade === 'tr')  stage = (BLOCK_COLS - 1 - bc) + br;
+        else if (cascade === 'bl')  stage = bc + (BLOCK_ROWS - 1 - br);
+        else if (cascade === 'ltr') stage = bc;
+        else if (cascade === 'rtl') stage = BLOCK_COLS - 1 - bc;
+        else if (cascade === 'ttb') stage = br;
+        else if (cascade === 'btt') stage = BLOCK_ROWS - 1 - br;
+        else                        stage = 0;
+        return stage * sweepStep;
+      };
+      // Stage A (grid) uses a fine 2×2 subdivision of the canvas
+      // cascade blocks for a smoother, more granular lattice arrival.
+      // Stage B (bg dissolve) stays on the same 4×3 blocks as the
+      // letter cascade so the image reveals in the larger chunks the
+      // text rides on.
+      const F_BLOCK_W = BLOCK_W / 2;
+      const F_BLOCK_H = BLOCK_H / 2;
+      const F_BLOCK_COLS = Math.ceil(T_COLS / F_BLOCK_W);
+      const F_BLOCK_ROWS = Math.ceil(T_ROWS / F_BLOCK_H);
+      const fineStep = sweepStep / 2;
+      const fineSynth = (bc, br) => {
+        let stage;
+        if      (cascade === 'tl')  stage = bc + br;
+        else if (cascade === 'br')  stage = (F_BLOCK_COLS - 1 - bc) + (F_BLOCK_ROWS - 1 - br);
+        else if (cascade === 'tr')  stage = (F_BLOCK_COLS - 1 - bc) + br;
+        else if (cascade === 'bl')  stage = bc + (F_BLOCK_ROWS - 1 - br);
+        else if (cascade === 'ltr') stage = bc;
+        else if (cascade === 'rtl') stage = F_BLOCK_COLS - 1 - bc;
+        else if (cascade === 'ttb') stage = br;
+        else if (cascade === 'btt') stage = F_BLOCK_ROWS - 1 - br;
+        else                        stage = 0;
+        return stage * fineStep;
+      };
+      // Auto-promote: any placeholder containing an <img> behaves as a
+      // tile-reveal target by default. Drop an <img> into a .placeholder
+      // and the two-stage cascade kicks in without touching the markup.
+      // If the placeholder was wearing .cascades-block (the older fade-
+      // in primitive), shed it — tile-reveal takes over the entrance.
+      slide.querySelectorAll('.placeholder').forEach(p => {
+        if (p.querySelector('img') && !p.classList.contains('tile-reveal')) {
+          p.classList.add('tile-reveal');
+          p.classList.remove('cascades-block');
+        }
+      });
+      const targets = slide.querySelectorAll('.tile-reveal');
+      for (let t = 0; t < targets.length; t++) {
+        const target = targets[t];
+        const tr = target.getBoundingClientRect();
+        if (!tr.width) continue;
+        // Default cell density mirrors the original Plate (slide 14)
+        // which sets 28×9 on a 1680×~642 design-px image area —
+        // 60-wide × ~72-tall cells. We measure the placeholder in
+        // design space (its rect is screen-px, so divide back through
+        // the canvas's screen-to-design scale) and round to those
+        // target cell sizes. Authors can override per-image with
+        // data-reveal-cols / data-reveal-rows.
+        let cols = parseInt(target.dataset.revealCols);
+        let rows = parseInt(target.dataset.revealRows);
+        if ((!cols || cols < 1) || (!rows || rows < 1)) {
+          const designW = tr.width  * 1920 / cr.width;
+          const designH = tr.height * 1080 / cr.height;
+          if (!cols || cols < 1) cols = Math.max(4, Math.round(designW / 60));
+          if (!rows || rows < 1) rows = Math.max(2, Math.round(designH / 72));
+        }
+        let cover = target.querySelector(':scope > .reveal-cover');
+        if (!cover) {
+          cover = document.createElement('div');
+          cover.className = 'reveal-cover';
+          target.appendChild(cover);
+        }
+        cover.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+        cover.style.gridTemplateRows = 'repeat(' + rows + ', 1fr)';
+        // Re-size the cell pool to match cols×rows.
+        const need = cols * rows;
+        while (cover.children.length < need) {
+          const c = document.createElement('div');
+          c.className = 'reveal-cell';
+          cover.appendChild(c);
+        }
+        while (cover.children.length > need) {
+          cover.removeChild(cover.lastChild);
+        }
+        const cellW = tr.width / cols;
+        const cellH = tr.height / rows;
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const cell = cover.children[r * cols + c];
+            const x = tr.left + (c + 0.5) * cellW - cr.left;
+            const y = tr.top  + (r + 0.5) * cellH - cr.top;
+            const cxN = x / cr.width;
+            const cyN = y / cr.height;
+            let col = Math.floor(cxN * T_COLS);
+            let row = Math.floor(cyN * T_ROWS);
+            if (col < 0) col = 0; else if (col > T_COLS - 1) col = T_COLS - 1;
+            if (row < 0) row = 0; else if (row > T_ROWS - 1) row = T_ROWS - 1;
+            // Fine delay drives Stage A; coarse delay drives Stage B.
+            const fBc = Math.floor(col / F_BLOCK_W);
+            const fBr = Math.floor(row / F_BLOCK_H);
+            const cBc = (col / BLOCK_W) | 0;
+            const cBr = (row / BLOCK_H) | 0;
+            const cBid = cBr * BLOCK_COLS + cBc;
+            const coarseK = blockDelay[cBid] >= 0 ? blockDelay[cBid] : synth(cBc, cBr);
+            cell.style.setProperty('--grid-delay', fineSynth(fBc, fBr) + 'ms');
+            cell.style.setProperty('--bg-delay',   coarseK + 'ms');
+          }
+        }
+      }
+    }
+
+    // Non-text elements (images, columns, list rows, KPIs, etc.) that
+    // opt in via `.cascades-block` ride the same block cascade as the
+    // letters and tiles. We compute the block under each element's
+    // centre and stamp its animation-delay so the element appears in
+    // step with the wave. The element's own CSS animation
+    // (duration/easing) is preserved; only the delay is overridden.
+    function applyElementBlockDelays(slide, blockDelay, cascade, sweepStep) {
+      const cv = deck.shadowRoot && deck.shadowRoot.querySelector('.canvas');
+      if (!cv) return;
+      const cr = cv.getBoundingClientRect();
+      if (!cr.width) return;
+      // Fallback delay for a block with no .ltr in it (e.g. an isolated
+      // image, or a number-only span where the count-up JS destroyed
+      // the original .ltr wrapping). Mirrors the diagonal/axis sweep
+      // the tile cascade uses, so the element still arrives in step.
+      const synth = (bc, br) => {
+        let stage;
+        if      (cascade === 'tl')  stage = bc + br;
+        else if (cascade === 'br')  stage = (BLOCK_COLS - 1 - bc) + (BLOCK_ROWS - 1 - br);
+        else if (cascade === 'tr')  stage = (BLOCK_COLS - 1 - bc) + br;
+        else if (cascade === 'bl')  stage = bc + (BLOCK_ROWS - 1 - br);
+        else if (cascade === 'ltr') stage = bc;
+        else if (cascade === 'rtl') stage = BLOCK_COLS - 1 - bc;
+        else if (cascade === 'ttb') stage = br;
+        else if (cascade === 'btt') stage = BLOCK_ROWS - 1 - br;
+        else                        stage = bc + br; // 'scan' / default
+        return stage * sweepStep;
+      };
+      // Keep this query in sync with the `.cascades-block, .pip, .sep`
+      // selector in piece-style. Auto-promoted primitives (pips,
+      // separators) get a cell-stamped delay here so they snap on with
+      // the surrounding cascade — no per-element opt-in required.
+      const els = slide.querySelectorAll('.cascades-block, .pip, .sep');
+      for (let i = 0; i < els.length; i++) {
+        const el = els[i];
+        const r = el.getBoundingClientRect();
+        if (!r.width) continue;
+        const cxN = (r.left + r.width / 2 - cr.left) / cr.width;
+        const cyN = (r.top  + r.height / 2 - cr.top)  / cr.height;
+        let col = Math.floor(cxN * T_COLS);
+        let row = Math.floor(cyN * T_ROWS);
+        if (col < 0) col = 0; else if (col > T_COLS - 1) col = T_COLS - 1;
+        if (row < 0) row = 0; else if (row > T_ROWS - 1) row = T_ROWS - 1;
+        const bc = (col / BLOCK_W) | 0;
+        const br = (row / BLOCK_H) | 0;
+        const bid = br * BLOCK_COLS + bc;
+        const k = blockDelay[bid] >= 0 ? blockDelay[bid] : synth(bc, br);
+        el.style.animationDelay = k + 'ms';
+      }
+    }
+
+    // Tile-rule — long decorative lines (timeline rule, split divider,
+    // hero-rule, close-slide dash, etc.) chopped into cell-aligned
+    // segments. Each segment is positioned by the existing flex layout
+    // of the rule (so 1px-tall horizontal rules tile horizontally and
+    // 1px-wide vertical rules tile vertically). Segments snap on at
+    // their cell's delay — same character as letter snap. JS keeps
+    // segment count in sync with the rule's bbox; on every entry,
+    // delays are re-stamped from the current blockDelay table.
+    function synthCascadeDelay(bc, br, cascade) {
+      let stage;
+      if      (cascade === 'tl')  stage = bc + br;
+      else if (cascade === 'br')  stage = (BLOCK_COLS - 1 - bc) + (BLOCK_ROWS - 1 - br);
+      else if (cascade === 'tr')  stage = (BLOCK_COLS - 1 - bc) + br;
+      else if (cascade === 'bl')  stage = bc + (BLOCK_ROWS - 1 - br);
+      else if (cascade === 'ltr') stage = bc;
+      else if (cascade === 'rtl') stage = BLOCK_COLS - 1 - bc;
+      else if (cascade === 'ttb') stage = br;
+      else if (cascade === 'btt') stage = BLOCK_ROWS - 1 - br;
+      else                        stage = bc + br;
+      return stage * (BLOCK_STEP * 2);
+    }
+
+    function applyRuleSegments(slide, blockDelay, cascade) {
+      const cv = deck.shadowRoot && deck.shadowRoot.querySelector('.canvas');
+      if (!cv) return;
+      const cr = cv.getBoundingClientRect();
+      if (!cr.width) return;
+      const cellW = cr.width / T_COLS;
+      const cellH = cr.height / T_ROWS;
+      const rules = slide.querySelectorAll('.tile-rule');
+
+      // Reset suppression flags on every entry (tiles persist across slides).
+      const gridTilesEl = document.getElementById('gridTiles');
+      if (gridTilesEl) {
+        const prev = gridTilesEl.querySelectorAll('.tile.is-rule-suppress-h, .tile.is-rule-suppress-v');
+        for (let i = 0; i < prev.length; i++) {
+          prev[i].classList.remove('is-rule-suppress-h');
+          prev[i].classList.remove('is-rule-suppress-v');
+        }
+      }
+
+      for (let ri = 0; ri < rules.length; ri++) {
+        const rule = rules[ri];
+        const r = rule.getBoundingClientRect();
+        if (!r.width || !r.height) continue;
+        const isHoriz = r.width >= r.height;
+        rule.classList.toggle('is-vertical', !isHoriz);
+
+        let startIdx, endIdx, fixedIdx;
+        if (isHoriz) {
+          startIdx = Math.max(0, Math.floor((r.left - cr.left) / cellW));
+          endIdx   = Math.min(T_COLS, Math.ceil((r.right - cr.left) / cellW));
+          fixedIdx = Math.floor((r.top + r.height / 2 - cr.top) / cellH);
+          if (fixedIdx < 0) fixedIdx = 0; else if (fixedIdx >= T_ROWS) fixedIdx = T_ROWS - 1;
+        } else {
+          startIdx = Math.max(0, Math.floor((r.top - cr.top) / cellH));
+          endIdx   = Math.min(T_ROWS, Math.ceil((r.bottom - cr.top) / cellH));
+          fixedIdx = Math.floor((r.left + r.width / 2 - cr.left) / cellW);
+          if (fixedIdx < 0) fixedIdx = 0; else if (fixedIdx >= T_COLS) fixedIdx = T_COLS - 1;
+        }
+        const segCount = Math.max(1, endIdx - startIdx);
+
+        if (rule.dataset.segCount !== String(segCount)) {
+          while (rule.firstChild) rule.removeChild(rule.firstChild);
+          for (let i = 0; i < segCount; i++) {
+            const seg = document.createElement('span');
+            seg.className = 'rule-seg';
+            rule.appendChild(seg);
+          }
+          rule.dataset.segCount = String(segCount);
+        }
+
+        for (let i = 0; i < segCount; i++) {
+          const col = isHoriz ? (startIdx + i) : fixedIdx;
+          const row = isHoriz ? fixedIdx       : (startIdx + i);
+          const bc = (col / BLOCK_W) | 0;
+          const br = (row / BLOCK_H) | 0;
+          const bid = br * BLOCK_COLS + bc;
+          const k = blockDelay[bid] >= 0
+            ? blockDelay[bid]
+            : synthCascadeDelay(bc, br, cascade);
+          rule.children[i].style.animationDelay = k + 'ms';
+        }
+
+        // Suppress the tile-grid hairline that runs parallel to a rule
+        // ONLY when the rule sits close enough to a cell boundary that
+        // the boundary's hairline reads as a duplicate "subline." Far
+        // from any boundary (rule sits mid-cell), the grid hairline is
+        // distinct from the rule and no suppression is needed — the
+        // earlier blanket suppression created visible gaps in the grid
+        // pattern on slides whose rules sit mid-row (e.g. slide-close
+        // dash). Threshold is a quarter-cell in design space.
+        if (gridTilesEl) {
+          // Rule's center in canvas-relative px (NOT design units —
+          // we compare against cellW/cellH which are also viewport).
+          const ruleCY = r.top  + r.height / 2 - cr.top;
+          const ruleCX = r.left + r.width  / 2 - cr.left;
+          // Threshold ~15 design-px = quarter-cell. Express in viewport
+          // px by scaling against the canvas-to-design ratio.
+          const SNAP_PX_DESIGN = 15;
+          const snapPxH = SNAP_PX_DESIGN * (cr.height / 1080);
+          const snapPxV = SNAP_PX_DESIGN * (cr.width  / 1920);
+          if (isHoriz) {
+            // Find the cell boundary nearest the rule's Y. boundary at
+            // row N is at Y = N * cellH. Suppress the border-top of
+            // row N when |ruleCY - N*cellH| < snapPxH.
+            const nearestRow = Math.round(ruleCY / cellH);
+            const dist = Math.abs(ruleCY - nearestRow * cellH);
+            if (dist < snapPxH && nearestRow >= 0 && nearestRow < T_ROWS) {
+              for (let c = startIdx; c < endIdx; c++) {
+                const idx = nearestRow * T_COLS + c;
+                const tile = gridTilesEl.children[idx];
+                if (tile) tile.classList.add('is-rule-suppress-h');
+              }
+            }
+          } else {
+            // Vertical: cell boundary at col N is at X = N * cellW.
+            const nearestCol = Math.round(ruleCX / cellW);
+            const dist = Math.abs(ruleCX - nearestCol * cellW);
+            if (dist < snapPxV && nearestCol >= 0 && nearestCol < T_COLS) {
+              for (let row = startIdx; row < endIdx; row++) {
+                const idx = row * T_COLS + nearestCol;
+                const tile = gridTilesEl.children[idx];
+                if (tile) tile.classList.add('is-rule-suppress-v');
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // The scribe container is left:120 right:120 in a 1920 canvas,
+    // so its inner width is 1680 (in design units). The car-x var is
+    // expressed in those same units — left:var(--car-x) of the scribe.
+    const scribeInnerW = 1920 - 120 - 120;
+
+    const apply = (slide, idx, total, isInit) => {
+      if (!slide) return;
+      const d = slide.dataset;
+
+      // Tile cascade — the tiles ARE the text. We rasterise every
+      // .ltr's bounding box into the 32×18 grid, accumulating per-cell
+      // "loudness" (fractional coverage). Cells touched by text light
+      // up; cells that aren't, don't. Brightness scales with how much
+      // text stacks into the cell, so headlines and body copy both
+      // read but headlines punch harder. Both letters and tiles ride
+      // the same column-major march.
+      //
+      // On every slide change we (a) snap all tiles off with transitions
+      // suppressed, then (b) re-enable transitions and cascade them back
+      // on so the wave replays.
+      const forward = isInit || idx >= lastIdx;
+      const prevIdx = lastIdx; // snapshot before lastIdx gets overwritten below
+      const cv = deck.shadowRoot && deck.shadowRoot.querySelector('.canvas');
+      const cr = cv && cv.getBoundingClientRect();
+
+      // Build the loudness map AND the per-cell halo-radius map. The
+      // halo radius is resolved per letter by walking up to the first
+      // ancestor with [data-halo] (falls back to the section's own
+      // [data-halo], default 0). For each cell that letter touches, we
+      // keep the MAX halo radius — so a small radius elsewhere never
+      // shrinks a big-radius element's reach.
+      const loud = new Float32Array(T_COLS * T_ROWS);
+      const haloR = new Float32Array(T_COLS * T_ROWS);
+      const sectionHalo = parseFloat(slide.dataset.halo || '0') || 0;
+      if (cr && cr.width) {
+        const cellW = cr.width  / T_COLS;
+        const cellH = cr.height / T_ROWS;
+        const letters = slide.querySelectorAll('.ltr');
+        // Cache resolved halo radius per element so we don't walk the
+        // tree once per letter.
+        const haloCache = new WeakMap();
+        const resolveHalo = (el) => {
+          let p = el;
+          while (p && p !== slide) {
+            if (haloCache.has(p)) return haloCache.get(p);
+            if (p.dataset && p.dataset.halo != null) {
+              const v = parseFloat(p.dataset.halo) || 0;
+              haloCache.set(p, v);
+              return v;
+            }
+            p = p.parentElement;
+          }
+          return sectionHalo;
+        };
+        for (let li = 0; li < letters.length; li++) {
+          const r = letters[li].getBoundingClientRect();
+          if (!r.width || !r.height) continue;
+          const h = resolveHalo(letters[li]);
+          const x0 = (r.left   - cr.left) / cellW;
+          const y0 = (r.top    - cr.top ) / cellH;
+          const x1 = (r.right  - cr.left) / cellW;
+          const y1 = (r.bottom - cr.top ) / cellH;
+          const c0 = Math.max(0, Math.floor(x0));
+          const c1 = Math.min(T_COLS - 1, Math.floor(x1 - 1e-6));
+          const r0 = Math.max(0, Math.floor(y0));
+          const r1 = Math.min(T_ROWS - 1, Math.floor(y1 - 1e-6));
+          for (let rr = r0; rr <= r1; rr++) {
+            const yA = Math.max(y0, rr);
+            const yB = Math.min(y1, rr + 1);
+            const dy = yB - yA;
+            if (dy <= 0) continue;
+            for (let cc = c0; cc <= c1; cc++) {
+              const xA = Math.max(x0, cc);
+              const xB = Math.min(x1, cc + 1);
+              const dx = xB - xA;
+              if (dx <= 0) continue;
+              const idx = rr * T_COLS + cc;
+              loud[idx] += dx * dy;
+              if (h > haloR[idx]) haloR[idx] = h;
+            }
+          }
+        }
+      }
+
+      // Note: .tile-rule elements do NOT contribute to the tile loudness
+      // map. Adding them lit the tile-border row at the rule's row, which
+      // appeared as a faint duplicate line offset from the rule itself
+      // (since the rule's bbox rarely aligns to a cell boundary). The
+      // rule still rides the same cascade rhythm — its segments take
+      // their snap delays from the same blockDelay map letters use.
+
+      // Silhouette smoothing: fill single-cell holes inside the text
+      // region so the lit cells read as a clean block rather than a
+      // jagged staircase. A cell with 4+ lit neighbours (of 8) is
+      // promoted to a modestly-lit text cell, inheriting a halo
+      // radius from its surroundings so the falloff keeps seeding.
+      // Protrusions (ascender/descender tips) stay — no erosion.
+      {
+        const FILL_THRESH = 0.04;   // matches MIN_COVERAGE: "lit" definition
+        const FILL_NEIGH  = 4;      // min lit neighbours to fill this cell
+        const smoothed  = new Float32Array(loud);
+        const smoothedH = new Float32Array(haloR);
+        for (let row = 0; row < T_ROWS; row++) {
+          for (let col = 0; col < T_COLS; col++) {
+            const idx = row * T_COLS + col;
+            if (loud[idx] > FILL_THRESH) continue;
+            let nSum = 0, nCnt = 0, nMaxH = 0;
+            for (let dr = -1; dr <= 1; dr++) {
+              for (let dc = -1; dc <= 1; dc++) {
+                if (!dr && !dc) continue;
+                const nr = row + dr, nc = col + dc;
+                if (nr < 0 || nr >= T_ROWS || nc < 0 || nc >= T_COLS) continue;
+                const nIdx = nr * T_COLS + nc;
+                if (loud[nIdx] > FILL_THRESH) {
+                  nSum += loud[nIdx];
+                  nCnt++;
+                  if (haloR[nIdx] > nMaxH) nMaxH = haloR[nIdx];
+                }
+              }
+            }
+            if (nCnt >= FILL_NEIGH) {
+              smoothed[idx]  = Math.max(FILL_THRESH * 1.5, (nSum / nCnt) * 0.5);
+              smoothedH[idx] = nMaxH;
+            }
+          }
+        }
+        for (let i = 0; i < loud.length; i++) {
+          loud[i]  = smoothed[i];
+          haloR[i] = smoothedH[i];
+        }
+      }
+
+      // Aggregate cell loudness into block loudness, then build the
+      // "ladder": an ordered list of just the blocks that contain text,
+      // in reading order (top-to-bottom, left-to-right). Each rung of
+      // the ladder gets a sequential delay; blocks NOT on the ladder
+      // never animate. Tiles and letters share this ladder, so a block
+      // of text and its tiles light at the exact same instant.
+      const BLOCK_LOUD_MIN = 0.10;
+      const blockLoud = new Float32Array(BLOCK_COLS * BLOCK_ROWS);
+      for (let row = 0; row < T_ROWS; row++) {
+        const br = (row / BLOCK_H) | 0;
+        for (let col = 0; col < T_COLS; col++) {
+          const bc = (col / BLOCK_W) | 0;
+          blockLoud[br * BLOCK_COLS + bc] += loud[row * T_COLS + col];
+        }
+      }
+      const blockDelay = new Int32Array(BLOCK_COLS * BLOCK_ROWS);
+      blockDelay.fill(-1);
+      const activeBlocks = [];
+      for (let br = 0; br < BLOCK_ROWS; br++) {
+        for (let bc = 0; bc < BLOCK_COLS; bc++) {
+          const bid = br * BLOCK_COLS + bc;
+          if (blockLoud[bid] >= BLOCK_LOUD_MIN) activeBlocks.push(bid);
+        }
+      }
+      // Cascade direction — data-cascade on the section picks the axis
+      // the wave travels along:
+      //   tl (default) — diagonal sweep originating at the top-left
+      //                  corner, propagating to bottom-right
+      //   br           — diagonal sweep from bottom-right to top-left
+      //   tr           — top-right origin, propagating to bottom-left
+      //   bl           — bottom-left origin, propagating to top-right
+      //   ltr          — left-to-right column sweep; all blocks in a
+      //                  given column light at the same instant
+      //   rtl          — right-to-left
+      //   ttb          — top-to-bottom row sweep
+      //   btt          — bottom-to-top
+      //   scan         — legacy block-by-block in reading order
+      // Reverse-nav (ArrowLeft) flips tl↔br, tr↔bl, ltr↔rtl and
+      // ttb↔btt so the motion plays in step with travel direction.
+      let cascade = d.cascade || 'tl';
+      if (!forward) {
+        if      (cascade === 'tl')  cascade = 'br';
+        else if (cascade === 'br')  cascade = 'tl';
+        else if (cascade === 'tr')  cascade = 'bl';
+        else if (cascade === 'bl')  cascade = 'tr';
+        else if (cascade === 'ltr') cascade = 'rtl';
+        else if (cascade === 'rtl') cascade = 'ltr';
+        else if (cascade === 'ttb') cascade = 'btt';
+        else if (cascade === 'btt') cascade = 'ttb';
+      }
+      // Sweep modes use a coarser step than scan because each "stage"
+      // fires many blocks at once — the wave reads as a single
+      // travelling line rather than a thread of individual lights.
+      // data-cascade-step on the section multiplies the step duration
+      // so short-axis sweeps (ttb on a 6-row grid completes in 5
+      // stages, vs. tl in 12) don't feel jarringly fast.
+      const cascadeStepMult = parseFloat(d.cascadeStep || '1') || 1;
+      const SWEEP_STEP = BLOCK_STEP * 2 * cascadeStepMult;
+      if (cascade === 'tl' || cascade === 'br' ||
+          cascade === 'tr' || cascade === 'bl') {
+        // Diagonal: Manhattan distance from the origin corner. Cells
+        // on the same anti-diagonal light at the same instant, so the
+        // wave reads as a clean line travelling across the canvas.
+        for (let i = 0; i < activeBlocks.length; i++) {
+          const bid = activeBlocks[i];
+          const bc = bid % BLOCK_COLS;
+          const br = (bid / BLOCK_COLS) | 0;
+          let k;
+          if      (cascade === 'tl') k = bc + br;
+          else if (cascade === 'br') k = (BLOCK_COLS - 1 - bc) + (BLOCK_ROWS - 1 - br);
+          else if (cascade === 'tr') k = (BLOCK_COLS - 1 - bc) + br;
+          else                       k = bc + (BLOCK_ROWS - 1 - br); // bl
+          blockDelay[bid] = k * SWEEP_STEP;
+        }
+      } else if (cascade === 'ltr' || cascade === 'rtl') {
+        for (let i = 0; i < activeBlocks.length; i++) {
+          const bid = activeBlocks[i];
+          const bc = bid % BLOCK_COLS;
+          const k = cascade === 'ltr' ? bc : (BLOCK_COLS - 1 - bc);
+          blockDelay[bid] = k * SWEEP_STEP;
+        }
+      } else if (cascade === 'ttb' || cascade === 'btt') {
+        for (let i = 0; i < activeBlocks.length; i++) {
+          const bid = activeBlocks[i];
+          const br = (bid / BLOCK_COLS) | 0;
+          const k = cascade === 'ttb' ? br : (BLOCK_ROWS - 1 - br);
+          blockDelay[bid] = k * SWEEP_STEP;
+        }
+      } else {
+        // 'scan' — legacy reading-order ladder
+        const orderList = forward ? activeBlocks : activeBlocks.slice().reverse();
+        for (let i = 0; i < orderList.length; i++) {
+          blockDelay[orderList[i]] = i * BLOCK_STEP;
+        }
+      }
+
+      // --------------------------------------------------------------
+      // HALO PASS
+      // For each non-text cell, find the nearest text-covered cell
+      // whose halo radius reaches us. The halo lights that cell at a
+      // reduced opacity (linear falloff with distance / radius) and
+      // delays it by the SOURCE block's text-arrival time plus a
+      // per-cell ring offset — so the halo "cascades outward" from
+      // each text region a beat after the text itself lands.
+      //
+      // Pacing: HALO_STEP_MS is slightly slower than BLOCK_STEP so the
+      // halo expansion reads as a softer second wave rather than the
+      // same march. Falloff is linear in cell distance, which on text
+      // bounding boxes (typically wider than tall) naturally produces
+      // an oval — a uniform dilation of a wide region.
+      // --------------------------------------------------------------
+      const MIN_COVERAGE = 0.04;
+      const HALO_STEP_MS = 58;     // ms per cell of halo distance
+      const HALO_PEAK    = 0.46;   // opacity of a halo cell immediately adjacent to text
+      const HALO_FLOOR   = 0.03;   // opacity of a halo cell at the very edge of its radius
+      const haloOp   = new Float32Array(T_COLS * T_ROWS);
+      const haloDly  = new Int32Array(T_COLS * T_ROWS);
+      haloDly.fill(-1);
+
+      // Collect seed cells: text-covered AND inside an element with a
+      // halo radius. If a slide / element opts out (halo = 0) no seeds
+      // contribute, so the slide gets the old text-only treatment.
+      const seedCells = [];
+      for (let i = 0; i < T_COLS * T_ROWS; i++) {
+        if (loud[i] > MIN_COVERAGE && haloR[i] > 0) seedCells.push(i);
+      }
+      if (seedCells.length) {
+        const maxR = Math.max.apply(null, seedCells.map(j => haloR[j]));
+        // For each cell, brute-force the nearest seed within radius.
+        // 576 cells × ~200 seeds = ~115k ops; cheap.
+        for (let i = 0; i < T_COLS * T_ROWS; i++) {
+          if (loud[i] > MIN_COVERAGE) continue;          // text owns this cell
+          const ic = i % T_COLS, ir = (i / T_COLS) | 0;
+          let bestStrength = 0;
+          let bestSrc = -1;
+          let bestDist = Infinity;
+          for (let si = 0; si < seedCells.length; si++) {
+            const j = seedCells[si];
+            const jc = j % T_COLS, jr = (j / T_COLS) | 0;
+            const dx = ic - jc, dy = ir - jr;
+            const d = Math.sqrt(dx * dx + dy * dy);
+            const R = haloR[j];
+            if (d > R) continue;
+            // Strength: smoothstep falloff in normalised radius units —
+            // inner halo holds bright, outer halo dims fast so the cut
+            // at the radius boundary is imperceptible. We take the MAX
+            // across all reaching seeds so cells in overlap zones glow
+            // brighter (denser regions accumulate).
+            const sLin = 1 - d / R;
+            const s = sLin * sLin * (3 - 2 * sLin);
+            if (s > bestStrength) {
+              bestStrength = s;
+              bestSrc = j;
+              bestDist = d;
+            }
+          }
+          if (bestSrc >= 0) {
+            haloOp[i] = HALO_FLOOR + (HALO_PEAK - HALO_FLOOR) * bestStrength;
+            const sc = bestSrc % T_COLS, sr = (bestSrc / T_COLS) | 0;
+            const sbid = ((sr / BLOCK_H) | 0) * BLOCK_COLS + ((sc / BLOCK_W) | 0);
+            const srcDelay = blockDelay[sbid] >= 0 ? blockDelay[sbid] : 0;
+            haloDly[i] = srcDelay + Math.round(bestDist * HALO_STEP_MS);
+          }
+        }
+        // Silence unused var warning for older engines that might
+        // strip dead code; maxR is documentary only.
+        void maxR;
+      }
+
+      if (tiles && tiles.length) {
+        // Use the shared T_COLS/T_ROWS/COL_STEP/ROW_STEP constants
+        // defined alongside applyLetterDelays — both waves run on the
+        // same grid and the same delay formula.
+
+        if (!isInit && gridTiles) {
+          gridTiles.classList.add('is-resetting');
+          for (let i = 0; i < tiles.length; i++) tiles[i].classList.remove('is-on');
+          void gridTiles.offsetWidth; // commit the no-transition clear
+          gridTiles.classList.remove('is-resetting');
+        }
+
+        for (let i = 0; i < tiles.length; i++) {
+          const col = i % T_COLS;
+          const row = (i / T_COLS) | 0;
+          const coverage = loud[i];
+          const bc = (col / BLOCK_W) | 0;
+          const br = (row / BLOCK_H) | 0;
+          const bid = br * BLOCK_COLS + bc;
+          const bd = blockDelay[bid];
+          const tile = tiles[i];
+          // Loudness → opacity. A cell with any meaningful letter
+          // coverage gets a clear floor so the silhouette reads; cells
+          // with stacked coverage hit 1. The exponent compresses the
+          // middle so the contour stays crisp rather than mushy.
+          const FLOOR = 0.55;
+          if (bd >= 0 && coverage > MIN_COVERAGE) {
+            // Primary: text-driven cell. Block-quantised timing.
+            tile.style.transitionDelay = bd + 'ms';
+            const t = Math.min(1, Math.pow(coverage, 0.6));
+            const op = FLOOR + (1 - FLOOR) * t;
+            tile.style.setProperty('--t-op', op.toFixed(3));
+            tile.classList.add('is-on');
+          } else if (haloOp[i] > 0) {
+            // Halo: per-cell timing, fades out with distance from text.
+            tile.style.transitionDelay = haloDly[i] + 'ms';
+            tile.style.setProperty('--t-op', haloOp[i].toFixed(3));
+            tile.classList.add('is-on');
+          } else {
+            tile.classList.remove('is-on');
+          }
+        }
+      }
+
+      // Letter cascade — same wave, same direction. Stamp each .ltr's
+      // animation-delay from its position in the canvas, then toggle
+      // `.letters-ready` on the section to (re)trigger the animation.
+      applyLetterDelays(slide, blockDelay);
+      // Non-text elements opted into the block cascade ride the same
+      // wave (images, columns, list rows, KPIs, etc. — see CSS).
+      applyElementBlockDelays(slide, blockDelay, cascade, SWEEP_STEP);
+      // Cell-segmented rules (timeline, split-divider, dash, hero-rule).
+      applyRuleSegments(slide, blockDelay, cascade);
+      // Tile-reveal targets unveil in blocks in time with the wave.
+      applyImageReveal(slide, blockDelay, cascade, SWEEP_STEP);
+      slidesAll.forEach(s => { if (s !== slide) s.classList.remove('letters-ready'); });
+      slide.classList.remove('letters-ready');
+      void slide.offsetWidth; // force reflow so removal commits before re-add
+      slide.classList.add('letters-ready');
+
+      lastIdx = idx;
+
+      // Counter
+      if (counter) {
+        const cur = counter.querySelector('.cur');
+        if (cur) cur.textContent = String(idx + 1).padStart(2, '0');
+      }
+
+      // Carriage X in design units.
+      const x = total <= 1 ? scribeInnerW / 2 : (idx / (total - 1)) * scribeInnerW;
+
+      // Scramble a label container's text. The container's content is
+      // wiped and rebuilt as a layer of per-character <span class="scramble-cell">
+      // elements. Each cell cycles through random uppercase letters at
+      // the cascade rhythm, then snaps to its final character. Cells
+      // light left-to-right, so the label types into place in step with
+      // the carriage clicking through ticks.
+      const SCRAMBLE_POOL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      // Tuned so the label settles around the same time as the slide
+      // content cascade (≤900ms). PER_CHAR_STEP adapts to the cell
+      // count: long labels use a tighter stride, short labels use the
+      // BLOCK_STEP rhythm. SCRAMBLE_DUR is the per-cell window of
+      // random ticks before the cell locks to its final character.
+      const SCRAMBLE_TICK   = 45;   // ms between random-char swaps
+      const SCRAMBLE_DUR    = 280;  // ms each cell scrambles before landing
+      const SCRAMBLE_TARGET = 720;  // ms — when the last cell should land
+      const randChar = () => SCRAMBLE_POOL[(Math.random() * SCRAMBLE_POOL.length) | 0];
+
+      const swapLabel = (container, newText, instant) => {
+        if (!container) return;
+        const current = container.querySelector('.layer');
+        if (current && current.dataset.finalText === newText) return;
+
+        // Wipe and rebuild as a single layer of scramble cells
+        container.innerHTML = '';
+        const layer = document.createElement('span');
+        layer.className = 'layer';
+        layer.dataset.finalText = newText;
+        container.appendChild(layer);
+
+        const chars = Array.from(newText);
+        const cells = chars.map((ch) => {
+          const sp = document.createElement('span');
+          sp.className = 'scramble-cell';
+          if (ch === ' ' || ch === ' ') {
+            sp.classList.add('is-space', 'is-on');
+            sp.innerHTML = '&nbsp;';
+          } else {
+            sp.textContent = ch;
+          }
+          layer.appendChild(sp);
+          return sp;
+        });
+
+        if (instant) {
+          // First mount — no scramble, just show the final text.
+          cells.forEach((c) => c.classList.add('is-on'));
+          return;
+        }
+
+        // Stretch the cell-start cascade so the LAST cell lands at
+        // ~SCRAMBLE_TARGET ms (within the slide cascade window). Cap
+        // at BLOCK_STEP so short labels still feel snappy, floor at
+        // 16ms so very long labels don't blur.
+        const spread = Math.max(1, chars.length - 1);
+        const perCharStep = Math.min(48,
+          Math.max(16, (SCRAMBLE_TARGET - SCRAMBLE_DUR) / spread));
+
+        cells.forEach((cell, i) => {
+          const finalCh = chars[i];
+          if (cell.classList.contains('is-space')) return; // already on, no scramble
+          const scrambleStart = i * perCharStep;
+          const landAt = scrambleStart + SCRAMBLE_DUR;
+          // Reveal + first random char
+          setTimeout(() => {
+            cell.classList.add('is-on');
+            cell.textContent = randChar();
+          }, scrambleStart);
+          // Subsequent scramble ticks
+          for (let t = scrambleStart + SCRAMBLE_TICK; t < landAt; t += SCRAMBLE_TICK) {
+            setTimeout(() => { cell.textContent = randChar(); }, t);
+          }
+          // Land on final character
+          setTimeout(() => { cell.textContent = finalCh; }, landAt);
+        });
+      };
+
+      const numText = d.numeral || String(idx + 1);
+      const nmText  = d.name    || ('Slide ' + (idx + 1));
+
+      if (isInit) {
+        // First mount — set carriage X with no transition so it doesn't
+        // glide in from x:0 while everything else is fading up.
+        if (carriage) {
+          carriage.style.transition = 'none';
+          carriage.style.setProperty('--car-x', x + 'px');
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => { carriage.style.transition = ''; });
+          });
+        }
+        if (fill) {
+          fill.style.transition = 'none';
+          fill.style.width = x + 'px';
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => { fill.style.transition = ''; });
+          });
+        }
+        swapLabel(numeralEl, numText, true);
+        swapLabel(nameEl,    nmText,  true);
+        // Reveal overlay chrome in step with first slide's `.rise`.
+        requestAnimationFrame(() => overlay.setAttribute('data-mounted', ''));
+      } else {
+        // Step-quantise the carriage + fill through every tick crossed,
+        // at the cascade's per-block rhythm (BLOCK_STEP = 48ms). One
+        // visible click per intermediate tick, so a 5-slide jump clicks
+        // 5 times in ~240ms — mechanical, in step with the letter snap
+        // and tile dissolve. Duration caps near the cascade tail (900ms)
+        // so the longest jump still lands with the wave.
+        const steps = Math.max(1, Math.abs(idx - prevIdx));
+        const stepDurMs = Math.min(900, steps * BLOCK_STEP);
+        const stepTiming = 'steps(' + steps + ', end)';
+        if (carriage) {
+          carriage.style.transitionTimingFunction = stepTiming;
+          carriage.style.transitionDuration = stepDurMs + 'ms';
+          carriage.style.setProperty('--car-x', x + 'px');
+        }
+        if (fill) {
+          fill.style.transitionTimingFunction = stepTiming;
+          fill.style.transitionDuration = stepDurMs + 'ms';
+          fill.style.width = x + 'px';
+        }
+        // Label crossfades stay smooth — they're continuous type, not
+        // positional motion.
+        swapLabel(numeralEl, numText, false);
+        swapLabel(nameEl,    nmText,  false);
+
+        // Trail wash on real navigation.
+        if (trail && lastX !== null && Math.abs(x - lastX) > 1) {
+          const a = Math.min(lastX, x);
+          const b = Math.max(lastX, x);
+          trail.style.transition = 'none';
+          trail.style.left = a + 'px';
+          trail.style.width = (b - a) + 'px';
+          trail.style.opacity = '0';
+          trail.offsetWidth;
+          trail.style.transition = 'opacity 220ms ease-out 80ms';
+          trail.style.opacity = '0.32';
+          if (trailFadeTimer) clearTimeout(trailFadeTimer);
+          trailFadeTimer = setTimeout(() => {
+            trail.style.transition = 'opacity 700ms ease-in';
+            trail.style.opacity = '0';
+          }, 480);
+        }
+      }
+
+      lastX = x;
+    };
+
+    deck.addEventListener('slidechange', (e) => {
+      apply(e.detail.slide, e.detail.index, e.detail.total, e.detail.reason === 'init');
+    });
+
+    // deck-stage may have already fired its init slidechange before this
+    // listener attached (script load order). Catch the active slide up
+    // by hand so the first paint isn't a frozen page of zero-opacity
+    // letters and an empty tile field.
+    const catchUp = () => {
+      const sections = Array.from(deck.querySelectorAll(':scope > section'));
+      if (!sections.length) { requestAnimationFrame(catchUp); return; }
+      const active = sections.find(s => s.hasAttribute('data-deck-active')) || sections[0];
+      apply(active, sections.indexOf(active), sections.length, true);
+    };
+    catchUp();
+  })();
+
+  /* ==================================================================
+     Count-up — for any element with data-count-to="N", animate the
+     text from 0 to N as the surrounding cascade arrives. Sync rule:
+     the count starts when the nearest cascading ancestor's animation
+     starts (i.e. at its block-delay). Works on .cascades-block AND
+     .rise.d-* — getComputedStyle gives us the delay either way.
+
+     Markup:
+       <span data-count-to="32">32</span>          number only
+       <span data-count-to="3.4" data-count-dur="700">3.4</span>  optional dur
+     Runs on every slide entry so navigating away and back re-plays.
+     ================================================================== */
+  (() => {
+    const deck = document.querySelector('deck-stage');
+    if (!deck) return;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function parseCssTimeMs(s) {
+      if (!s) return 0;
+      const t = s.trim();
+      if (t.endsWith('ms')) return parseFloat(t);
+      if (t.endsWith('s'))  return parseFloat(t) * 1000;
+      return parseFloat(t) || 0;
+    }
+
+    function runCount(el, to, dur, isInt) {
+      // Use explicit setTimeout waypoints (not an rAF loop). When the
+      // page lives in a low-refresh preview iframe, rAF gets throttled
+      // and a single tick collapses the whole count to its final value
+      // — invisible. Explicit timeouts always advance one step each.
+      //
+      // For small integer targets ease-out compresses the count into
+      // the first ~30% of the duration; use linear so each integer is
+      // visible. Big targets keep ease-out — at scale the curve reads
+      // as a counter winding down.
+      const useLinear = isInt && Math.abs(to) <= 12;
+      // Waypoint count: enough to span every distinct value for small
+      // integers, ~24 frames for big counts (the digit roll effect).
+      const steps = isInt
+        ? Math.max(8, Math.min(64, Math.ceil(Math.abs(to))))
+        : 24;
+      for (let i = 1; i <= steps; i++) {
+        const t = i / steps;
+        const eased = useLinear ? t : 1 - Math.pow(1 - t, 5);
+        const v = isInt ? String(Math.round(to * eased)) : (to * eased).toFixed(1);
+        setTimeout(() => { el.textContent = v; }, Math.round(t * dur));
+      }
+    }
+
+    function setupCountUp(slide) {
+      const els = slide.querySelectorAll('[data-count-to]');
+      if (!els.length) return;
+      // Synchronous — apply() (the cascade JS, registered earlier) ran
+      // first on this same slidechange and already stamped inline
+      // animation-delay on every .cascades-block; we can read it now.
+      // (Double-rAF here would be victim to preview-iframe throttling.)
+      els.forEach((el) => {
+        const to = parseFloat(el.dataset.countTo);
+        if (!Number.isFinite(to)) return;
+        const isInt = Number.isInteger(to);
+        // Small integer counts get extra duration so the user reads
+        // each integer (≥220ms per step). Big counts stay at 700ms
+        // — at that speed the digits roll, which IS the effect.
+        const defaultDur = (isInt && Math.abs(to) <= 12)
+          ? Math.max(700, Math.round(Math.abs(to) * 220))
+          : 700;
+        const dur = parseInt(el.dataset.countDur || String(defaultDur), 10);
+
+        if (reduced) { el.textContent = isInt ? String(to) : to.toFixed(1); return; }
+        el.textContent = isInt ? '0' : '0.0';
+
+        // Sync to the surrounding cascade's arrival.
+        const animEl = el.closest('.cascades-block, .rise') || el;
+        const inlineDelay = parseCssTimeMs(animEl.style.animationDelay);
+        const computedDelay = parseCssTimeMs(getComputedStyle(animEl).animationDelay);
+        const delayMs = inlineDelay || computedDelay || 0;
+
+        setTimeout(() => runCount(el, to, dur, isInt), delayMs);
+      });
+    }
+
+    deck.addEventListener('slidechange', (e) => {
+      if (e.detail && e.detail.slide) setupCountUp(e.detail.slide);
+    });
+    // Catch the initial slide if slidechange already fired before we mounted.
+    const initial = deck.querySelector(':scope > section[data-deck-active]');
+    if (initial) setupCountUp(initial);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,6 +1,20 @@
 {
   "pieces": [
     {
+      "slug": "senior-capstone",
+      "kind": "deck",
+      "title": "Senior Capstone Presentation — Elijah Frost",
+      "description": "Senior capstone for the Center for Advanced Learning, Health Sciences: Medical track. Two summers of OHSU research, three nonprofits, and a pathway to pediatric neurology.",
+      "date": "2026-05-19",
+      "tags": [
+        "capstone",
+        "neuroscience",
+        "medical"
+      ],
+      "parent_template": null,
+      "pinned": false
+    },
+    {
       "slug": "editorial-template",
       "kind": "deck",
       "title": "Editorial Template — Slide layouts and motion",
