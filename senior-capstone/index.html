@@ -41,7 +41,7 @@
     "neuroscience",
     "medical"
   ],
-  "date": "2026-05-19",
+  "date": "2026-05-20",
   "version_id": null,
   "parent_version_id": "01KRY6WV4S3Q7EJRKB2NJ3TGYS",
   "created_at": null,
@@ -2269,6 +2269,17 @@
     padding-bottom: 170px;
   }
 
+  /* Certification card image sits at the top of the Certifications
+     list-lede. Aspect ~1.58 matches the source scan exactly, so the
+     image fills the placeholder edge-to-edge with no empty space;
+     the 10x6 reveal grid yields ~60px square tiles in step with the
+     rest of the deck. */
+  .slide-list .list-lede .cert-card {
+    width: 600px;
+    height: 380px;
+    margin: 0 0 28px;
+  }
+
   /* Hero stats — a row of large animated count-ups for slides that
      have a few headline numbers worth foregrounding. Used inline
      inside .it-text or .num-text. */
@@ -2315,28 +2326,28 @@
 </style>
 
 <script type="application/json" id="speaker-notes">[
-  "Good morning. I'm Elijah Frost, a senior at Reynolds High School in the Center for Advanced Learning Health Sciences Medical track, Class of 2026. Pause. Breath. Then advance.",
-  "From Fairview, Oregon. Senior at Reynolds High School, in the CAL Health Sciences Medical track. Dyslexia at the 99th percentile of severity and the first percentile of performance on a clinical assessment — that diagnosis set the path through neuroscience and psychiatry. Heading into undergraduate neuroscience, with pediatric neurology as the long-range goal. Dyslexia said dis-LEK-see-uh. CAL said as letters. Clinical tone, not heavy.",
-  "Lead camp counselor at Montavilla Community Center, Portland Parks and Recreation. Two summers, returning for 2026. Freelance photographer since 2020. Built and maintain full-stack web infrastructure for elijahfrost.com and projects.elijahfrost.com. Point at the image, don't read it.",
-  "Written for undergraduate neuroscience admission, with pediatric neurology as the long-range target. Maps two summers of OHSU research and three nonprofits onto the training pathway. Pathway: neuroscience B.S., medical school, pediatric neurology fellowship. B.S. said bachelor of science. Don't read the image.",
-  "Summer 2023 at OHSU in the Galbraith Lab. Project: the first single-cell measurement of the Piezo1 mechanosensitive channel activation threshold. Method: a custom stimulation rig applies a calibrated point force, paired with a fluorescent calcium indicator that lights up the moment the channel opens. Analysis: image pipeline at millisecond resolution, time-locked to the force trace. Finding: threshold near 180 piconewtons, roughly the force to lift a single virus particle. OHSU said as letters. Piezo1 said pee-AY-zo one. Mechanosensitive said mek-uh-no-SEN-sih-tiv. Piconewton said PEE-ko-NEW-ton.",
-  "Summer 2024 at OHSU in the Gibbs Labs. Context: short-wave infrared, 900 to 1700 nanometers, penetrates tissue with less scattering and autofluorescence than visible light. Build: dual-channel SWIR system for two spectrally distinct fluorophores in the same field of view. Pipeline: scattering correction and deconvolution against measured point-spread functions, with a 35 percent reduction in background noise. Deliverable: standard operating procedure now used by the lab for calibration, alignment, and routine acquisition. SWIR said swer (rhymes with stir). Fluorophore said FLOR-uh-for. Deconvolution said dee-kon-vuh-LOO-shun.",
-  "Co-founder and lead instructor since October 2022. More than 1,000 hours of programming delivered. Operates under the City of Portland Safe Blocks Program, with curriculum for teen girls, women, and LGBTQIA+ youth. Train-the-trainer model has reached more than 11,000 community members. Presented outcomes to Portland City Council. FY 2025 to 2026 funding secured. LGBTQIA+ said as letters.",
-  "Generous City. Oregon nonprofit I founded in October 2024 and currently direct, 501(c)(3) in process. 30-plus volunteers, $50,000-plus in donated supplies, over 1,000 served across the Portland metro. Partners include Portland Homeless Family Solutions, Blanchet House, and regional mutual-aid networks. Ohana Self-Defense. Separate 501(c)(3) where I serve as co-president and curriculum developer. Trauma-informed self-defense for participants with diverse abilities and trauma histories. Ohana said oh-HAH-nah. 501(c)(3) said five-oh-one-c-three.",
-  "Neuroscience in Medicine deck I produced for CAL Health Sciences. Maps the training pipeline from undergraduate neuroscience through medical school, residency, and pediatric neurology fellowship. Why it matters: pediatric neurology is more than a decade of training, and mapping it now lets the high-school and undergraduate years feed forward instead of running in parallel.",
-  "SCN1A loss-of-function epileptic encephalopathy with onset in infancy. Mechanism: reduced Naᵥ 1.1 sodium-channel function on GABAergic interneurons, producing cortical disinhibition and the seizure phenotype. Care sits at the intersection of pediatric neurology, anticonvulsant pharmacology, and genetic counseling, with management coordinated across the full clinical team. Why it matters: a model case for the coordination problem in pediatric neurology, where genetics, pharmacology, and family-level care decisions all attach to one patient. Dravet said druh-VAY. SCN1A said S-C-N-one-A. Naᵥ 1.1 said Nav one-point-one. GABAergic said gab-uh-ER-jik. Anticonvulsant said an-tee-kun-VUL-sunt.",
-  "Public health flyer I wrote for Oregon high school students and families, citation-backed. United States firearm deaths totaled 46,728 in 2023. Firearms are now the leading cause of death for Americans ages 1 to 17. Strongest evidence supports extreme risk protection order laws and safe storage requirements. Why it matters: leading cause of pediatric death, and ERPO laws plus safe storage are interventions a primary-care visit can actually deliver. ERPO said as letters. Stands for extreme risk protection order.",
-  "Same audience and format as the gun-violence flyer. United States opioid overdose deaths totaled 81,806 in 2022. Naloxone is now available over the counter and reverses overdose within minutes. Fentanyl test strips and bystander training are first-line harm-reduction interventions. Why it matters: naloxone and bystander training are evidence-based harm-reduction tools any clinician can teach in a single visit. Naloxone said nuh-LOK-sone. Fentanyl said FEN-tuh-nil.",
-  "Omega-3 fatty acids, EPA and DHA, essential polyunsaturated. Clinical use: FDA-approved for severe hypertriglyceridemia. Evidence supports prevention of fatal coronary heart disease, ischemic stroke, and age-related cognitive decline. Sources: salmon, sardines, herring, flaxseed, chia, walnuts, and algal DHA. Intake: Adequate Intake of 1.6 grams per day for adult men, 1.1 for adult women. No RDA or Upper Limit in the United States. EFSA reports no safety concern up to 5 grams per day combined. Fun fact: DHA is the dominant omega-3 in the human retina and brain gray matter, which is why deficiency first presents as visual and cognitive symptoms. Why it matters: omega-3 status affects fetal brain development, pediatric cognition, and adult cardiovascular risk. EPA, DHA, ALA said as letters. Hypertriglyceridemia, just say severe high triglycerides. EFSA said as letters, European Food Safety Authority.",
-  "WR 122 research paper, approximately 15 pages, more than 30 peer-reviewed citations in APA 7. Question: does the hippocampal-entorhinal system encode physical space, or general relational structure? Sources span O'Keefe and Nadel's cognitive map through Constantinescu, O'Reilly, and Behrens 2016 on grid-like coding for non-spatial relations. Why it matters: the same circuits underlie memory loss in Alzheimer's disease, spatial disorientation in pediatric epilepsies, and developmental disorders of memory. The representational question is a prerequisite for understanding how the system breaks. Hippocampal-entorhinal said hip-uh-KAM-pul en-toh-RYE-null. Constantinescu said kon-stan-tin-ES-koo. Nadel said NAY-dul.",
-  "CNA from Northwest N.A.C. Training, Washington State. Scope covers vital signs, patient mobility and transfers, ADL support, infection control, and documentation. BLS from the American Heart Association. Healthcare-provider level CPR for adults, children, and infants, with AED and bag-mask ventilation. CPR/AED from the American Red Cross. Lay-rescuer adult and pediatric CPR with AED operation. CNA, BLS, CPR, AED said as letters.",
-  "Programming: Python, JavaScript, TypeScript, HTML, CSS, jQuery, Git. Markup and typesetting: LaTeX, XML, MathML. Full courses authored in LaTeX for Pre-Calculus, AP Statistics, AP World History, AP U.S. History, and Anatomy and Physiology. Scientific tooling: napari, image-processing pipelines, and version-controlled lab notebooks. Languages: English, and three years of ASL coursework. LaTeX said LAH-tek. napari said nuh-PAR-ee. ASL said as letters. Name the buckets, don't read every tool.",
-  "Undergraduate target, neuroscience B.S. as the intended major. Fit: top-ranked undergraduate neuroscience program, School of Medicine ranked third nationally for research, and the Kennedy Krieger Institute on the same campus. Highest annual research expenditures in the United States, near $3.6 billion. Skip the $371,000 cost number unless asked.",
-  "Fall 2023: neurology physician shadowing. Patient consultations, neurological examination protocols, and case-presentation rounds. Fall 2025: clinical psychology shadowing. Intake sessions, cognitive behavioral therapy interventions, and documentation review. Spring 2026: Mount Hood Legacy Hospital. Four-hour in-hospital observation through CAL Health Sciences. First sustained exposure to a working hospital unit outside of a research building.",
-  "Scholastic Art and Writing Awards, National Anthology Finalist for The World as You See It. Black Box Gallery, second place, Black and White Photo Contest. Clackamas County Photography Competition, first place. Work displayed in county government buildings. Washington Trails Association Northwest Exposure Photo Contest, first place. Work exhibited at the University of Washington. One breath each. Don't dwell.",
-  "Slow down. Narrative beat. Thesis: build the systems that fit how you work, rather than wait for systems built for you. Pause. Backstory: entered fourth grade reading at a kindergarten level. Most of elementary school was lost to the gap between learning and how the school measured success. Turning point: turning dyslexia accommodations into a method. The night with Kandel's Principles of Neural Science and the DSM-V open at the same time, both read for pleasure. Land on CAL as the first program where the work mapped directly onto the career, through phlebotomy lab, CNA clinicals, the disease-state case study, the public-health flyers, and the micronutrient analysis.",
-  "Undergraduate: neuroscience B.S., Johns Hopkins as the target. MD-PhD: seven to eight years at the Johns Hopkins School of Medicine. Residency: three-year pediatrics. Fellowship: three-year pediatric neurology. MD-PhD said as letters.",
-  "Open with the quote: An engram is the physical trace a memory leaves in the brain. Thank you to everyone in this room who became one of mine. Pause. Acknowledgments: Dr. Stephanie Axman, Dr. Ashley Maliken, Dr. Antonia Forster, Dr. Summer Gibbs. At CAL: Zeke, Kelsey, McNeal, Zimmerman. Pause. Invite questions. Engram said EN-gram. Maliken said MAL-ih-kin. Forster said FOR-stur."
+  "Good morning. I'm Elijah Frost, a senior at Reynolds High School in the Center for Advanced Learning Health Sciences Medical track, Class of 2026.\nPause. Breath. Then advance.",
+  "Portland born and raised.\nParents grew up in Wisconsin and Oklahoma, met in New York City, then loaded the lesbian-couple U-Haul to Portland on cue.\nSevere dyslexia. 99th percentile of severity and first percentile of performance on clinical assessment. Sustained impact across school and daily function.\nMental-health challenges pushed me toward psychology, which is inseparable from medicine. Medicine has been the only career I have considered.\nDyslexia said dis-LEK-see-uh. Let the U-Haul line land dry, then move on.",
+  "Lead camp counselor at Montavilla Community Center, Portland Parks and Recreation. Two summers, returning for 2026.\nFreelance photographer since 2020.\nBuilt and maintain full-stack web infrastructure for elijahfrost.com and projects.elijahfrost.com.\nPoint at the image, don't read it.",
+  "Written for undergraduate neuroscience admission, with pediatric neurology as the long-range target.\nMaps two summers of OHSU research and three nonprofits onto the training pathway.\nPathway: neuroscience B.S., medical school, pediatric neurology fellowship.\nB.S. said bachelor of science. Don't read the image.",
+  "Neuroscience in Medicine deck I produced for CAL Health Sciences.\nMaps the training pipeline from undergraduate neuroscience through medical school, residency, and pediatric neurology fellowship.\nWhy it matters: pediatric neurology is more than a decade of training, and mapping it now lets the high-school and undergraduate years feed forward instead of running in parallel.",
+  "Capgras Syndrome. Delusional misidentification syndrome. Fixed belief that a loved one has been replaced by an identical impostor.\nMechanism: dual-route face processing. Ventral stream recognizes the face. Dorsal-limbic route assigns affective familiarity. When that affective tag is severed, the patient rationalizes the empty match as an impostor.\nAnatomy: fusiform gyrus for recognition, amygdala for affect, frontal cortex for reality monitoring. Common contexts: right-hemisphere lesions, neurodegenerative disease, paranoid schizophrenia.\nCare: diagnosis of exclusion. Psychiatric interview and neuroimaging. Treat the underlying cause. Antipsychotics, cholinesterase inhibitors, environmental stability, consistent caregivers.\nWhy it matters: clean dissociation between recognition and emotional valuation. Up to 15 percent prevalence in Alzheimer's, Lewy body, and Parkinson's populations. Recurring caregiver-management problem.\nCapgras said KAP-grah (silent s). Fusiform said FYOO-zih-form. Amygdala said uh-MIG-duh-luh. Lewy said LOO-ee. Cholinesterase said koh-lin-ES-ter-ase.",
+  "Public health flyer I wrote for Oregon high school students and families, citation-backed.\nUnited States firearm deaths totaled 46,728 in 2023.\nFirearms are now the leading cause of death for Americans ages 1 to 17.\nStrongest evidence supports extreme risk protection order laws and safe storage requirements.\nWhy it matters: leading cause of pediatric death, and ERPO laws plus safe storage are interventions a primary-care visit can actually deliver.\nERPO said as letters. Stands for extreme risk protection order.",
+  "Same audience and format as the gun-violence flyer.\nUnited States opioid overdose deaths totaled 81,806 in 2022.\nNaloxone is now available over the counter and reverses overdose within minutes.\nFentanyl test strips and bystander training are first-line harm-reduction interventions.\nWhy it matters: naloxone and bystander training are evidence-based harm-reduction tools any clinician can teach in a single visit.\nNaloxone said nuh-LOK-sone. Fentanyl said FEN-tuh-nil.",
+  "Omega-3 fatty acids, EPA and DHA, essential polyunsaturated.\nClinical use: FDA-approved for severe hypertriglyceridemia. Evidence supports prevention of fatal coronary heart disease, ischemic stroke, and age-related cognitive decline.\nSources: salmon, sardines, herring, flaxseed, chia, walnuts, and algal DHA.\nIntake: Adequate Intake of 1.6 grams per day for adult men, 1.1 for adult women. No RDA or Upper Limit in the United States. EFSA reports no safety concern up to 5 grams per day combined.\nFun fact: DHA is the dominant omega-3 in the human retina and brain gray matter, which is why deficiency first presents as visual and cognitive symptoms.\nWhy it matters: omega-3 status affects fetal brain development, pediatric cognition, and adult cardiovascular risk.\nEPA, DHA, ALA said as letters. Hypertriglyceridemia, just say severe high triglycerides. EFSA said as letters, European Food Safety Authority.",
+  "WR 122 research paper, approximately 15 pages, more than 30 peer-reviewed citations in APA 7.\nQuestion: does the hippocampal-entorhinal system encode physical space, or general relational structure?\nSources span O'Keefe and Nadel's cognitive map through Constantinescu, O'Reilly, and Behrens 2016 on grid-like coding for non-spatial relations.\nWhy it matters: the same circuits underlie memory loss in Alzheimer's disease, spatial disorientation in pediatric epilepsies, and developmental disorders of memory. The representational question is a prerequisite for understanding how the system breaks.\nHippocampal-entorhinal said hip-uh-KAM-pul en-toh-RYE-null. Constantinescu said kon-stan-tin-ES-koo. Nadel said NAY-dul.",
+  "Summer 2023 at OHSU in the Galbraith Lab.\nProject: the first single-cell measurement of the Piezo1 mechanosensitive channel activation threshold.\nMethod: a custom stimulation rig applies a calibrated point force, paired with a fluorescent calcium indicator that lights up the moment the channel opens.\nAnalysis: image pipeline at millisecond resolution, time-locked to the force trace.\nFinding: threshold near 180 piconewtons, roughly the force to lift a single virus particle.\nOHSU said as letters. Piezo1 said pee-AY-zo one. Mechanosensitive said mek-uh-no-SEN-sih-tiv. Piconewton said PEE-ko-NEW-ton.",
+  "Summer 2024 at OHSU in the Gibbs Labs.\nContext: short-wave infrared, 900 to 1700 nanometers, penetrates tissue with less scattering and autofluorescence than visible light.\nBuild: dual-channel SWIR system for two spectrally distinct fluorophores in the same field of view.\nPipeline: scattering correction and deconvolution against measured point-spread functions, with a 35 percent reduction in background noise.\nDeliverable: standard operating procedure now used by the lab for calibration, alignment, and routine acquisition.\nSWIR said swer (rhymes with stir). Fluorophore said FLOR-uh-for. Deconvolution said dee-kon-vuh-LOO-shun.",
+  "Co-founder and lead instructor since October 2022.\nMore than 1,000 hours of programming delivered.\nOperates under the City of Portland Safe Blocks Program, with curriculum for teen girls, women, and LGBTQIA+ youth.\nTrain-the-trainer model has reached more than 11,000 community members.\nPresented outcomes to Portland City Council. FY 2025 to 2026 funding secured.\nLGBTQIA+ said as letters.",
+  "Generous City. Oregon nonprofit I founded in October 2024 and currently direct, 501(c)(3) in process.\n30-plus volunteers, $50,000-plus in donated supplies, over 1,000 served across the Portland metro.\nPartners include Portland Homeless Family Solutions, Blanchet House, and regional mutual-aid networks.\nOhana Self-Defense. Separate 501(c)(3) where I serve as co-president and curriculum developer. Trauma-informed self-defense for participants with diverse abilities and trauma histories.\nOhana said oh-HAH-nah. 501(c)(3) said five-oh-one-c-three.",
+  "CNA from Northwest N.A.C. Training, Washington State. Scope covers vital signs, patient mobility and transfers, ADL support, infection control, and documentation.\nBLS from the American Heart Association. Healthcare-provider level CPR for adults, children, and infants, with AED and bag-mask ventilation.\nCPR/AED from the American Red Cross. Lay-rescuer adult and pediatric CPR with AED operation.\nCNA, BLS, CPR, AED said as letters.",
+  "Programming: Python, JavaScript, TypeScript, HTML, CSS, jQuery, Git.\nMarkup and typesetting: LaTeX, XML, MathML. Full courses authored in LaTeX for Pre-Calculus, AP Statistics, AP World History, AP U.S. History, and Anatomy and Physiology.\nScientific tooling: napari, image-processing pipelines, and version-controlled lab notebooks.\nLanguages: English, and three years of ASL coursework.\nLaTeX said LAH-tek. napari said nuh-PAR-ee. ASL said as letters. Name the buckets, don't read every tool.",
+  "Fall 2023: neurology physician shadowing. Patient consultations, neurological examination protocols, and case-presentation rounds.\nFall 2025: clinical psychology shadowing. Intake sessions, cognitive behavioral therapy interventions, and documentation review.\nSpring 2026: Mount Hood Legacy Hospital. Four-hour in-hospital observation through CAL Health Sciences. First sustained exposure to a working hospital unit outside of a research building.",
+  "Scholastic Art and Writing Awards, National Anthology Finalist for The World as You See It.\nBlack Box Gallery, second place, Black and White Photo Contest.\nClackamas County Photography Competition, first place. Work displayed in county government buildings.\nWashington Trails Association Northwest Exposure Photo Contest, first place. Work exhibited at the University of Washington.\nOne breath each. Don't dwell.",
+  "Reflective beat. Slow down.\nThe four years were mostly self-exploration. Developmental function of adolescence.\nRecurring challenge: saying no. Schedules have repeatedly exceeded the hours in the day, even without sleep. Next step is pacing.\nHealth Sciences strengthened the résumé and documented sustained interest in pediatric neurology. Acknowledge that openly.\nThe community at CAL has mattered more.\nPublic charter upbringing. Reynolds was a jarring shift. CAL has been a more pleasant environment.\nCAL said as letters.",
+  "Undergraduate target, neuroscience B.S. as the intended major.\nFit: top-ranked undergraduate neuroscience program, School of Medicine ranked third nationally for research, and the Kennedy Krieger Institute on the same campus.\nHighest annual research expenditures in the United States, near $3.6 billion.\nSkip the $371,000 cost number unless asked.",
+  "Undergraduate: neuroscience B.S., Johns Hopkins as the target.\nMD-PhD: seven to eight years at the Johns Hopkins School of Medicine.\nResidency: three-year pediatrics.\nFellowship: three-year pediatric neurology.\nMD-PhD said as letters.",
+  "Open with the quote: An engram is the physical trace a memory leaves in the brain. Thank you to everyone in this room who became one of mine.\nPause.\nAcknowledgments: Dr. Stephanie Axman, Dr. Ashley Maliken, Dr. Antonia Forster, Dr. Summer Gibbs.\nAt CAL: Zeke, Kelsey, McNeal, Zimmerman.\nPause. Invite questions.\nEngram said EN-gram. Maliken said MAL-ih-kin. Forster said FOR-stur."
 ]</script>
 </head>
 
@@ -2368,10 +2379,10 @@
         </div>
         <div class="it-text">
           <div class="label">Who I am</div>
-          <h2>Fairview, Oregon &mdash;<br>headed into neuroscience.</h2>
-          <p>Senior at Reynolds High School, on the CAL Health Sciences Medical track.</p>
-          <p>Dyslexia at the <strong>99th percentile of severity</strong> and the first percentile of performance on a clinical assessment &mdash; that diagnosis set the path through neuroscience and psychiatry.</p>
-          <p>Heading into undergraduate neuroscience, with <strong>pediatric neurology</strong> as the long-range goal.</p>
+          <h2>Portland, Oregon &mdash;<br>headed into neuroscience.</h2>
+          <p><strong>Born and raised in Portland.</strong> Parents grew up in Wisconsin and Oklahoma, met in New York City, then moved to Portland.</p>
+          <p><strong>Severe dyslexia</strong> &mdash; at the 99th percentile of severity and the first percentile of performance on a clinical assessment, with sustained impact across school and daily function.</p>
+          <p><strong>Long-standing mental-health challenges</strong> pushed me toward psychology, which is inseparable from medicine &mdash; and medicine has been the only career I have considered.</p>
         </div>
       </div>
     </div>
@@ -2417,125 +2428,9 @@
     </div>
   </section>
 
-  <!-- 05 — GALBRAITH LAB -->
-  <section data-screen-label="05 Galbraith Lab" class="slide-image-text"
-           data-numeral="V" data-name="OHSU &middot; Galbraith, &rsquo;23" data-halo="5">
-    <div class="slide left" style="align-items: center;">
-      <div class="it is-landscape-wide">
-        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="8">
-          <div class="placeholder-tag">Figure &middot; Piezo1 structure &amp; localization</div>
-          <img src="img/galbraith.png" alt="Piezo1 channel figure" loading="lazy" />
-        </div>
-        <div class="it-text">
-          <div class="label">OHSU Galbraith Lab &middot; Summer 2023</div>
-          <h2>The threshold to<br>open Piezo1.</h2>
-          <p><strong>Project.</strong> First single-cell quantification of the Piezo1 mechanosensitive channel activation threshold.</p>
-          <p><strong>Method.</strong> Custom single-cell stimulation rig that applies a calibrated point force, paired with a fluorescent calcium indicator for real-time channel activation.</p>
-          <p><strong>Analysis.</strong> Image-analysis pipeline at millisecond temporal resolution, time-locked to the force trace.</p>
-          <p><strong>Finding.</strong> Activation threshold near <span class="cascades-block" data-count-to="180" data-count-dur="900">180</span>&nbsp;piconewtons &mdash; roughly the force required to lift a single virus particle.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 06 — GIBBS LABS -->
-  <section data-screen-label="06 Gibbs Labs" class="slide-image-text"
-           data-numeral="VI" data-name="OHSU &middot; Gibbs, &rsquo;24" data-halo="5">
-    <div class="slide left" style="align-items: center;">
-      <div class="it is-banner">
-        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="28" data-reveal-rows="4">
-          <div class="placeholder-tag">Figure &middot; Dual-channel SWIR system</div>
-          <img src="img/gibbs.png" alt="SWIR imaging system" loading="lazy" />
-        </div>
-        <div class="it-text">
-          <div class="label">OHSU Gibbs Labs &middot; Summer 2024</div>
-          <h2>Two fluorophores,<br>one short-wave field.</h2>
-          <p><strong>Context.</strong> Short-wave infrared (900&ndash;1700&nbsp;nm) penetrates tissue with less scattering and autofluorescence than visible light.</p>
-          <p><strong>Build.</strong> Dual-channel SWIR system for simultaneous acquisition of two spectrally distinct fluorophores in the same field of view.</p>
-          <p><strong>Pipeline.</strong> Scattering correction and deconvolution against measured point-spread functions &mdash; a <span class="cascades-block" data-count-to="35">35</span>&nbsp;percent reduction in background noise.</p>
-          <p><strong>Deliverable.</strong> SOP now used by the lab for calibration, alignment, and routine acquisition.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 07 — ROSE CITY SELF DEFENSE -->
-  <section data-screen-label="07 Rose City Self Defense" class="slide-image-text"
-           data-numeral="VII" data-name="Rose City Self Defense" data-halo="5">
-    <div class="slide left" style="align-items: center;">
-      <div class="it">
-        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="7">
-          <div class="placeholder-tag">Rose City Self Defense &middot; Portland</div>
-          <img src="img/rcsd.png" alt="Rose City Self Defense" loading="lazy" />
-        </div>
-        <div class="it-text">
-          <div class="label">Rose City Self Defense</div>
-          <h2>Trauma-informed,<br>train-the-trainer.</h2>
-          <p>Co-founder and lead instructor since <strong>October 2022</strong>.</p>
-          <div class="stat-row cascades-block">
-            <div class="stat">
-              <div class="stat-num"><span class="cascades-block" data-count-to="1000">1,000</span>+</div>
-              <div class="stat-lbl">Hours of<br>programming delivered</div>
-            </div>
-            <div class="stat">
-              <div class="stat-num"><span class="cascades-block" data-count-to="11000">11,000</span>+</div>
-              <div class="stat-lbl">Community<br>members reached</div>
-            </div>
-          </div>
-          <p>Runs under the City of Portland <strong>Safe Blocks Program</strong> &mdash; curriculum for teen girls, women, and LGBTQIA+ youth.</p>
-          <p>Presented outcomes to Portland City Council &mdash; FY 2025&ndash;2026 funding secured.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 08 — COMMUNITY NONPROFITS -->
-  <section data-screen-label="08 Community nonprofits" class="slide-list"
-           data-numeral="VIII" data-name="Nonprofits" data-halo="4" data-cascade="ttb" data-cascade-step="2">
-    <div class="slide left">
-      <div class="list-wrap">
-        <div class="list-lede">
-          <div class="label">Community nonprofits</div>
-          <h2>Two organizations,<br>thousands served.</h2>
-          <p>Founder and director of one, co-president of the other &mdash; both registered Oregon nonprofits operating across the Portland metro.</p>
-        </div>
-        <div class="num-list">
-          <div class="num-item cascades-block">
-            <div class="num-tag">i.</div>
-            <div class="num-text">
-              <h3>Generous City</h3>
-              <div class="stat-row cascades-block" style="--stats: 3">
-                <div class="stat">
-                  <div class="stat-num"><span class="cascades-block" data-count-to="30">30</span>+</div>
-                  <div class="stat-lbl">Volunteers</div>
-                </div>
-                <div class="stat">
-                  <div class="stat-num">$<span class="cascades-block" data-count-to="50">50</span>K+</div>
-                  <div class="stat-lbl">Donated supplies</div>
-                </div>
-                <div class="stat">
-                  <div class="stat-num"><span class="cascades-block" data-count-to="1000">1,000</span>+</div>
-                  <div class="stat-lbl">Individuals served</div>
-                </div>
-              </div>
-              <p>Oregon nonprofit I founded in October 2024 and currently direct, 501(c)(3) in process, operating across the Portland metropolitan area. Partners include Portland Homeless Family Solutions, Blanchet House, and regional mutual-aid networks.</p>
-            </div>
-          </div>
-          <div class="num-item cascades-block">
-            <div class="num-tag">ii.</div>
-            <div class="num-text">
-              <h3>Ohana Self-Defense</h3>
-              <p>Separate 501(c)(3) where I serve as co-president and curriculum developer. Trauma-informed self-defense for participants with diverse abilities and trauma histories.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 09 — CAREER DEVELOPMENT PROJECT -->
-  <section data-screen-label="09 Career development project" class="slide-image-text"
-           data-numeral="IX" data-name="Career project" data-halo="5">
+  <!-- 05 — CAREER DEVELOPMENT PROJECT -->
+  <section data-screen-label="05 Career development project" class="slide-image-text"
+           data-numeral="V" data-name="Career project" data-halo="5">
     <div class="slide left" style="align-items: center;">
       <div class="it">
         <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="7">
@@ -2553,30 +2448,30 @@
     </div>
   </section>
 
-  <!-- 10 — DRAVET SYNDROME -->
-  <section data-screen-label="10 Dravet Syndrome" class="slide-image-text"
-           data-numeral="X" data-name="Disease state &middot; Dravet" data-halo="5">
+  <!-- 06 — CAPGRAS SYNDROME -->
+  <section data-screen-label="06 Capgras Syndrome" class="slide-image-text"
+           data-numeral="VI" data-name="Disease state &middot; Capgras" data-halo="5">
     <div class="slide left" style="align-items: center;">
-      <div class="it">
-        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="7">
-          <div class="placeholder-tag">Mechanism &middot; Na&#x1d65; 1.1 on interneurons</div>
-          <img src="img/dravet.png" alt="Dravet mechanism diagram" loading="lazy" />
+      <div class="it is-landscape-wide">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="8">
+          <div class="placeholder-tag">Mechanism &middot; Dual-route face processing</div>
+          <img src="img/capgras.png" alt="Capgras dual-route face processing diagram" loading="lazy" />
         </div>
         <div class="it-text">
-          <div class="label">Disease state &middot; Dravet Syndrome</div>
-          <h2>SCN1A,<br>cortical disinhibition.</h2>
-          <p><strong>Genetics.</strong> SCN1A loss-of-function epileptic encephalopathy with onset in infancy.</p>
-          <p><strong>Mechanism.</strong> Reduced Na&#x1d65;&nbsp;1.1 sodium-channel function on GABAergic interneurons &mdash; cortical disinhibition and the seizure phenotype.</p>
-          <p><strong>Care.</strong> Pediatric neurology, anticonvulsant pharmacology, and genetic counseling, coordinated across the full clinical team.</p>
-          <p><strong>Why this matters.</strong> A model case for the coordination problem in pediatric neurology, where genetics, pharmacology, and family-level care all attach to one patient.</p>
+          <div class="label">Disease state &middot; Capgras Syndrome</div>
+          <h2>Face known,<br>but the feeling&rsquo;s gone.</h2>
+          <p><strong>Definition.</strong> Delusional misidentification syndrome marked by the fixed belief that a close family member, friend, or pet has been replaced by an identical impostor &mdash; with face recognition and general cognition typically preserved.</p>
+          <p><strong>Mechanism.</strong> Dual-route face processing &mdash; the ventral visual stream recognizes the face, the dorsal-limbic route assigns affective familiarity. Capgras follows when that affective signal is severed and the patient rationalizes the empty match as an impostor.</p>
+          <p><strong>Care.</strong> Diagnosis of exclusion through psychiatric interview and neuroimaging &mdash; treatment directed at the underlying cause: antipsychotics for primary psychosis, cholinesterase inhibitors for dementia, alongside environmental stability and consistent caregivers.</p>
+          <p><strong>Why this matters.</strong> A clean dissociation between recognition and emotional valuation &mdash; with prevalence reaching <span class="cascades-block" data-count-to="15">15</span>&nbsp;percent in Alzheimer&rsquo;s, Lewy body, and Parkinson&rsquo;s populations.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 11 — GUN VIOLENCE FLYER -->
-  <section data-screen-label="11 Gun violence flyer" class="slide-image-text"
-           data-numeral="XI" data-name="Public health &middot; Gun violence" data-halo="5">
+  <!-- 07 — GUN VIOLENCE FLYER -->
+  <section data-screen-label="07 Gun violence flyer" class="slide-image-text"
+           data-numeral="VII" data-name="Public health &middot; Gun violence" data-halo="5">
     <div class="slide left" style="align-items: center;">
       <div class="it is-portrait">
         <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="10" data-reveal-rows="13">
@@ -2596,9 +2491,9 @@
     </div>
   </section>
 
-  <!-- 12 — OPIOID FLYER -->
-  <section data-screen-label="12 Opioid flyer" class="slide-image-text"
-           data-numeral="XII" data-name="Public health &middot; Overdose" data-halo="5">
+  <!-- 08 — OPIOID FLYER -->
+  <section data-screen-label="08 Opioid flyer" class="slide-image-text"
+           data-numeral="VIII" data-name="Public health &middot; Overdose" data-halo="5">
     <div class="slide left" style="align-items: center;">
       <div class="it is-portrait">
         <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="10" data-reveal-rows="13">
@@ -2618,9 +2513,9 @@
     </div>
   </section>
 
-  <!-- 13 — MICRONUTRIENT PROJECT -->
-  <section data-screen-label="13 Micronutrient project" class="slide-list"
-           data-numeral="XIII" data-name="Micronutrient" data-halo="4" data-cascade="ttb" data-cascade-step="2">
+  <!-- 09 — MICRONUTRIENT PROJECT -->
+  <section data-screen-label="09 Micronutrient project" class="slide-list"
+           data-numeral="IX" data-name="Micronutrient" data-halo="4" data-cascade="ttb" data-cascade-step="2">
     <div class="slide left">
       <div class="list-wrap">
         <div class="list-lede">
@@ -2662,9 +2557,9 @@
     </div>
   </section>
 
-  <!-- 14 — SENIOR ENGLISH RESEARCH -->
-  <section data-screen-label="14 Senior English research" class="slide-body"
-           data-numeral="XIV" data-name="Senior research" data-halo="4">
+  <!-- 10 — SENIOR ENGLISH RESEARCH -->
+  <section data-screen-label="10 Senior English research" class="slide-body"
+           data-numeral="X" data-name="Senior research" data-halo="4">
     <div class="slide left">
       <div class="body-stack">
         <div class="label">Senior English research &middot; WR 122</div>
@@ -2676,12 +2571,132 @@
     </div>
   </section>
 
+  <!-- 11 — GALBRAITH LAB -->
+  <section data-screen-label="11 Galbraith Lab" class="slide-image-text"
+           data-numeral="XI" data-name="OHSU &middot; Galbraith, &rsquo;23" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it is-landscape-wide">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="8">
+          <div class="placeholder-tag">Figure &middot; Piezo1 structure &amp; localization</div>
+          <img src="img/galbraith.png" alt="Piezo1 channel figure" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">OHSU Galbraith Lab &middot; Summer 2023</div>
+          <h2>The threshold to<br>open Piezo1.</h2>
+          <p><strong>Project.</strong> First single-cell quantification of the Piezo1 mechanosensitive channel activation threshold.</p>
+          <p><strong>Method.</strong> Custom single-cell stimulation rig that applies a calibrated point force, paired with a fluorescent calcium indicator for real-time channel activation.</p>
+          <p><strong>Analysis.</strong> Image-analysis pipeline at millisecond temporal resolution, time-locked to the force trace.</p>
+          <p><strong>Finding.</strong> Activation threshold near <span class="cascades-block" data-count-to="180" data-count-dur="900">180</span>&nbsp;piconewtons &mdash; roughly the force required to lift a single virus particle.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 — GIBBS LABS -->
+  <section data-screen-label="12 Gibbs Labs" class="slide-image-text"
+           data-numeral="XII" data-name="OHSU &middot; Gibbs, &rsquo;24" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it is-banner">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="28" data-reveal-rows="4">
+          <div class="placeholder-tag">Figure &middot; Dual-channel SWIR system</div>
+          <img src="img/gibbs.png" alt="SWIR imaging system" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">OHSU Gibbs Labs &middot; Summer 2024</div>
+          <h2>Two fluorophores,<br>one short-wave field.</h2>
+          <p><strong>Context.</strong> Short-wave infrared (900&ndash;1700&nbsp;nm) penetrates tissue with less scattering and autofluorescence than visible light.</p>
+          <p><strong>Build.</strong> Dual-channel SWIR system for simultaneous acquisition of two spectrally distinct fluorophores in the same field of view.</p>
+          <p><strong>Pipeline.</strong> Scattering correction and deconvolution against measured point-spread functions &mdash; a <span class="cascades-block" data-count-to="35">35</span>&nbsp;percent reduction in background noise.</p>
+          <p><strong>Deliverable.</strong> SOP now used by the lab for calibration, alignment, and routine acquisition.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 — ROSE CITY SELF DEFENSE -->
+  <section data-screen-label="13 Rose City Self Defense" class="slide-image-text"
+           data-numeral="XIII" data-name="Rose City Self Defense" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="7">
+          <div class="placeholder-tag">Rose City Self Defense &middot; Portland</div>
+          <img src="img/rcsd.png" alt="Rose City Self Defense" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">Rose City Self Defense</div>
+          <h2>Trauma-informed,<br>train-the-trainer.</h2>
+          <p>Co-founder and lead instructor since <strong>October 2022</strong>.</p>
+          <div class="stat-row cascades-block">
+            <div class="stat">
+              <div class="stat-num"><span class="cascades-block" data-count-to="1000">1,000</span>+</div>
+              <div class="stat-lbl">Hours of<br>programming delivered</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num"><span class="cascades-block" data-count-to="11000">11,000</span>+</div>
+              <div class="stat-lbl">Community<br>members reached</div>
+            </div>
+          </div>
+          <p>Runs under the City of Portland <strong>Safe Blocks Program</strong> &mdash; curriculum for teen girls, women, and LGBTQIA+ youth.</p>
+          <p>Presented outcomes to Portland City Council &mdash; FY 2025&ndash;2026 funding secured.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 — COMMUNITY NONPROFITS -->
+  <section data-screen-label="14 Community nonprofits" class="slide-list"
+           data-numeral="XIV" data-name="Nonprofits" data-halo="4" data-cascade="ttb" data-cascade-step="2">
+    <div class="slide left">
+      <div class="list-wrap">
+        <div class="list-lede">
+          <div class="label">Community nonprofits</div>
+          <h2>Two organizations,<br>thousands served.</h2>
+          <p>Founder and director of one, co-president of the other &mdash; both registered Oregon nonprofits operating across the Portland metro.</p>
+        </div>
+        <div class="num-list">
+          <div class="num-item cascades-block">
+            <div class="num-tag">i.</div>
+            <div class="num-text">
+              <h3>Generous City</h3>
+              <div class="stat-row cascades-block" style="--stats: 3">
+                <div class="stat">
+                  <div class="stat-num"><span class="cascades-block" data-count-to="30">30</span>+</div>
+                  <div class="stat-lbl">Volunteers</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-num">$<span class="cascades-block" data-count-to="50">50</span>K+</div>
+                  <div class="stat-lbl">Donated supplies</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-num"><span class="cascades-block" data-count-to="1000">1,000</span>+</div>
+                  <div class="stat-lbl">Individuals served</div>
+                </div>
+              </div>
+              <p>Oregon nonprofit I founded in October 2024 and currently direct, 501(c)(3) in process, operating across the Portland metropolitan area. Partners include Portland Homeless Family Solutions, Blanchet House, and regional mutual-aid networks.</p>
+            </div>
+          </div>
+          <div class="num-item cascades-block">
+            <div class="num-tag">ii.</div>
+            <div class="num-text">
+              <h3>Ohana Self-Defense</h3>
+              <p>Separate 501(c)(3) where I serve as co-president and curriculum developer. Trauma-informed self-defense for participants with diverse abilities and trauma histories.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- 15 — CERTIFICATIONS -->
   <section data-screen-label="15 Certifications" class="slide-list"
            data-numeral="XV" data-name="Certifications" data-halo="4" data-cascade="ttb" data-cascade-step="2">
     <div class="slide left">
       <div class="list-wrap">
         <div class="list-lede">
+          <div class="placeholder cascades-block cert-card" data-halo="6" data-reveal-cols="10" data-reveal-rows="6">
+            <div class="placeholder-tag">Scanned &middot; CNA &middot; BLS &middot; CPR/AED</div>
+            <img src="img/certifications.png" alt="Certification cards" loading="lazy" />
+          </div>
           <div class="label">Certifications</div>
           <h2>Clinical credentials,<br>active and current.</h2>
           <p>Healthcare-provider and lay-rescuer certifications maintained through the program and on the floor.</p>
@@ -2757,30 +2772,9 @@
     </div>
   </section>
 
-  <!-- 17 — JOHNS HOPKINS -->
-  <section data-screen-label="17 Johns Hopkins" class="slide-image-text"
-           data-numeral="XVII" data-name="Johns Hopkins" data-halo="5">
-    <div class="slide left" style="align-items: center;">
-      <div class="it">
-        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="7">
-          <div class="placeholder-tag">Campus &middot; Johns Hopkins University</div>
-          <img src="img/jhu.png" alt="Johns Hopkins campus" loading="lazy" />
-        </div>
-        <div class="it-text">
-          <div class="label">Undergraduate target</div>
-          <h2>Johns Hopkins<br>University.</h2>
-          <p><strong>Neuroscience B.S.</strong> as the intended major.</p>
-          <p><strong>Fit.</strong> Top-ranked undergraduate neuroscience program, School of Medicine ranked third nationally for research, Kennedy Krieger Institute on the same campus.</p>
-          <p><strong>Highest annual research expenditures</strong> in the United States &mdash; near $<span class="cascades-block" data-count-to="3.6">3.6</span>&nbsp;billion.</p>
-          <p>Four-year cost projection near $371,000 with annual financial-aid renewal.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 18 — SERVICE LEARNING AND SHADOWING -->
-  <section data-screen-label="18 Service learning and shadowing" class="slide-timeline"
-           data-numeral="XVIII" data-name="Shadowing" data-halo="4">
+  <!-- 17 — SERVICE LEARNING AND SHADOWING -->
+  <section data-screen-label="17 Service learning and shadowing" class="slide-timeline"
+           data-numeral="XVII" data-name="Shadowing" data-halo="4">
     <div class="slide left">
       <div class="tl-lede">
         <div class="label">Service learning and shadowing</div>
@@ -2813,9 +2807,9 @@
     </div>
   </section>
 
-  <!-- 19 — AWARDS -->
-  <section data-screen-label="19 Awards" class="slide-image-text"
-           data-numeral="XIX" data-name="Awards" data-halo="5">
+  <!-- 18 — AWARDS -->
+  <section data-screen-label="18 Awards" class="slide-image-text"
+           data-numeral="XVIII" data-name="Awards" data-halo="5">
     <div class="slide left" style="align-items: center;">
       <div class="it">
         <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="7">
@@ -2834,16 +2828,37 @@
     </div>
   </section>
 
-  <!-- 20 — REFLECTION -->
-  <section data-screen-label="20 Reflection" class="slide-body"
-           data-numeral="XX" data-name="Reflection" data-halo="6">
+  <!-- 19 — REFLECTION -->
+  <section data-screen-label="19 Reflection" class="slide-body"
+           data-numeral="XIX" data-name="Reflection" data-halo="6">
     <div class="slide left">
       <div class="body-stack">
         <div class="label">Reflection</div>
-        <h2>Build the systems<br>that fit how you work.</h2>
-        <p class="body lede">The last four years have taught me to build the systems that fit how I work, rather than wait for systems built for me. I entered fourth grade reading at a kindergarten level, and most of elementary school was lost to the gap between what I was learning and what school treated as success.</p>
-        <p class="body lede">The work since then has been turning dyslexia accommodations into a method &mdash; and the night I sat with Kandel&rsquo;s <em>Principles of Neural Science</em> and the DSM-V open in front of me and read them both for pleasure is when that translation felt complete.</p>
-        <p class="body lede">CAL was the first program where the work mapped directly onto the career I want to do &mdash; through phlebotomy lab, CNA clinicals, the disease-state case study, the public-health flyers, and the micronutrient analysis.</p>
+        <h2>Self-exploration,<br>and the practice of saying no.</h2>
+        <p class="body lede">The four years were mostly <strong>self-exploration</strong> &mdash; the developmental function of adolescence.</p>
+        <p class="body lede">The recurring challenge has been <strong>saying no</strong>. I have repeatedly built schedules that exceed the hours in the day even without sleep, so the next step is pacing.</p>
+        <p class="body lede">Health Sciences strengthened the r&eacute;sum&eacute; and documented sustained interest in pediatric neurology, which I acknowledge openly &mdash; though the <strong>community at CAL</strong> has mattered more. After a public charter upbringing, Reynolds was a jarring shift, and CAL has been a more pleasant environment.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 20 — JOHNS HOPKINS -->
+  <section data-screen-label="20 Johns Hopkins" class="slide-image-text"
+           data-numeral="XX" data-name="Johns Hopkins" data-halo="5">
+    <div class="slide left" style="align-items: center;">
+      <div class="it">
+        <div class="placeholder cascades-block it-image" data-halo="8" data-reveal-cols="13" data-reveal-rows="7">
+          <div class="placeholder-tag">Campus &middot; Johns Hopkins University</div>
+          <img src="img/jhu.png" alt="Johns Hopkins campus" loading="lazy" />
+        </div>
+        <div class="it-text">
+          <div class="label">Undergraduate target</div>
+          <h2>Johns Hopkins<br>University.</h2>
+          <p><strong>Neuroscience B.S.</strong> as the intended major.</p>
+          <p><strong>Fit.</strong> Top-ranked undergraduate neuroscience program, School of Medicine ranked third nationally for research, Kennedy Krieger Institute on the same campus.</p>
+          <p><strong>Highest annual research expenditures</strong> in the United States &mdash; near $<span class="cascades-block" data-count-to="3.6">3.6</span>&nbsp;billion.</p>
+          <p>Four-year cost projection near $371,000 with annual financial-aid renewal.</p>
+        </div>
       </div>
     </div>
   </section>
