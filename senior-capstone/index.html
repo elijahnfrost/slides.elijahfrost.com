@@ -1401,12 +1401,18 @@
     pointer-events: none;
     z-index: 2;
   }
-  /* Presenter NEXT-slide iframe (?_view=slide) — the deck-stage hosts a
-     single static slide with no broadcast and no nav-driven re-trigger.
-     The tile-reveal cover only dissolves on .letters-ready, which the
-     thumb iframe doesn't reliably re-fire, so the cover sits over the
-     image and blocks the preview. In slide-mode, drop the cover. */
-  deck-stage[data-view="slide"] .tile-reveal > .reveal-cover { display: none; }
+  /* Presenter NEXT-slide iframe (?_view=slide) — the tile-reveal cover
+     can stall over the image if .letters-ready doesn't re-fire, so the
+     thumb shows a black rectangle instead of the next slide. Strip the
+     cover entirely in slide-mode via both class and attribute hooks. */
+  deck-stage[data-view="slide"] .tile-reveal > .reveal-cover,
+  deck-stage[data-view="slide"] .placeholder > .reveal-cover,
+  html.deck-view-slide .tile-reveal > .reveal-cover,
+  html.deck-view-slide .placeholder > .reveal-cover {
+    display: none !important;
+  }
+  html.deck-view-slide .tile-reveal,
+  html.deck-view-slide .placeholder { overflow: hidden; }
   .tile-reveal > .reveal-cover > .reveal-cell {
     --grid-delay: 0ms;
     --bg-delay:   0ms;
@@ -2930,6 +2936,67 @@
 <!-- /FRAMEWORK-MANAGED:deck-bootstrap -->
 
 <script id="piece-script">
+  /* ==================================================================
+     Presenter-mode safeguards.
+     (1) In ?_view=slide iframes (presenter CURRENT/NEXT thumbs), strip
+         every tile-reveal cover so a stalled animation never leaves a
+         black rectangle over the image. Defensive against any future
+         iframe path where .letters-ready doesn't re-fire.
+     (2) In the live deck window, send an extra BroadcastChannel state
+         every 2s. The framework's own heartbeat is 5s and the presenter
+         watchdog is 7s, which leaves no headroom if Chrome throttles
+         the deck tab — a single skipped beat shows "Waiting for deck…".
+         An aggressive shadow heartbeat keeps the presenter pinned even
+         under background-tab throttling.
+     ================================================================== */
+  (() => {
+    const params = new URLSearchParams(location.search);
+    const slideMode = params.get('_view') === 'slide';
+    if (slideMode) {
+      document.documentElement.classList.add('deck-view-slide');
+      const stripCovers = () => {
+        document.querySelectorAll('.reveal-cover').forEach(c => c.remove());
+      };
+      stripCovers();
+      // The framework re-stamps reveal-cover on slidechange and on init
+      // catch-up. Strip again on every paint while in slide-mode.
+      const mo = new MutationObserver(stripCovers);
+      mo.observe(document.body, { childList: true, subtree: true });
+      // Also clear once more on rAF after first paint, in case the
+      // mutation observer hasn't been wired before the first stamp.
+      requestAnimationFrame(() => requestAnimationFrame(stripCovers));
+    } else if (typeof BroadcastChannel !== 'undefined') {
+      // Live deck window: piggy-back on the framework's channel name
+      // (deck-stage:<path>) and shadow-heartbeat every 2s. The presenter
+      // accepts {type:'state'} from anyone on the channel.
+      let lastIdx = 0, lastTotal = 0, lastFrag = 0, lastFragTotal = 0, lastSkipped = [];
+      const ch = (() => { try { return new BroadcastChannel('deck-stage:' + location.pathname); } catch (e) { return null; } })();
+      const deckEl = document.querySelector('deck-stage');
+      if (deckEl) {
+        deckEl.addEventListener('slidechange', (e) => {
+          const d = e.detail || {};
+          if (Number.isInteger(d.index)) lastIdx = d.index;
+          if (Number.isInteger(d.total)) lastTotal = d.total;
+          if (Number.isInteger(d.fragment)) lastFrag = d.fragment;
+          if (Number.isInteger(d.fragmentTotal)) lastFragTotal = d.fragmentTotal;
+        });
+      }
+      if (ch) {
+        setInterval(() => {
+          if (!lastTotal) return;
+          try {
+            ch.postMessage({
+              type: 'state',
+              index: lastIdx, total: lastTotal,
+              fragment: lastFrag, fragmentTotal: lastFragTotal,
+              skipped: lastSkipped, reason: 'shadow-heartbeat',
+            });
+          } catch (e) {}
+        }, 2000);
+      }
+    }
+  })();
+
   /* ==================================================================
      Mirror deck-stage's scaled .canvas with the overlay's transform.
      The canvas is in shadow DOM; we resolve it lazily and re-sync on
