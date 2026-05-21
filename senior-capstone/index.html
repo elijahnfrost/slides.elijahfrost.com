@@ -1401,6 +1401,12 @@
     pointer-events: none;
     z-index: 2;
   }
+  /* Presenter NEXT-slide iframe (?_view=slide) — the deck-stage hosts a
+     single static slide with no broadcast and no nav-driven re-trigger.
+     The tile-reveal cover only dissolves on .letters-ready, which the
+     thumb iframe doesn't reliably re-fire, so the cover sits over the
+     image and blocks the preview. In slide-mode, drop the cover. */
+  deck-stage[data-view="slide"] .tile-reveal > .reveal-cover { display: none; }
   .tile-reveal > .reveal-cover > .reveal-cell {
     --grid-delay: 0ms;
     --bg-delay:   0ms;
